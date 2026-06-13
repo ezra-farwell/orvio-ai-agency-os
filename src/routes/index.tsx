@@ -507,16 +507,17 @@ function DemoSection() {
 
 function FeatureDeepDives() {
   return (
-    <section id="features" className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] space-y-24 px-5 sm:px-8">
+    <section id="features" className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] space-y-32 px-6 sm:px-10 sm:space-y-40">
         <FeatureRow
           mockup={<ReportMockup />}
+          index="03a"
           eyebrow="AI Reports"
           title="Reports that write themselves."
           body="Tell Orvio to generate a report. In 30 seconds, the AI reads your client's campaign data and writes a plain-English performance summary — what worked, what didn't, what's next. Your logo on every page."
           bullets={[
             "Generated in under 30 seconds",
-            "Adapts to your tone: Professional, Casual, Data-Heavy, Executive",
+            "Adapts tone: Professional, Casual, Data-Heavy, Executive",
             "Branded PDF, auto-delivered to client",
             "Full report archive per client, forever",
           ]}
@@ -524,21 +525,23 @@ function FeatureDeepDives() {
         <FeatureRow
           reversed
           mockup={<ModelDropdownMockup />}
+          index="03b"
           eyebrow="Model Selector"
           title="Six models. You pick the right one."
-          body="Not every campaign needs your most expensive model. Use Flash for rapid draft cycles. Use Standard models for most client work. Reserve Opus or GPT-5.5 for campaigns that have to convert. One credit balance, shared across your whole team."
+          body="Not every campaign needs your most expensive model. Use Flash for rapid draft cycles. Standard for most client work. Reserve Opus or GPT-5.5 for campaigns that have to convert."
           bullets={[
             "Six AI models across four tiers",
             "Credit cost shown before you generate",
-            "Image model selection for static ad concepts",
-            "Workspace credits shared — no per-user fragmentation",
+            "Image models for static ad concepts",
+            "Shared workspace credits — no per-user fragmentation",
           ]}
         />
         <FeatureRow
           mockup={<PortalMockup />}
+          index="03c"
           eyebrow="White-label Portal"
           title="Your clients log in. They see you."
-          body="Every client gets a branded portal under your name, your logo, your colors, your domain. They see their numbers in plain English, download reports, sign contracts, and pay invoices. Orvio is invisible. You get the credit."
+          body="Every client gets a branded portal under your name, your logo, your colors, your domain. They see their numbers in plain English, download reports, sign contracts, and pay invoices."
           bullets={[
             "Your brand on every pixel clients see",
             "Custom domain: portal.youragency.com",
