@@ -554,6 +554,7 @@ function FeatureDeepDives() {
 function FeatureRow({
   mockup,
   eyebrow,
+  index,
   title,
   body,
   bullets,
@@ -561,21 +562,31 @@ function FeatureRow({
 }: {
   mockup: React.ReactNode;
   eyebrow: string;
+  index: string;
   title: string;
   body: string;
   bullets: string[];
   reversed?: boolean;
 }) {
   return (
-    <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
+    <div className="grid items-center gap-12 md:grid-cols-2 md:gap-20">
       <Reveal className={reversed ? "md:order-2" : ""}>
-        <div className="text-xs font-medium uppercase tracking-wider text-indigo">{eyebrow}</div>
-        <h3 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">{title}</h3>
-        <p className="mt-4 text-base text-text-muted">{body}</p>
-        <ul className="mt-6 space-y-3">
+        <div className="mono-eyebrow flex items-center gap-3">
+          <span className="text-[#5EEAD4]">{index}</span>
+          <span className="text-text-faint">—</span>
+          <span>{eyebrow}</span>
+        </div>
+        <h3
+          className="mt-5 font-display font-extrabold leading-[1.05]"
+          style={{ fontSize: "clamp(1.875rem, 3.2vw, 3rem)" }}
+        >
+          {title}
+        </h3>
+        <p className="mt-5 text-base text-text-muted">{body}</p>
+        <ul className="mt-7 space-y-3">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-3 text-sm">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-indigo" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
               <span className="text-foreground/90">{b}</span>
             </li>
           ))}
@@ -590,64 +601,74 @@ function FeatureRow({
 
 function Stats() {
   return (
-    <section className="border-y border-border bg-surface/50">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-8 px-5 py-16 sm:px-8 md:grid-cols-4">
-        {[
-          { v: <><span className="text-text-muted text-3xl">&lt;</span> <CountUp to={20} /> <span className="text-text-muted text-3xl">min</span></>, l: "Average time to onboard a new client", c: "text-indigo" },
-          { v: <><span>$</span><CountUp to={97} />/mo</>, l: "vs $497+ for GHL white-label", c: "text-success" },
-          { v: <><CountUp to={30} /> sec</>, l: "Average AI report generation time", c: "text-indigo" },
-          { v: <><CountUp to={6} /> models</>, l: "AI models. You choose the right one.", c: "text-amber" },
-        ].map((s, i) => (
-          <Reveal key={i} delay={i * 0.05}>
-            <div>
-              <div className={`font-mono text-4xl font-semibold sm:text-5xl ${s.c}`}>{s.v}</div>
-              <div className="mt-2 text-xs text-text-muted">{s.l}</div>
-            </div>
-          </Reveal>
-        ))}
+    <SkyBand className="py-24" variant="soft">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
+        <div className="grid grid-cols-2 gap-y-12 gap-x-8 md:grid-cols-4">
+          {[
+            { v: <><span className="text-text-muted text-3xl">&lt;</span><CountUp to={20} /><span className="text-text-muted text-3xl ml-1">min</span></>, l: "Average client onboarding" },
+            { v: <><span>$</span><CountUp to={97} /><span className="text-text-muted text-3xl">/mo</span></>, l: "vs $497+ for GHL white-label" },
+            { v: <><CountUp to={30} /><span className="text-text-muted text-3xl ml-1">sec</span></>, l: "Avg. AI report generation" },
+            { v: <><CountUp to={6} /><span className="text-text-muted text-3xl ml-1">models</span></>, l: "Pick the right one per task" },
+          ].map((s, i) => (
+            <Reveal key={i} delay={i * 0.05}>
+              <div>
+                <div className="font-mono text-4xl font-semibold text-foreground sm:text-5xl">{s.v}</div>
+                <div className="mt-3 mono-eyebrow text-text-muted">{s.l}</div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
-    </section>
+    </SkyBand>
   );
 }
 
 function Marketplace() {
   const tone = (t: string) =>
-    t === "Free" ? "border-success/30 bg-success/10 text-success"
-    : t === "Standard" ? "border-indigo/30 bg-indigo/10 text-indigo"
-    : t === "Premium" ? "border-[#8B5CF6]/30 bg-[#8B5CF6]/10 text-[#8B5CF6]"
-    : "border-amber/30 bg-amber/10 text-amber";
+    t === "Free" ? "text-success"
+    : t === "Standard" ? "text-[#5EEAD4]"
+    : t === "Premium" ? "text-[#A78BFA]"
+    : "text-amber";
 
   return (
-    <section className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
           <SectionHeader
-            title="The right model for every job."
-            subtitle="Don't pay premium rates for every task. Route intelligently."
+            center={false}
+            index="04"
+            eyebrow="Model marketplace"
+            title={<>The right model<br />for every job.</>}
+            subtitle="Don't pay premium rates for every task. Route intelligently — six models across four tiers, one shared credit balance."
           />
         </Reveal>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {models.map((m, i) => (
-            <Reveal key={m.name} delay={i * 0.04}>
-              <SpotlightCard className="h-full p-6" glow={m.tone === "amber" ? "rgba(217,119,6,0.22)" : m.tone === "purple" ? "rgba(139,92,246,0.22)" : m.tone === "green" ? "rgba(16,185,129,0.18)" : "rgba(99,102,241,0.22)"}>
-                <div className="flex items-start justify-between gap-2">
-                  <h4 className="font-display text-lg font-bold">{m.name}</h4>
-                  <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${tone(m.tier)}`}>
-                    {m.tier}
-                  </span>
+        <Reveal delay={0.1}>
+          <div className="mt-20 hairline-t hairline-b">
+            <div className="hidden grid-cols-[2fr_1fr_120px_3fr] gap-6 py-4 mono-eyebrow text-text-muted md:grid">
+              <span>Model</span>
+              <span>Tier</span>
+              <span className="text-right">Credits</span>
+              <span>Best for</span>
+            </div>
+          </div>
+          <div className="divide-y divide-border">
+            {models.map((m, i) => (
+              <Reveal key={m.name} delay={i * 0.03}>
+                <div className="grid grid-cols-1 gap-3 py-7 transition-colors hover:bg-surface/30 md:grid-cols-[2fr_1fr_120px_3fr] md:items-center md:gap-6 md:px-2">
+                  <div className="font-display text-xl font-bold">{m.name}</div>
+                  <div className={`mono-eyebrow ${tone(m.tier)}`}>{m.tier}</div>
+                  <div className="font-mono text-base text-amber md:text-right">{m.credits} cr</div>
+                  <p className="text-sm text-text-muted">{m.copy}</p>
                 </div>
-                <div className="mt-1 font-mono text-sm text-amber">{m.credits} credits</div>
-                <p className="mt-4 text-sm text-text-muted">{m.copy}</p>
-              </SpotlightCard>
-            </Reveal>
-          ))}
-        </div>
+              </Reveal>
+            ))}
+          </div>
+        </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-text-muted">
-            Credits are purchased per workspace, not per user. One balance, shared across your entire team.
-            They never expire.
+          <p className="mt-10 max-w-2xl mono-eyebrow text-text-muted">
+            One balance, shared across your team. Credits never expire.
           </p>
         </Reveal>
       </div>
