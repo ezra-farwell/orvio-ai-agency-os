@@ -289,11 +289,11 @@ function Problem() {
         <div className="mt-12 grid gap-4 sm:mt-16 md:grid-cols-2 lg:grid-cols-3">
           {problems.map((p, i) => (
             <Reveal key={p.t} delay={i * 0.05}>
-              <div className="surface-card h-full p-6 transition-colors hover:border-danger/30">
+              <SpotlightCard className="h-full p-6" glow="rgba(239,68,68,0.18)">
                 <div className="grid h-9 w-9 place-items-center rounded-lg bg-danger/10 text-danger">!</div>
                 <h3 className="mt-4 font-display text-lg font-bold">{p.t}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-text-muted">{p.d}</p>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
@@ -520,7 +520,7 @@ function Marketplace() {
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {models.map((m, i) => (
             <Reveal key={m.name} delay={i * 0.04}>
-              <div className="surface-card h-full p-6">
+              <SpotlightCard className="h-full p-6" glow={m.tone === "amber" ? "rgba(217,119,6,0.22)" : m.tone === "purple" ? "rgba(139,92,246,0.22)" : m.tone === "green" ? "rgba(16,185,129,0.18)" : "rgba(99,102,241,0.22)"}>
                 <div className="flex items-start justify-between gap-2">
                   <h4 className="font-display text-lg font-bold">{m.name}</h4>
                   <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${tone(m.tier)}`}>
@@ -529,7 +529,7 @@ function Marketplace() {
                 </div>
                 <div className="mt-1 font-mono text-sm text-amber">{m.credits} credits</div>
                 <p className="mt-4 text-sm text-text-muted">{m.copy}</p>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
