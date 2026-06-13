@@ -187,8 +187,7 @@ export function MagneticButton({
   const onLeave = () => { x.set(0); y.set(0); };
   return (
     <motion.span style={{ display: "inline-flex", x, y }}>
-      {/* @ts-expect-error polymorphic */}
-      <As ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} className={className} {...props}>
+      <As ref={ref as never} onMouseMove={onMove} onMouseLeave={onLeave} className={className} {...props}>
         {children}
       </As>
     </motion.span>
