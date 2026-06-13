@@ -9,7 +9,7 @@ import { ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/or
 import { StudioDemo } from "@/components/orvio/StudioDemo";
 import { ArrowIcon, GlyphEcho, Hairline, MonoEyebrow, PillCTA, SkyBand } from "@/components/orvio/lattice";
 import { useState } from "react";
-import heroMountains from "@/assets/hero-mountains.jpg";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
