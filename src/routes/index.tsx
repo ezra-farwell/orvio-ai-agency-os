@@ -889,12 +889,15 @@ export function PricingBlock() {
 
 function Pricing() {
   return (
-    <section id="pricing" className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section id="pricing" className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
           <SectionHeader
-            title="Simple pricing. No surprises."
-            subtitle="Flat monthly subscription. Credits for AI usage. No per-seat fees."
+            center={false}
+            index="05"
+            eyebrow="Pricing"
+            title={<>Simple pricing.<br />No surprises.</>}
+            subtitle="Flat monthly subscription. Credits for AI usage. No per-seat fees. Cancel anytime."
           />
         </Reveal>
         <Reveal delay={0.1}>
@@ -922,48 +925,45 @@ const compareRows = [
 
 function Comparison() {
   const cell = (v: string, isOrvio: boolean) => {
-    if (v === "✓") return <span className={isOrvio ? "text-indigo" : "text-foreground/80"}>✓</span>;
+    if (v === "✓") return <span className={isOrvio ? "text-[#5EEAD4]" : "text-foreground/60"}>✓</span>;
     if (v === "✗") return <span className="text-text-faint">—</span>;
-    return <span className={`text-sm ${isOrvio ? "font-mono text-indigo" : "text-text-muted"}`}>{v}</span>;
+    return <span className={`text-sm ${isOrvio ? "font-mono text-[#5EEAD4]" : "text-text-muted"}`}>{v}</span>;
   };
 
   return (
-    <section className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
-          <SectionHeader title="Orvio vs. the alternatives" />
+          <SectionHeader
+            center={false}
+            index="06"
+            eyebrow="Comparison"
+            title={<>Orvio vs.<br />the alternatives.</>}
+          />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-12 overflow-x-auto">
-            <table className="w-full min-w-[700px] border-separate border-spacing-0 text-sm">
+          <div className="mt-16 overflow-x-auto">
+            <table className="w-full min-w-[760px] border-separate border-spacing-0 text-sm">
               <thead>
-                <tr>
-                  <th className="border-b border-border p-4 text-left text-xs font-medium uppercase tracking-wider text-text-muted">
-                    Feature
+                <tr className="hairline-b">
+                  <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Feature</th>
+                  <th className="py-5 pr-4 text-left">
+                    <span className="mono-eyebrow text-[#5EEAD4]">Orvio</span>
                   </th>
-                  <th className="border-b-2 border-indigo bg-indigo/10 p-4 text-left font-display text-base font-bold text-indigo">
-                    Orvio
-                  </th>
-                  <th className="border-b border-border p-4 text-left text-sm font-medium text-text-muted">
-                    GoHighLevel
-                  </th>
-                  <th className="border-b border-border p-4 text-left text-sm font-medium text-text-muted">
-                    Generic CRM
-                  </th>
-                  <th className="border-b border-border p-4 text-left text-sm font-medium text-text-muted">
-                    Manual Stack
-                  </th>
+                  <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">GoHighLevel</th>
+                  <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Generic CRM</th>
+                  <th className="py-5 text-left mono-eyebrow text-text-muted">Manual Stack</th>
                 </tr>
               </thead>
               <tbody>
                 {compareRows.map((row, i) => (
-                  <tr key={i}>
-                    <td className="border-b border-border/60 p-4 text-foreground/90">{row[0]}</td>
-                    <td className="border-b border-border/60 bg-indigo/[0.04] p-4">{cell(row[1], true)}</td>
-                    <td className="border-b border-border/60 p-4">{cell(row[2], false)}</td>
-                    <td className="border-b border-border/60 p-4">{cell(row[3], false)}</td>
-                    <td className="border-b border-border/60 p-4">{cell(row[4], false)}</td>
+                  <tr key={i} className="group transition-colors hover:bg-surface/30">
+                    <td className="border-b border-border/60 py-5 pr-4 text-foreground/90">{row[0]}</td>
+                    <td className="border-b border-[#5EEAD4]/30 bg-[#5EEAD4]/[0.04] py-5 pr-4">{cell(row[1], true)}</td>
+                    <td className="border-b border-border/60 py-5 pr-4">{cell(row[2], false)}</td>
+                    <td className="border-b border-border/60 py-5 pr-4">{cell(row[3], false)}</td>
+                    <td className="border-b border-border/60 py-5">{cell(row[4], false)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -971,9 +971,8 @@ function Comparison() {
           </div>
         </Reveal>
 
-        <p className="mt-6 text-xs text-text-faint">
-          *GHL white-label requires the $497/month SaaS plan. Usage fees for SMS, email, and AI push real
-          monthly cost to $600–$900+.
+        <p className="mt-8 mono-eyebrow text-text-faint">
+          * GHL white-label requires the $497/mo SaaS plan. Usage fees push real monthly cost to $600–$900+
         </p>
       </div>
     </section>
@@ -982,19 +981,24 @@ function Comparison() {
 
 function FAQ() {
   return (
-    <section className="py-20 sm:py-32">
-      <div className="mx-auto max-w-3xl px-5 sm:px-8">
+    <section className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto grid max-w-[1280px] gap-16 px-6 sm:px-10 md:grid-cols-[1fr_2fr]">
         <Reveal>
-          <SectionHeader title="Questions." />
+          <SectionHeader
+            center={false}
+            index="07"
+            eyebrow="FAQ"
+            title={<>Questions,<br />answered.</>}
+          />
         </Reveal>
         <Reveal delay={0.1}>
-          <Accordion type="single" collapsible className="mt-12">
+          <Accordion type="single" collapsible className="w-full">
             {faqs.map((f, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="border-border">
-                <AccordionTrigger className="text-left font-display text-base font-semibold hover:no-underline sm:text-lg">
+                <AccordionTrigger className="py-6 text-left font-display text-lg font-bold leading-tight hover:no-underline sm:text-xl">
                   {f.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-text-muted">{f.a}</AccordionContent>
+                <AccordionContent className="pb-6 text-base leading-relaxed text-text-muted">{f.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -1006,47 +1010,55 @@ function FAQ() {
 
 function FinalCTA() {
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
-      <div
-        className="absolute inset-0 -z-10"
-        style={{ background: "radial-gradient(ellipse at center, rgba(99,102,241,0.15), transparent 70%)" }}
-        aria-hidden
-      />
-      <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
+    <SkyBand variant="full" className="py-32 sm:py-48">
+      <div className="mx-auto max-w-4xl px-6 text-center sm:px-10">
         <Reveal>
-          <h2 className="font-display text-4xl font-extrabold leading-tight sm:text-6xl">
-            Your agency deserves <span className="text-gradient-orvio">better infrastructure</span>.
-          </h2>
+          <div className="mb-8 flex justify-center">
+            <GlyphEcho size={120} />
+          </div>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <MonoEyebrow className="justify-center text-white/85" dot="live">
+            08 — Start
+          </MonoEyebrow>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-6 max-w-2xl text-base text-text-muted sm:text-lg">
-            Stop running on copy-paste reports, Google Drive contracts, and Slack brief threads. Orvio
-            gives your agency the operating system it's been missing — and the creative studio to ship
-            faster than ever.
-          </p>
+          <h2
+            className="mt-6 font-display font-extrabold leading-[1.02] tracking-tight text-white"
+            style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
+          >
+            Your agency deserves<br />
+            <span className="italic">better infrastructure.</span>
+          </h2>
         </Reveal>
         <Reveal delay={0.15}>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <p className="mx-auto mt-8 max-w-2xl text-base text-white/85 sm:text-lg">
+            Stop running on copy-paste reports, Google Drive contracts, and Slack brief threads. Orvio is
+            the operating system your agency has been missing.
+          </p>
+        </Reveal>
+        <Reveal delay={0.2}>
+          <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/signup"
-              className="inline-flex h-12 items-center justify-center rounded-lg bg-indigo px-6 text-sm font-semibold text-white shadow-[0_12px_40px_-12px_rgba(99,102,241,0.7)] transition-all hover:brightness-110"
+              className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-[#1B2552] shadow-[0_14px_36px_-10px_rgba(255,255,255,0.6)] hover:shadow-[0_20px_50px_-10px_rgba(255,255,255,0.8)]"
             >
-              Start free — 14 days
+              Start free — 14 days <ArrowIcon />
             </Link>
             <a
               href="mailto:ezra@scaledsolutions.net"
-              className="inline-flex h-12 items-center justify-center rounded-lg border border-border px-6 text-sm font-medium text-foreground hover:bg-surface"
+              className="group inline-flex h-12 items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 text-sm font-medium text-white backdrop-blur hover:bg-white/20"
             >
               Talk to us first
             </a>
           </div>
         </Reveal>
-        <Reveal delay={0.2}>
-          <p className="mt-6 text-xs text-text-faint">
-            No credit card required · Cancel anytime · Setup takes 20 minutes
+        <Reveal delay={0.25}>
+          <p className="mt-8 mono-eyebrow text-white/70">
+            No credit card · Cancel anytime · Setup in 20 minutes
           </p>
         </Reveal>
       </div>
-    </section>
+    </SkyBand>
   );
 }
