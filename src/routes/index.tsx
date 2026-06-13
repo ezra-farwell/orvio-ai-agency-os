@@ -757,93 +757,99 @@ export function PricingBlock() {
 
   return (
     <>
-      <div className="mt-10 flex items-center justify-center gap-3">
-        <span className={`text-sm ${!annual ? "text-foreground" : "text-text-muted"}`}>Monthly</span>
+      <div className="mt-12 flex items-center justify-center gap-4">
+        <button
+          onClick={() => setAnnual(false)}
+          className={`mono-eyebrow transition-colors ${!annual ? "text-foreground" : "text-text-muted"}`}
+        >
+          Monthly
+        </button>
         <button
           onClick={() => setAnnual((v) => !v)}
-          className="relative h-7 w-12 rounded-full border border-border bg-surface transition-colors"
+          className="relative h-6 w-11 rounded-full border border-border bg-surface transition-colors"
           aria-label="Toggle annual billing"
         >
           <span
-            className={`absolute top-0.5 h-5 w-5 rounded-full bg-indigo transition-all ${
-              annual ? "left-[26px]" : "left-0.5"
+            className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#5EEAD4] transition-all ${
+              annual ? "left-[24px]" : "left-0.5"
             }`}
+            style={{ boxShadow: "0 0 12px rgba(94,234,212,0.7)" }}
           />
         </button>
-        <span className={`text-sm ${annual ? "text-foreground" : "text-text-muted"}`}>
-          Annual <span className="ml-1 rounded-full border border-success/30 bg-success/10 px-1.5 py-0.5 text-[10px] font-medium text-success">20% off</span>
-        </span>
+        <button
+          onClick={() => setAnnual(true)}
+          className={`mono-eyebrow flex items-center gap-2 transition-colors ${annual ? "text-foreground" : "text-text-muted"}`}
+        >
+          Annual <span className="text-[#5EEAD4]">−20%</span>
+        </button>
       </div>
 
-      <div className="mt-10 grid gap-4 lg:grid-cols-3">
+      <div className="mt-16 grid divide-y divide-border border-y border-border lg:grid-cols-3 lg:divide-x lg:divide-y-0">
         {tierData.map((t) => (
           <div
             key={t.name}
-            className={`relative flex h-full flex-col p-7 ${
-              t.featured
-                ? "rounded-2xl border-2 border-indigo bg-gradient-to-b from-indigo/5 to-transparent shadow-[0_30px_80px_-30px_rgba(99,102,241,0.5)]"
-                : "surface-card"
+            className={`relative flex h-full flex-col p-10 transition-colors ${
+              t.featured ? "bg-surface/30" : "hover:bg-surface/30"
             }`}
           >
             {t.featured && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">
-                Most popular
-              </div>
+              <span className="mono-eyebrow absolute right-10 top-10 text-[#5EEAD4]">
+                ★ Most popular
+              </span>
             )}
-            <div className="text-xs font-medium uppercase tracking-wider text-text-muted">{t.name}</div>
-            <div className="mt-3 flex items-baseline gap-1">
+            <div className="mono-eyebrow text-text-muted">{t.name}</div>
+            <div className="mt-6 flex items-baseline gap-2">
               {t.price === null ? (
-                <span className="font-display text-4xl font-extrabold">Custom</span>
+                <span className="font-display text-5xl font-extrabold">Custom</span>
               ) : (
                 <>
-                  <span className="font-display text-5xl font-extrabold">${annual ? t.annual : t.price}</span>
-                  <span className="text-sm text-text-muted">/mo</span>
+                  <span className="font-display text-6xl font-extrabold tracking-tight">${annual ? t.annual : t.price}</span>
+                  <span className="mono-eyebrow text-text-muted">/mo</span>
                   {annual && (
-                    <span className="ml-2 text-xs text-text-faint line-through">${t.price}</span>
+                    <span className="ml-2 font-mono text-xs text-text-faint line-through">${t.price}</span>
                   )}
                 </>
               )}
             </div>
-            <div className="mt-1 text-sm text-text-muted">{t.blurb}</div>
-            <div className="mt-4 rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm text-amber">
-              {t.credits}
-            </div>
+            <div className="mt-2 text-sm text-text-muted">{t.blurb}</div>
+            <div className="mt-5 font-mono text-sm text-amber">{t.credits}</div>
 
             {t.name === "Enterprise" ? (
               <a
                 href="mailto:ezra@scaledsolutions.net?subject=Orvio%20Enterprise%20Inquiry"
-                className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg border border-foreground/30 text-sm font-medium hover:bg-foreground/5"
+                className="group mt-8 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-border text-sm font-medium hover:bg-surface"
               >
-                {t.cta}
+                {t.cta} <ArrowIcon />
               </a>
             ) : (
               <Link
                 to="/signup"
-                className={`mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg text-sm font-semibold transition-all ${
+                className={`group mt-8 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full text-sm font-medium transition-all ${
                   t.featured
-                    ? "bg-indigo text-white shadow-[0_8px_24px_-8px_rgba(99,102,241,0.7)] hover:brightness-110"
-                    : "border border-indigo/50 text-indigo hover:bg-indigo/10"
+                    ? "bg-foreground text-background hover:shadow-[0_14px_36px_-10px_rgba(255,255,255,0.45)]"
+                    : "border border-border text-foreground hover:bg-surface"
                 }`}
               >
-                {t.cta}
+                {t.cta} <ArrowIcon />
               </Link>
             )}
 
-            <ul className="mt-6 space-y-2.5 text-sm">
+            <ul className="mt-8 space-y-3 text-sm">
               {t.features.map((f) => (
-                <li key={f.t} className="flex items-start gap-2.5">
+                <li key={f.t} className="flex items-start gap-3">
                   {f.y ? (
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-indigo" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
                   ) : (
-                    <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center text-text-faint">✕</span>
+                    <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center text-text-faint">·</span>
                   )}
-                  <span className={f.y ? "text-foreground/90" : "text-text-faint line-through"}>{f.t}</span>
+                  <span className={f.y ? "text-foreground/90" : "text-text-faint"}>{f.t}</span>
                 </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
+
 
       <div className="mt-16">
         <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
