@@ -31,7 +31,7 @@ function PortalPage() {
           </Reveal>
           <Reveal delay={0.05}>
             <div className="mono-eyebrow mt-8 flex items-center justify-center gap-3 text-white/85">
-              <span className="text-[#F76B15]">01</span>
+              <span className="text-[#171717]">01</span>
               <span>—</span>
               <span>Client experience preview</span>
             </div>
@@ -69,7 +69,7 @@ function PortalPage() {
               {/* Portal header */}
               <div className="flex items-center justify-between border-b border-border bg-surface px-6 py-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="h-6 w-6 rounded-md bg-gradient-to-br from-[#F76B15] to-[#F76B15]" />
+                  <div className="h-6 w-6 rounded-md bg-gradient-to-br from-[#171717] to-[#171717]" />
                   <span className="font-display text-lg font-extrabold tracking-tight">GrowthDesk</span>
                 </div>
                 <div className="hidden gap-6 text-sm sm:flex">
@@ -116,7 +116,7 @@ function PortalPage() {
               {/* Reports */}
               <div className="border-b border-border p-7">
                 <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
-                  <span className="text-[#F76B15]">02</span>
+                  <span className="text-[#171717]">02</span>
                   <span>—</span>
                   Recent reports
                 </div>
@@ -142,7 +142,7 @@ function PortalPage() {
               {/* Invoices */}
               <div className="p-7">
                 <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
-                  <span className="text-[#F76B15]">03</span>
+                  <span className="text-[#171717]">03</span>
                   <span>—</span>
                   Invoices
                 </div>

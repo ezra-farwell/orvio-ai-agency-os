@@ -53,7 +53,7 @@ export function Footer() {
           {cols.map((col) => (
             <div key={col.label}>
               <div className="mono-eyebrow flex items-center gap-2 text-text-muted">
-                <span className="text-[#F76B15]">{col.num}</span>
+                <span className="text-[#171717]">{col.num}</span>
                 {col.label}
               </div>
               <ul className="mt-6 space-y-3">
@@ -74,7 +74,7 @@ export function Footer() {
           {colsExternal.map((col) => (
             <div key={col.label}>
               <div className="mono-eyebrow flex items-center gap-2 text-text-muted">
-                <span className="text-[#F76B15]">{col.num}</span>
+                <span className="text-[#171717]">{col.num}</span>
                 {col.label}
               </div>
               <ul className="mt-6 space-y-3">

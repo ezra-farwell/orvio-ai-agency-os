@@ -200,8 +200,8 @@ function Hero() {
           className="group inline-flex items-center gap-2.5 rounded-full glass-pill px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-white/90 hover:text-white"
         >
           <span
-            className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#F76B15] live-dot"
-            style={{ boxShadow: "0 0 10px rgba(247,107,21,0.9)" }}
+            className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#171717] live-dot"
+            style={{ boxShadow: "0 0 10px rgba(23,23,23,0.9)" }}
           />
           <span className="font-mono">Orvio raises $61M Series A</span>
           <ArrowRight className="h-3 w-3 -mr-0.5 transition-transform group-hover:translate-x-0.5" />
@@ -313,7 +313,7 @@ function SocialProof() {
     <section className="hairline-t hairline-b bg-background/60">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-5 px-6 py-8 sm:px-10 md:flex-row md:items-center md:justify-between md:gap-10">
         <MonoEyebrow className="shrink-0 text-text-muted">
-          <span className="text-[#F76B15]">00</span>
+          <span className="text-[#171717]">00</span>
           <span className="text-text-faint">—</span>
           Built for agencies serving
         </MonoEyebrow>
@@ -328,7 +328,7 @@ function SocialProof() {
           </div>
         </div>
         <div className="shrink-0 mono-eyebrow text-text-muted">
-          <span className="font-mono text-[#F76B15]">$4.82</span>
+          <span className="font-mono text-[#171717]">$4.82</span>
           <span className="ml-2">avg CPL</span>
         </div>
       </div>
@@ -381,7 +381,7 @@ function TwoLayers() {
     {
       num: "02",
       label: "Client OS",
-      accent: "#F76B15",
+      accent: "#171717",
       title: "Operations, reporting, and retention.",
       lede: "Everything that happens after you sign a client. Reports, contracts, billing, churn detection — all in one branded portal.",
       list: clientOS,
@@ -389,7 +389,7 @@ function TwoLayers() {
     {
       num: "03",
       label: "Creative Studio",
-      accent: "#F76B15",
+      accent: "#171717",
       title: "AI campaign production, from brief to Meta.",
       lede: "Generate, audit, and approve ad creatives. Push them live to your client's Meta account in one click.",
       list: studio,
@@ -541,7 +541,7 @@ function FeatureRow({
     <div className="grid items-center gap-12 md:grid-cols-2 md:gap-20">
       <Reveal className={reversed ? "md:order-2" : ""}>
         <div className="mono-eyebrow flex items-center gap-3">
-          <span className="text-[#F76B15]">{index}</span>
+          <span className="text-[#171717]">{index}</span>
           <span className="text-text-faint">—</span>
           <span>{eyebrow}</span>
         </div>
@@ -555,7 +555,7 @@ function FeatureRow({
         <ul className="mt-7 space-y-3">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-3 text-sm">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#F76B15]" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#171717]" />
               <span className="text-foreground/90">{b}</span>
             </li>
           ))}
@@ -595,8 +595,8 @@ function Stats() {
 function Marketplace() {
   const tone = (t: string) =>
     t === "Free" ? "text-success"
-    : t === "Standard" ? "text-[#F76B15]"
-    : t === "Premium" ? "text-[#F76B15]"
+    : t === "Standard" ? "text-[#171717]"
+    : t === "Premium" ? "text-[#171717]"
     : "text-amber";
 
   return (
@@ -736,17 +736,17 @@ export function PricingBlock() {
           aria-label="Toggle annual billing"
         >
           <span
-            className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#F76B15] transition-all ${
+            className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#171717] transition-all ${
               annual ? "left-[24px]" : "left-0.5"
             }`}
-            style={{ boxShadow: "0 0 12px rgba(247,107,21,0.7)" }}
+            style={{ boxShadow: "0 0 12px rgba(23,23,23,0.7)" }}
           />
         </button>
         <button
           onClick={() => setAnnual(true)}
           className={`mono-eyebrow flex items-center gap-2 transition-colors ${annual ? "text-foreground" : "text-text-muted"}`}
         >
-          Annual <span className="text-[#F76B15]">−20%</span>
+          Annual <span className="text-[#171717]">−20%</span>
         </button>
       </div>
 
@@ -759,7 +759,7 @@ export function PricingBlock() {
             }`}
           >
             {t.featured && (
-              <span className="mono-eyebrow absolute right-10 top-10 text-[#F76B15]">
+              <span className="mono-eyebrow absolute right-10 top-10 text-[#171717]">
                 ★ Most popular
               </span>
             )}
@@ -804,7 +804,7 @@ export function PricingBlock() {
               {t.features.map((f) => (
                 <li key={f.t} className="flex items-start gap-3">
                   {f.y ? (
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#F76B15]" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#171717]" />
                   ) : (
                     <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center text-text-faint">·</span>
                   )}
@@ -819,7 +819,7 @@ export function PricingBlock() {
 
       <div className="mt-16">
         <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
-          <span className="text-[#F76B15]">06</span>
+          <span className="text-[#171717]">06</span>
           <span className="text-text-faint">—</span>
           <span>Top-up packs</span>
         </div>
@@ -833,7 +833,7 @@ export function PricingBlock() {
           {topUps.map((t) => (
             <div key={t.credits} className="relative p-6">
               {t.badge && (
-                <span className="mono-eyebrow absolute right-6 top-6 text-[#F76B15]">
+                <span className="mono-eyebrow absolute right-6 top-6 text-[#171717]">
                   ★ {t.badge}
                 </span>
               )}
@@ -891,9 +891,9 @@ const compareRows = [
 
 function Comparison() {
   const cell = (v: string, isOrvio: boolean) => {
-    if (v === "✓") return <span className={isOrvio ? "text-[#F76B15]" : "text-foreground/60"}>✓</span>;
+    if (v === "✓") return <span className={isOrvio ? "text-[#171717]" : "text-foreground/60"}>✓</span>;
     if (v === "✗") return <span className="text-text-faint">—</span>;
-    return <span className={`text-sm ${isOrvio ? "font-mono text-[#F76B15]" : "text-text-muted"}`}>{v}</span>;
+    return <span className={`text-sm ${isOrvio ? "font-mono text-[#171717]" : "text-text-muted"}`}>{v}</span>;
   };
 
   return (
@@ -915,7 +915,7 @@ function Comparison() {
                 <tr className="hairline-b">
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Feature</th>
                   <th className="py-5 pr-4 text-left">
-                    <span className="mono-eyebrow text-[#F76B15]">Orvio</span>
+                    <span className="mono-eyebrow text-[#171717]">Orvio</span>
                   </th>
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">GoHighLevel</th>
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Generic CRM</th>
@@ -926,7 +926,7 @@ function Comparison() {
                 {compareRows.map((row, i) => (
                   <tr key={i} className="group transition-colors hover:bg-surface/30">
                     <td className="border-b border-border/60 py-5 pr-4 text-foreground/90">{row[0]}</td>
-                    <td className="border-b border-[#F76B15]/30 bg-[#F76B15]/[0.04] py-5 pr-4">{cell(row[1], true)}</td>
+                    <td className="border-b border-[#171717]/30 bg-[#171717]/[0.04] py-5 pr-4">{cell(row[1], true)}</td>
                     <td className="border-b border-border/60 py-5 pr-4">{cell(row[2], false)}</td>
                     <td className="border-b border-border/60 py-5 pr-4">{cell(row[3], false)}</td>
                     <td className="border-b border-border/60 py-5">{cell(row[4], false)}</td>
