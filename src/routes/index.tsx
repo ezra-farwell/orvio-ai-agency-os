@@ -845,28 +845,41 @@ export function PricingBlock() {
         ))}
       </div>
 
-      <div className="mt-14">
-        <h3 className="font-display text-xl font-bold sm:text-2xl">Need more credits? Top up anytime.</h3>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-16">
+        <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
+          <span className="text-[#5EEAD4]">06</span>
+          <span className="text-text-faint">—</span>
+          <span>Top-up packs</span>
+        </div>
+        <h3
+          className="mt-4 font-display font-extrabold leading-tight"
+          style={{ fontSize: "clamp(1.5rem, 2.4vw, 2rem)" }}
+        >
+          Need more credits? Top up anytime.
+        </h3>
+        <div className="mt-8 grid divide-y divide-border border-y border-border sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
           {topUps.map((t) => (
-            <div key={t.credits} className="surface-card relative p-5">
+            <div key={t.credits} className="relative p-6">
               {t.badge && (
-                <StatusBadge tone="indigo">{t.badge}</StatusBadge>
+                <span className="mono-eyebrow absolute right-6 top-6 text-[#5EEAD4]">
+                  ★ {t.badge}
+                </span>
               )}
-              <div className="mt-2 font-mono text-2xl font-semibold">{t.credits}</div>
-              <div className="text-xs text-text-muted">credits</div>
-              <div className="mt-3 font-mono text-lg font-semibold text-amber">{t.price}</div>
+              <div className="font-mono text-3xl font-semibold text-foreground">{t.credits}</div>
+              <div className="mono-eyebrow mt-1 text-text-muted">credits</div>
+              <div className="mt-4 font-mono text-xl font-semibold text-amber">{t.price}</div>
               <div className="font-mono text-xs text-text-faint">{t.per}</div>
             </div>
           ))}
         </div>
-        <p className="mt-6 text-sm text-text-muted">
-          Credits never expire. Shared across your team. Roll over indefinitely.
+        <p className="mt-6 mono-eyebrow text-text-muted">
+          Credits never expire · Shared across team · Roll over indefinitely
         </p>
       </div>
     </>
   );
 }
+
 
 function Pricing() {
   return (
