@@ -411,56 +411,65 @@ function Problem() {
 }
 
 function TwoLayers() {
+  const layers = [
+    {
+      num: "02",
+      label: "Client OS",
+      accent: "#5EEAD4",
+      title: "Operations, reporting, and retention.",
+      lede: "Everything that happens after you sign a client. Reports, contracts, billing, churn detection — all in one branded portal.",
+      list: clientOS,
+    },
+    {
+      num: "03",
+      label: "Creative Studio",
+      accent: "#FBBF24",
+      title: "AI campaign production, from brief to Meta.",
+      lede: "Generate, audit, and approve ad creatives. Push them live to your client's Meta account in one click.",
+      list: studio,
+    },
+  ];
   return (
-    <section id="two-layers" className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section id="two-layers" className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
           <SectionHeader
-            title="One platform. Two modes. Total control."
+            center={false}
+            index="01"
+            eyebrow="The platform"
+            title={<>One platform. Two modes.<br />Total control.</>}
             subtitle="Client OS handles everything after you sign a client. Creative Studio handles everything before a campaign goes live."
           />
         </Reveal>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          <Reveal>
-            <div className="surface-card relative h-full overflow-hidden p-7 pl-9">
-              <div className="absolute inset-y-0 left-0 w-1.5 bg-indigo" />
-              <div className="text-xs font-medium uppercase tracking-wider text-indigo">Client OS</div>
-              <h3 className="mt-1 font-display text-2xl font-bold">Operations, reporting, and retention.</h3>
-              <ul className="mt-6 space-y-3">
-                {clientOS.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-indigo" />
-                    <span className="text-foreground/90">{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <div className="surface-card relative h-full overflow-hidden p-7 pl-9">
-              <div className="absolute inset-y-0 left-0 w-1.5 bg-amber" />
-              <div className="text-xs font-medium uppercase tracking-wider text-amber">Creative Studio</div>
-              <h3 className="mt-1 font-display text-2xl font-bold">AI campaign production, from brief to Meta.</h3>
-              <ul className="mt-6 space-y-3">
-                {studio.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber" />
-                    <span className="text-foreground/90">{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
+        <div className="mt-20 grid divide-y divide-border border-y border-border md:grid-cols-2 md:divide-x md:divide-y-0">
+          {layers.map((l, idx) => (
+            <Reveal key={l.label} delay={idx * 0.08}>
+              <div className="group relative h-full p-10 transition-colors hover:bg-surface/40">
+                <div className="mono-eyebrow flex items-center gap-2.5" style={{ color: l.accent }}>
+                  <span>{l.num}</span>
+                  <span className="text-text-faint">—</span>
+                  <span>{l.label}</span>
+                </div>
+                <h3
+                  className="mt-6 font-display font-extrabold leading-[1.05]"
+                  style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.5rem)" }}
+                >
+                  {l.title}
+                </h3>
+                <p className="mt-5 max-w-md text-base text-text-muted">{l.lede}</p>
+                <ul className="mt-8 grid grid-cols-1 gap-2.5">
+                  {l.list.map((b) => (
+                    <li key={b} className="flex items-start gap-3 text-sm">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: l.accent }} />
+                      <span className="text-foreground/85">{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
         </div>
-
-        <Reveal delay={0.15}>
-          <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-text-muted">
-            Both layers share the same workspace. Every creative links to a client. Every brief syncs to
-            campaign history. Credits are shared across your entire team.
-          </p>
-        </Reveal>
       </div>
     </section>
   );
