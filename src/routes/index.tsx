@@ -153,157 +153,118 @@ function Landing() {
 
 function Hero() {
   return (
-    <section className="relative isolate flex h-screen min-h-[780px] w-full flex-col overflow-hidden bg-black">
-      {/* Cinematic photo background with slow ken-burns */}
-      <motion.div
-        aria-hidden
-        className="absolute inset-0 -z-20 ken-burns"
-        style={{
-          backgroundImage: `url(${heroMountains})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center 55%",
-        }}
-        initial={{ opacity: 0, scale: 1.08 }}
-        animate={{ opacity: 1, scale: 1.04 }}
-        transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1] }}
-      />
-      {/* Top sky → horizon haze gradient overlay (deepens edges, preserves orange glow) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.55) 100%)",
-        }}
-      />
-      {/* Subtle vignette */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(ellipse 90% 70% at 50% 40%, transparent 50%, rgba(0,0,0,0.55) 100%)",
-        }}
-      />
+    <section className="relative isolate w-full overflow-hidden bg-background pt-16">
+      {/* Faint grid backdrop, fades to nothing at edges */}
+      <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 -z-10" />
 
-      {/* Spacer for fixed nav */}
-      <div className="h-20" />
-
-      {/* Centered content stack */}
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 text-center">
-        {/* Announcement pill */}
-        <motion.a
-          href="#two-layers"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="group inline-flex items-center gap-2.5 rounded-full glass-pill px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-white/90 hover:text-white"
-        >
-          <span
-            className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#171717] live-dot"
-            style={{ boxShadow: "0 0 10px rgba(23,23,23,0.9)" }}
-          />
-          <span className="font-mono">Orvio raises $61M Series A</span>
-          <ArrowRight className="h-3 w-3 -mr-0.5 transition-transform group-hover:translate-x-0.5" />
-        </motion.a>
-
-        {/* Serif display headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 max-w-[18ch] font-display font-normal leading-[0.98] tracking-[-0.02em] text-white"
-          style={{ fontSize: "clamp(2.6rem, 7.4vw, 6.5rem)" }}
-        >
-          AI that runs ads<br />
-          <em className="italic font-normal text-white/95">like a senior buyer.</em><br />
-          Scales like an agency.
-        </motion.h1>
-
-        {/* Subhead */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.85 }}
-          className="mt-7 max-w-md text-[15px] font-normal text-white/75"
-        >
-          The white-label operating system for lead-gen agencies.
-        </motion.p>
-
-        {/* CTA */}
+      <div className="mx-auto max-w-[1280px] px-6 pt-20 sm:px-10 sm:pt-28">
+        {/* "We are hiring" pill */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 1.05 }}
-          className="mt-9 flex items-center gap-3"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="flex justify-center"
         >
           <Link
             to="/signup"
-            className="inline-flex h-12 items-center gap-2 rounded-full bg-white px-7 text-[14px] font-medium text-black transition-all hover:shadow-[0_14px_40px_-10px_rgba(255,255,255,0.55)]"
+            className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface-elevated px-3.5 py-1.5 text-[12px] text-foreground/80 shadow-[0_1px_0_0_rgba(255,255,255,0.6)_inset,0_2px_8px_-2px_rgba(0,0,0,0.05)] transition-colors hover:text-foreground"
           >
-            Talk to us
+            <span className="relative grid h-2 w-2 place-items-center">
+              <span className="absolute inset-0 rounded-full bg-danger/30 pulse-amber" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-danger" />
+            </span>
+            We are hiring
           </Link>
-          <Link
-            to="/demo"
-            className="group inline-flex h-12 items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 text-[14px] text-white backdrop-blur-md transition-all hover:bg-white/10"
+        </motion.div>
+
+        {/* Display headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto mt-7 max-w-[14ch] text-center font-display font-bold leading-[0.95] tracking-[-0.045em] text-foreground"
+          style={{ fontSize: "clamp(2.6rem, 7.6vw, 6rem)" }}
+        >
+          The agency OS
+          <br />
+          <span className="text-foreground/40">for AI-powered ads</span>
+        </motion.h1>
+
+        {/* Subhead with inline chips */}
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.25 }}
+          className="mx-auto mt-7 max-w-[640px] text-center text-[17px] leading-[1.6] text-foreground/70"
+        >
+          Run client campaigns, ship creative, and prove performance — all in one branded
+          portal with{" "}
+          <span className="chip">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            Reports
+          </span>{" "}
+          ,{" "}
+          <span className="chip">
+            <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+            Studio
+          </span>{" "}
+          and{" "}
+          <span className="chip">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+            Approvals
+          </span>
+          .
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-9 flex items-center justify-center gap-3"
+        >
+          <a
+            href="mailto:ezra@scaledsolutions.net?subject=Orvio%20—%20Talk%20to%20Sales"
+            className="group inline-flex h-11 items-center gap-2 rounded-full border border-border bg-surface-elevated px-5 text-[13.5px] font-medium text-foreground transition-all hover:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.18)]"
           >
-            Watch demo
+            <span className="grid h-3.5 w-3.5 place-items-center rounded-sm bg-foreground/90">
+              <svg width="8" height="8" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <rect x="3" y="3" width="10" height="10" rx="1" stroke="#FAFAF7" strokeWidth="1.4" />
+              </svg>
+            </span>
+            Talk to Sales
+          </a>
+          <Link
+            to="/signup"
+            className="group inline-flex h-11 items-center gap-2 rounded-full bg-foreground px-5 text-[13.5px] font-medium text-background transition-all hover:opacity-90"
+          >
+            Start Free Trial
             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </motion.div>
-      </div>
 
-      {/* Floating preview card (video / product peek) — bottom-left */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 1.3, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute bottom-8 left-6 z-10 hidden items-center gap-3 rounded-xl glass-dark p-2.5 pr-4 md:flex"
-      >
-        <div
-          className="relative h-14 w-20 shrink-0 overflow-hidden rounded-md"
-          style={{
-            backgroundImage: `url(${heroMountains})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+        {/* Dashboard mockup peek */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mx-auto mt-20 w-full max-w-[1180px]"
         >
-          <div className="absolute inset-0 bg-black/30" />
-          <div className="absolute inset-0 grid place-items-center">
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/95 text-black">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </span>
+          {/* Soft halo under the mockup */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-x-10 -bottom-10 -top-10 -z-10 rounded-[40px]"
+            style={{
+              background:
+                "radial-gradient(60% 50% at 50% 20%, rgba(10,10,10,0.10), transparent 70%)",
+              filter: "blur(20px)",
+            }}
+          />
+          <div className="overflow-hidden rounded-2xl border border-border bg-surface-elevated shadow-soft">
+            <PortalMockup />
           </div>
-        </div>
-        <div className="leading-tight">
-          <div className="text-[13px] font-medium text-white">You can&rsquo;t hire a senior buyer overnight.</div>
-          <div className="text-[11px] text-white/55">Until now. <span className="text-white/85">Watch (1:30)</span></div>
-        </div>
-      </motion.div>
-
-      {/* Logo strip — bottom */}
-      <div className="relative z-10 mx-auto mb-6 hidden w-full max-w-[1100px] items-center justify-between gap-10 px-10 pb-2 sm:flex">
-        {["POSTMAN", "Rio", "DOORDASH", "capital.com", "afriex"].map((logo) => (
-          <span
-            key={logo}
-            className="font-display text-[15px] font-normal tracking-wide text-white/55"
-          >
-            {logo}
-          </span>
-        ))}
+        </motion.div>
       </div>
-
-      {/* Scroll hint */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 0.8 }}
-        className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.3em] text-white/45"
-      >
-        Scroll
-      </motion.div>
     </section>
   );
 }
