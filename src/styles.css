@@ -64,23 +64,26 @@
 
 :root {
   --radius: 0.75rem;
-  --background: #0A0B0F;
-  --foreground: #F1F5F9;
-  --surface: #13151F;
-  --surface-elevated: #1C1F30;
-  --border: #252840;
-  --accent-primary: #6366F1;
-  --accent-primary-glow: #8B5CF6;
-  --accent-action: #D97706;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --danger: #EF4444;
-  --text-muted: #94A3B8;
-  --text-faint: #475569;
+  --background: #07080C;
+  --foreground: #F5F7FB;
+  --surface: #11131C;
+  --surface-elevated: #1A1D2B;
+  --border: #262A3D;
+  --accent-primary: #7C8CFF;
+  --accent-primary-glow: #A78BFA;
+  --accent-cyan: #5EEAD4;
+  --accent-action: #FBBF24;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+  --text-muted: #A6ADBD;
+  --text-faint: #5A6075;
 
-  --gradient-orvio: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #D97706 100%);
-  --shadow-indigo: 0 10px 40px -10px rgba(99, 102, 241, 0.45);
-  --shadow-amber: 0 10px 40px -10px rgba(217, 119, 6, 0.45);
+  --gradient-orvio: linear-gradient(135deg, #5EEAD4 0%, #7C8CFF 45%, #A78BFA 75%, #FBBF24 100%);
+  --gradient-sky: radial-gradient(ellipse 90% 70% at 50% 0%, #1B2552 0%, #2A3470 18%, #3B3C7E 38%, #6B5E97 58%, #C99BB2 78%, #F3C9B0 92%, #FAD9B8 100%);
+  --shadow-indigo: 0 10px 40px -10px rgba(124, 140, 255, 0.55);
+  --shadow-amber: 0 10px 40px -10px rgba(251, 191, 36, 0.5);
+  --shadow-cyan: 0 10px 40px -10px rgba(94, 234, 212, 0.55);
 }
 
 @layer base {
