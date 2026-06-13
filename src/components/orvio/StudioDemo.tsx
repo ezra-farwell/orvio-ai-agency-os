@@ -2,19 +2,22 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Sparkles, Check, X, ChevronDown } from "lucide-react";
 
-const strategyModels = [
+type StrategyModel = { name: string; tier: "Free" | "Standard" | "Premium" | "Maximum"; credits: number };
+type ImageModel = { name: string; credits: number };
+
+const strategyModels: StrategyModel[] = [
   { name: "Gemini 2.5 Flash", tier: "Free", credits: 5 },
   { name: "Gemini 2.5 Pro", tier: "Standard", credits: 20 },
   { name: "Command R+", tier: "Standard", credits: 25 },
   { name: "Mistral Large", tier: "Standard", credits: 30 },
   { name: "Claude Opus 4.8", tier: "Premium", credits: 60 },
   { name: "GPT-5.5", tier: "Maximum", credits: 75 },
-] as const;
+];
 
-const imageModels = [
+const imageModels: ImageModel[] = [
   { name: "Nano Banana Pro", credits: 15 },
   { name: "Premium Image Model", credits: 35 },
-] as const;
+];
 
 type Creative = {
   hook: string;
