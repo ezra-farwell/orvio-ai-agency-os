@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Nav } from "@/components/orvio/Nav";
 import { Footer } from "@/components/orvio/Footer";
-import { Wordmark } from "@/components/orvio/primitives";
+import { Reveal } from "@/components/orvio/primitives";
+import { ArrowIcon, GlyphEcho } from "@/components/orvio/lattice";
 import { CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/signup")({
@@ -35,67 +36,96 @@ function SignupPage() {
   return (
     <div className="min-h-screen bg-background">
       <Nav />
-      <main className="pt-24">
-        <div className="mx-auto grid max-w-[1200px] gap-0 px-0 md:grid-cols-[2fr_3fr] md:px-8">
-          {/* LEFT */}
-          <aside className="relative hidden overflow-hidden border-r border-border bg-surface/60 p-10 md:flex md:flex-col md:justify-between">
-            <div>
-              <Wordmark />
-              <h2 className="mt-16 font-display text-3xl font-extrabold leading-tight">
-                Join agencies generating real results for their clients.
-              </h2>
-              <ul className="mt-10 space-y-4 text-sm">
-                {[
-                  "White-label portal ready in 20 minutes",
-                  "First AI report in under 30 seconds",
-                  "No credit card required",
-                ].map((t) => (
-                  <li key={t} className="flex items-start gap-3 text-foreground/90">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-indigo" />
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="text-xs text-text-faint">
-              "Setup took 22 minutes. First report went out the same day."
-              <div className="mt-1 text-text-muted">— Early access agency</div>
-            </div>
-          </aside>
+      <main className="grid min-h-screen md:grid-cols-[1.1fr_1fr]">
+        {/* Sky panel */}
+        <aside
+          className="sky-hero relative hidden flex-col justify-between overflow-hidden p-12 md:flex"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/2 cloud-drift"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 60% at 30% 80%, rgba(255,220,190,0.55), transparent 60%), radial-gradient(ellipse 60% 50% at 75% 70%, rgba(255,200,210,0.5), transparent 60%)",
+              filter: "blur(20px)",
+            }}
+          />
+          <div className="mono-eyebrow flex items-center gap-2.5 text-white/85">
+            <span
+              className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#5EEAD4] live-dot"
+              style={{ boxShadow: "0 0 10px rgba(94,234,212,0.85)" }}
+            />
+            Orvio · Agency Edition
+          </div>
 
-          {/* RIGHT */}
-          <section className="p-6 sm:p-10 lg:p-14">
-            <div className="md:hidden">
-              <Wordmark />
+          <div className="flex flex-col items-start gap-10">
+            <GlyphEcho size={160} />
+            <h2
+              className="font-display font-extrabold leading-[1.02] tracking-tight text-white"
+              style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)" }}
+            >
+              Join agencies running on infrastructure.
+            </h2>
+            <ul className="space-y-3">
+              {[
+                "White-label portal ready in 20 minutes",
+                "First AI report in under 30 seconds",
+                "No credit card required",
+              ].map((t) => (
+                <li key={t} className="flex items-start gap-3 text-sm text-white/90">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mono-eyebrow text-white/65">
+            "Setup took 22 minutes. First report went out the same day."
+          </div>
+        </aside>
+
+        {/* Form panel */}
+        <section className="flex items-center justify-center p-6 pt-28 sm:p-12 md:pt-12">
+          <div className="w-full max-w-md">
+            <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
+              <span className="text-[#5EEAD4]">01</span>
+              <span className="text-text-faint">—</span>
+              <span>Create account</span>
             </div>
-            <h1 className="mt-6 font-display text-3xl font-extrabold sm:text-4xl">
-              Create your agency account
+            <h1
+              className="mt-6 font-display font-extrabold leading-[1.05] tracking-tight"
+              style={{ fontSize: "clamp(2rem, 3.4vw, 2.75rem)" }}
+            >
+              Start your<br />agency OS.
             </h1>
-            <p className="mt-2 text-sm text-text-muted">
+            <p className="mt-4 text-sm text-text-muted">
               14 days free. No credit card required.
             </p>
 
             {submitted ? (
-              <div className="mt-10 rounded-xl border border-success/30 bg-success/10 p-6">
-                <div className="flex items-center gap-3 text-success">
-                  <CheckCircle2 className="h-5 w-5" />
-                  <span className="font-medium">Account created (demo)</span>
+              <Reveal>
+                <div className="mt-10 hairline-t hairline-b py-8">
+                  <div className="flex items-center gap-3 text-[#5EEAD4]">
+                    <CheckCircle2 className="h-5 w-5" />
+                    <span className="font-display text-xl font-bold">Account created</span>
+                  </div>
+                  <p className="mt-4 text-sm text-foreground/90">
+                    This is a UI preview — Orvio doesn't keep your details. Head to the demo or portal to
+                    keep exploring.
+                  </p>
+                  <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                    <Link to="/demo" className="group inline-flex h-11 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-sm font-medium text-background">
+                      Try the Studio <ArrowIcon />
+                    </Link>
+                    <Link to="/portal-preview" className="inline-flex h-11 items-center justify-center rounded-full border border-border px-5 text-sm font-medium">
+                      See the client portal
+                    </Link>
+                  </div>
                 </div>
-                <p className="mt-3 text-sm text-foreground/90">
-                  This is a UI preview — Orvio doesn't keep your details. Head to the demo or pricing
-                  page to keep exploring.
-                </p>
-                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                  <Link to="/demo" className="inline-flex h-11 items-center justify-center rounded-lg bg-indigo px-5 text-sm font-semibold text-white">
-                    Try the Studio
-                  </Link>
-                  <Link to="/portal-preview" className="inline-flex h-11 items-center justify-center rounded-lg border border-border px-5 text-sm font-medium">
-                    See the client portal
-                  </Link>
-                </div>
-              </div>
+              </Reveal>
             ) : (
-              <form onSubmit={onSubmit} className="mt-8 space-y-4">
+              <form onSubmit={onSubmit} className="mt-10 space-y-6">
                 <Field label="Full name">
                   <input
                     required
@@ -135,7 +165,7 @@ function SignupPage() {
                     className="orvio-input"
                   />
                 </Field>
-                <Field label="How many clients do you currently have?">
+                <Field label="Current client count">
                   <select
                     required
                     value={form.clients}
@@ -152,21 +182,22 @@ function SignupPage() {
 
                 <button
                   type="submit"
-                  className="mt-2 inline-flex h-12 w-full items-center justify-center rounded-lg bg-indigo text-sm font-semibold text-white shadow-[0_12px_40px_-12px_rgba(99,102,241,0.7)] transition-all hover:brightness-110"
+                  className="group mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground text-sm font-medium text-background transition-all hover:shadow-[0_14px_36px_-10px_rgba(255,255,255,0.45)]"
                 >
-                  Create account →
+                  Create account <ArrowIcon />
                 </button>
 
-                <p className="text-sm text-text-muted">
-                  Already have an account? <Link to="/signup" className="text-indigo hover:underline">Sign in →</Link>
+                <p className="mono-eyebrow text-text-muted">
+                  Already have an account?{" "}
+                  <Link to="/signup" className="story-link-underline text-foreground">Sign in</Link>
                 </p>
-                <p className="text-xs text-text-faint">
+                <p className="mono-eyebrow text-text-faint">
                   By signing up you agree to our Terms of Service and Privacy Policy.
                 </p>
               </form>
             )}
-          </section>
-        </div>
+          </div>
+        </section>
       </main>
       <Footer />
 
@@ -174,20 +205,28 @@ function SignupPage() {
         .orvio-input {
           width: 100%;
           height: 44px;
-          padding: 0 14px;
-          background: var(--background);
-          border: 1px solid var(--border);
-          border-radius: 8px;
+          padding: 0 0 8px 0;
+          background: transparent;
+          border: 0;
+          border-bottom: 1px solid var(--border);
+          border-radius: 0;
           color: var(--foreground);
-          font-size: 14px;
-          transition: border-color 0.15s;
+          font-size: 15px;
+          transition: border-color 0.25s;
         }
+        .orvio-input::placeholder { color: var(--text-faint); }
         .orvio-input:focus {
           outline: none;
-          border-color: var(--accent-primary);
-          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+          border-bottom-color: #5EEAD4;
         }
-        select.orvio-input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, #94A3B8 50%), linear-gradient(135deg, #94A3B8 50%, transparent 50%); background-position: calc(100% - 18px) center, calc(100% - 13px) center; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 36px; }
+        select.orvio-input {
+          appearance: none;
+          background-image: linear-gradient(45deg, transparent 50%, #A6ADBD 50%), linear-gradient(135deg, #A6ADBD 50%, transparent 50%);
+          background-position: calc(100% - 12px) 18px, calc(100% - 7px) 18px;
+          background-size: 5px 5px;
+          background-repeat: no-repeat;
+          padding-right: 28px;
+        }
       `}</style>
     </div>
   );
@@ -196,7 +235,7 @@ function SignupPage() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-text-muted">{label}</span>
+      <span className="mono-eyebrow mb-2 block text-text-muted">{label}</span>
       {children}
     </label>
   );
