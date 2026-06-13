@@ -18,13 +18,13 @@ export function MonoEyebrow({
       {dot && (
         <span
           className={`grid h-1.5 w-1.5 place-items-center rounded-full ${
-            dot === "amber" ? "bg-amber" : "bg-[#5EEAD4]"
-          } ${dot === "live" ? "live-dot bg-[#5EEAD4]" : ""}`}
+            dot === "amber" ? "bg-amber" : "bg-[#F76B15]"
+          } ${dot === "live" ? "live-dot bg-[#F76B15]" : ""}`}
           style={{
             boxShadow:
               dot === "amber"
-                ? "0 0 10px rgba(251,191,36,0.8)"
-                : "0 0 10px rgba(94,234,212,0.85)",
+                ? "0 0 10px rgba(247,107,21,0.8)"
+                : "0 0 10px rgba(247,107,21,0.85)",
           }}
         />
       )}
@@ -56,7 +56,7 @@ export function SectionHead({
         }`}
       >
         {index && (
-          <span className="text-[#5EEAD4]">{index}</span>
+          <span className="text-[#F76B15]">{index}</span>
         )}
         {index && eyebrow && <span className="text-text-faint">—</span>}
         {eyebrow && <span>{eyebrow}</span>}
@@ -98,7 +98,7 @@ export function SkyBand({
           background:
             variant === "full"
               ? "var(--gradient-sky)"
-              : "radial-gradient(ellipse 90% 70% at 50% 100%, rgba(255,220,190,0.18), transparent 60%), radial-gradient(ellipse 60% 50% at 50% 0%, rgba(124,140,255,0.18), transparent 65%)",
+              : "radial-gradient(ellipse 90% 70% at 50% 100%, rgba(255,220,190,0.18), transparent 60%), radial-gradient(ellipse 60% 50% at 50% 0%, rgba(247,107,21,0.18), transparent 65%)",
         }}
       />
       {variant === "full" && (
@@ -143,7 +143,7 @@ export function PillCTA({
     tone === "primary"
       ? "bg-foreground text-background hover:shadow-[0_14px_36px_-10px_rgba(255,255,255,0.45)]"
       : tone === "amber"
-      ? "bg-amber text-background hover:shadow-[0_14px_36px_-10px_rgba(251,191,36,0.6)]"
+      ? "bg-amber text-background hover:shadow-[0_14px_36px_-10px_rgba(247,107,21,0.6)]"
       : "border border-border bg-surface/50 text-foreground hover:bg-surface backdrop-blur";
 
   const cls = `group inline-flex h-11 items-center gap-2 rounded-full px-5 text-[13px] font-medium transition-all ${styles} ${className}`;
@@ -231,8 +231,8 @@ export function GlyphEcho({ size = 84 }: { size?: number }) {
     >
       <defs>
         <linearGradient id="ge-stroke" x1="0" y1="0" x2="0" y2="460">
-          <stop offset="0" stopColor="#7DF9E3" />
-          <stop offset="1" stopColor="#A8C0FF" />
+          <stop offset="0" stopColor="#FBA15B" />
+          <stop offset="1" stopColor="#F76B15" />
         </linearGradient>
       </defs>
       <ellipse cx="180" cy="230" rx="150" ry="200" fill="none" stroke="url(#ge-stroke)" strokeWidth="2" />

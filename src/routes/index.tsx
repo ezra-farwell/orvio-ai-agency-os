@@ -178,7 +178,7 @@ function Hero() {
         className="relative z-10 flex items-center justify-between px-6 pt-7 sm:px-12 sm:pt-9"
       >
         <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-white/85">
-          <span className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#5EEAD4] shadow-[0_0_10px_rgba(94,234,212,0.9)] live-dot" />
+          <span className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#F76B15] shadow-[0_0_10px_rgba(247,107,21,0.9)] live-dot" />
           Orvio
         </div>
         <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/85">
@@ -233,19 +233,19 @@ function CinematicGlyph() {
         className="absolute -inset-32 -z-10 rounded-full"
         style={{
           background:
-            "radial-gradient(circle, rgba(94,234,212,0.28), rgba(124,140,255,0.18) 35%, transparent 65%)",
+            "radial-gradient(circle, rgba(247,107,21,0.28), rgba(247,107,21,0.18) 35%, transparent 65%)",
           filter: "blur(40px)",
         }}
       />
       <svg
         viewBox="0 0 360 460"
-        className="h-[58vh] max-h-[520px] w-auto drop-shadow-[0_0_30px_rgba(94,234,212,0.45)]"
+        className="h-[58vh] max-h-[520px] w-auto drop-shadow-[0_0_30px_rgba(247,107,21,0.45)]"
       >
         <defs>
           <linearGradient id="cg-stroke" x1="0" y1="0" x2="0" y2="460" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stopColor="#7DF9E3" />
-            <stop offset="0.5" stopColor="#5EEAD4" />
-            <stop offset="1" stopColor="#A8C0FF" />
+            <stop offset="0" stopColor="#FBA15B" />
+            <stop offset="0.5" stopColor="#F76B15" />
+            <stop offset="1" stopColor="#F76B15" />
           </linearGradient>
           <filter id="cg-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="3" result="b" />
@@ -322,14 +322,14 @@ function PillIcon({ name, primary }: { name: "sparkles" | "arrow" | "box"; prima
   const stroke = primary ? "#1B2552" : "currentColor";
   if (name === "sparkles") {
     return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F76B15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" />
       </svg>
     );
   }
   if (name === "arrow") {
     return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F76B15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         <path d="M5 12h14M13 6l6 6-6 6" />
       </svg>
     );
@@ -347,7 +347,7 @@ function SocialProof() {
     <section className="hairline-t hairline-b bg-background/60">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-5 px-6 py-8 sm:px-10 md:flex-row md:items-center md:justify-between md:gap-10">
         <MonoEyebrow className="shrink-0 text-text-muted">
-          <span className="text-[#5EEAD4]">00</span>
+          <span className="text-[#F76B15]">00</span>
           <span className="text-text-faint">—</span>
           Built for agencies serving
         </MonoEyebrow>
@@ -362,7 +362,7 @@ function SocialProof() {
           </div>
         </div>
         <div className="shrink-0 mono-eyebrow text-text-muted">
-          <span className="font-mono text-[#5EEAD4]">$4.82</span>
+          <span className="font-mono text-[#F76B15]">$4.82</span>
           <span className="ml-2">avg CPL</span>
         </div>
       </div>
@@ -415,7 +415,7 @@ function TwoLayers() {
     {
       num: "02",
       label: "Client OS",
-      accent: "#5EEAD4",
+      accent: "#F76B15",
       title: "Operations, reporting, and retention.",
       lede: "Everything that happens after you sign a client. Reports, contracts, billing, churn detection — all in one branded portal.",
       list: clientOS,
@@ -423,7 +423,7 @@ function TwoLayers() {
     {
       num: "03",
       label: "Creative Studio",
-      accent: "#FBBF24",
+      accent: "#F76B15",
       title: "AI campaign production, from brief to Meta.",
       lede: "Generate, audit, and approve ad creatives. Push them live to your client's Meta account in one click.",
       list: studio,
@@ -575,7 +575,7 @@ function FeatureRow({
     <div className="grid items-center gap-12 md:grid-cols-2 md:gap-20">
       <Reveal className={reversed ? "md:order-2" : ""}>
         <div className="mono-eyebrow flex items-center gap-3">
-          <span className="text-[#5EEAD4]">{index}</span>
+          <span className="text-[#F76B15]">{index}</span>
           <span className="text-text-faint">—</span>
           <span>{eyebrow}</span>
         </div>
@@ -589,7 +589,7 @@ function FeatureRow({
         <ul className="mt-7 space-y-3">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-3 text-sm">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#F76B15]" />
               <span className="text-foreground/90">{b}</span>
             </li>
           ))}
@@ -629,8 +629,8 @@ function Stats() {
 function Marketplace() {
   const tone = (t: string) =>
     t === "Free" ? "text-success"
-    : t === "Standard" ? "text-[#5EEAD4]"
-    : t === "Premium" ? "text-[#A78BFA]"
+    : t === "Standard" ? "text-[#F76B15]"
+    : t === "Premium" ? "text-[#F76B15]"
     : "text-amber";
 
   return (
@@ -770,17 +770,17 @@ export function PricingBlock() {
           aria-label="Toggle annual billing"
         >
           <span
-            className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#5EEAD4] transition-all ${
+            className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#F76B15] transition-all ${
               annual ? "left-[24px]" : "left-0.5"
             }`}
-            style={{ boxShadow: "0 0 12px rgba(94,234,212,0.7)" }}
+            style={{ boxShadow: "0 0 12px rgba(247,107,21,0.7)" }}
           />
         </button>
         <button
           onClick={() => setAnnual(true)}
           className={`mono-eyebrow flex items-center gap-2 transition-colors ${annual ? "text-foreground" : "text-text-muted"}`}
         >
-          Annual <span className="text-[#5EEAD4]">−20%</span>
+          Annual <span className="text-[#F76B15]">−20%</span>
         </button>
       </div>
 
@@ -793,7 +793,7 @@ export function PricingBlock() {
             }`}
           >
             {t.featured && (
-              <span className="mono-eyebrow absolute right-10 top-10 text-[#5EEAD4]">
+              <span className="mono-eyebrow absolute right-10 top-10 text-[#F76B15]">
                 ★ Most popular
               </span>
             )}
@@ -838,7 +838,7 @@ export function PricingBlock() {
               {t.features.map((f) => (
                 <li key={f.t} className="flex items-start gap-3">
                   {f.y ? (
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#F76B15]" />
                   ) : (
                     <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center text-text-faint">·</span>
                   )}
@@ -853,7 +853,7 @@ export function PricingBlock() {
 
       <div className="mt-16">
         <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
-          <span className="text-[#5EEAD4]">06</span>
+          <span className="text-[#F76B15]">06</span>
           <span className="text-text-faint">—</span>
           <span>Top-up packs</span>
         </div>
@@ -867,7 +867,7 @@ export function PricingBlock() {
           {topUps.map((t) => (
             <div key={t.credits} className="relative p-6">
               {t.badge && (
-                <span className="mono-eyebrow absolute right-6 top-6 text-[#5EEAD4]">
+                <span className="mono-eyebrow absolute right-6 top-6 text-[#F76B15]">
                   ★ {t.badge}
                 </span>
               )}
@@ -925,9 +925,9 @@ const compareRows = [
 
 function Comparison() {
   const cell = (v: string, isOrvio: boolean) => {
-    if (v === "✓") return <span className={isOrvio ? "text-[#5EEAD4]" : "text-foreground/60"}>✓</span>;
+    if (v === "✓") return <span className={isOrvio ? "text-[#F76B15]" : "text-foreground/60"}>✓</span>;
     if (v === "✗") return <span className="text-text-faint">—</span>;
-    return <span className={`text-sm ${isOrvio ? "font-mono text-[#5EEAD4]" : "text-text-muted"}`}>{v}</span>;
+    return <span className={`text-sm ${isOrvio ? "font-mono text-[#F76B15]" : "text-text-muted"}`}>{v}</span>;
   };
 
   return (
@@ -949,7 +949,7 @@ function Comparison() {
                 <tr className="hairline-b">
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Feature</th>
                   <th className="py-5 pr-4 text-left">
-                    <span className="mono-eyebrow text-[#5EEAD4]">Orvio</span>
+                    <span className="mono-eyebrow text-[#F76B15]">Orvio</span>
                   </th>
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">GoHighLevel</th>
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Generic CRM</th>
@@ -960,7 +960,7 @@ function Comparison() {
                 {compareRows.map((row, i) => (
                   <tr key={i} className="group transition-colors hover:bg-surface/30">
                     <td className="border-b border-border/60 py-5 pr-4 text-foreground/90">{row[0]}</td>
-                    <td className="border-b border-[#5EEAD4]/30 bg-[#5EEAD4]/[0.04] py-5 pr-4">{cell(row[1], true)}</td>
+                    <td className="border-b border-[#F76B15]/30 bg-[#F76B15]/[0.04] py-5 pr-4">{cell(row[1], true)}</td>
                     <td className="border-b border-border/60 py-5 pr-4">{cell(row[2], false)}</td>
                     <td className="border-b border-border/60 py-5 pr-4">{cell(row[3], false)}</td>
                     <td className="border-b border-border/60 py-5">{cell(row[4], false)}</td>

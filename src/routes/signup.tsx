@@ -52,8 +52,8 @@ function SignupPage() {
           />
           <div className="mono-eyebrow flex items-center gap-2.5 text-white/85">
             <span
-              className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#5EEAD4] live-dot"
-              style={{ boxShadow: "0 0 10px rgba(94,234,212,0.85)" }}
+              className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#F76B15] live-dot"
+              style={{ boxShadow: "0 0 10px rgba(247,107,21,0.85)" }}
             />
             Orvio · Agency Edition
           </div>
@@ -73,7 +73,7 @@ function SignupPage() {
                 "No credit card required",
               ].map((t) => (
                 <li key={t} className="flex items-start gap-3 text-sm text-white/90">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#F76B15]" />
                   {t}
                 </li>
               ))}
@@ -89,7 +89,7 @@ function SignupPage() {
         <section className="flex items-center justify-center p-6 pt-28 sm:p-12 md:pt-12">
           <div className="w-full max-w-md">
             <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
-              <span className="text-[#5EEAD4]">01</span>
+              <span className="text-[#F76B15]">01</span>
               <span className="text-text-faint">—</span>
               <span>Create account</span>
             </div>
@@ -106,7 +106,7 @@ function SignupPage() {
             {submitted ? (
               <Reveal>
                 <div className="mt-10 hairline-t hairline-b py-8">
-                  <div className="flex items-center gap-3 text-[#5EEAD4]">
+                  <div className="flex items-center gap-3 text-[#F76B15]">
                     <CheckCircle2 className="h-5 w-5" />
                     <span className="font-display text-xl font-bold">Account created</span>
                   </div>
@@ -217,7 +217,7 @@ function SignupPage() {
         .orvio-input::placeholder { color: var(--text-faint); }
         .orvio-input:focus {
           outline: none;
-          border-bottom-color: #5EEAD4;
+          border-bottom-color: #F76B15;
         }
         select.orvio-input {
           appearance: none;
