@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const links = [
-  { label: "Product", to: "/" as const, hash: "#product" },
-  { label: "Use Cases", to: "/" as const, hash: "#use-cases" },
+  { label: "Platform", to: "/" as const, hash: "#platform" },
+  { label: "Client OS", to: "/" as const, hash: "#client-os" },
+  { label: "Creative Studio", to: "/" as const, hash: "#studio" },
   { label: "Pricing", to: "/pricing" as const },
   { label: "Resources", to: "/demo" as const },
 ];
@@ -14,7 +15,7 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -24,19 +25,30 @@ export function Nav() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-border/80 bg-background/80 backdrop-blur-xl"
+          ? "border-b border-border/70 bg-background/75 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6 sm:px-8">
-        <Link to="/" className="flex shrink-0 items-center gap-2.5 text-foreground">
-          <span className="relative grid h-7 w-7 place-items-center rounded-md bg-gradient-to-br from-indigo to-indigo/60 shadow-glow">
-            <span className="absolute inset-0.5 rounded-[5px] bg-background" />
-            <span className="relative h-2 w-2 rounded-full bg-indigo glow-pulse" />
+      <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between gap-6 px-6 sm:px-8">
+        {/* Left: logo + beta pill */}
+        <div className="flex shrink-0 items-center gap-3">
+          <Link to="/" className="flex items-center gap-2.5 text-foreground">
+            <span className="relative grid h-7 w-7 place-items-center rounded-md bg-gradient-to-br from-indigo to-[#4F46E5]">
+              <span className="absolute inset-[3px] rounded-[4px] bg-background" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-indigo glow-pulse" />
+            </span>
+            <span className="text-[16px] font-semibold tracking-tight">Orvio</span>
+          </Link>
+          <span className="hidden items-center gap-1.5 rounded-full border border-border bg-surface/70 px-2.5 py-1 sm:inline-flex">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo/70 opacity-60" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-indigo" />
+            </span>
+            <span className="mono text-[10.5px] uppercase tracking-[0.14em] text-text-muted">Private beta</span>
           </span>
-          <span className="text-[16px] font-semibold tracking-tight">Orvio</span>
-        </Link>
+        </div>
 
+        {/* Center: nav links */}
         <nav className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
             <Link
@@ -44,20 +56,20 @@ export function Nav() {
               to={l.to}
               hash={l.hash}
               className="text-[13.5px] text-foreground/70 transition-colors hover:text-foreground"
-              activeProps={{ className: "text-foreground" }}
             >
               {l.label}
             </Link>
           ))}
         </nav>
 
+        {/* Right: CTAs */}
         <div className="hidden items-center gap-3 md:flex">
           <Link to="/signup" className="text-[13.5px] text-foreground/70 transition-colors hover:text-foreground">
             Sign in
           </Link>
           <Link
             to="/signup"
-            className="inline-flex h-9 items-center gap-2 rounded-lg bg-indigo px-4 text-[13px] font-medium text-white transition-all hover:bg-indigo/90 shadow-[0_6px_24px_-8px_rgba(99,102,241,0.6)]"
+            className="inline-flex h-9 items-center gap-2 rounded-lg bg-indigo px-4 text-[13px] font-medium text-white transition-all hover:bg-[#4F46E5] shadow-[0_6px_24px_-8px_rgba(99,102,241,0.6)]"
           >
             Start free trial
           </Link>
@@ -73,7 +85,7 @@ export function Nav() {
       </div>
 
       {open && (
-        <div className="fixed inset-0 top-16 z-40 flex flex-col gap-1 bg-background/98 px-6 py-8 backdrop-blur-xl md:hidden">
+        <div className="fixed inset-0 top-[72px] z-40 flex flex-col gap-1 bg-background/98 px-6 py-8 backdrop-blur-xl md:hidden">
           {links.map((l) => (
             <Link
               key={l.label}
@@ -88,7 +100,14 @@ export function Nav() {
           <Link
             to="/signup"
             onClick={() => setOpen(false)}
-            className="mt-4 inline-flex h-11 items-center justify-center rounded-lg bg-indigo px-5 text-sm font-medium text-white"
+            className="mt-2 inline-flex h-11 items-center justify-center rounded-lg border border-border px-5 text-sm font-medium text-foreground"
+          >
+            Sign in
+          </Link>
+          <Link
+            to="/signup"
+            onClick={() => setOpen(false)}
+            className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-indigo px-5 text-sm font-medium text-white"
           >
             Start free trial
           </Link>
