@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Nav } from "@/components/orvio/Nav";
 import { Footer } from "@/components/orvio/Footer";
 import { CountUp, Reveal, SectionHeader, StatusBadge } from "@/components/orvio/primitives";
-import { DashboardMockup, ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/orvio/mockups";
+import { ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/orvio/mockups";
 import { StudioDemo } from "@/components/orvio/StudioDemo";
-import { MagneticButton, MouseGlow, OrvioGlyph, ParallaxY, SpotlightCard, TypeRotate } from "@/components/orvio/interactive";
+import { SpotlightCard } from "@/components/orvio/interactive";
 import { useState } from "react";
 
 export const Route = createFileRoute("/")({
@@ -130,9 +130,9 @@ const faqs = [
 function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <Hero />
       <Nav />
       <main>
-        <Hero />
         <SocialProof />
         <Problem />
         <TwoLayers />
@@ -152,102 +152,193 @@ function Landing() {
 
 function Hero() {
   return (
-    <MouseGlow className="overflow-hidden pt-32 sm:pt-36" color="rgba(99,102,241,0.16)" size={720}>
-      {/* layered background */}
-      <div className="pointer-events-none absolute inset-0 -z-10 grid-lines opacity-60" aria-hidden />
+    <section className="sky-hero relative isolate flex h-screen min-h-[760px] w-full flex-col overflow-hidden">
+      {/* Soft cloud band near horizon */}
       <motion.div
-        className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-[720px] w-[1100px] -translate-x-1/2 rounded-full blur-[120px] aurora"
-        style={{ background: "radial-gradient(circle at 30% 40%, rgba(99,102,241,0.35), transparent 55%), radial-gradient(circle at 70% 60%, rgba(217,119,6,0.25), transparent 60%)" }}
         aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[55%] cloud-drift"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 60% at 30% 80%, rgba(255,220,190,0.55), transparent 60%), radial-gradient(ellipse 60% 50% at 75% 70%, rgba(255,200,210,0.5), transparent 60%), radial-gradient(ellipse 90% 40% at 50% 100%, rgba(255,240,220,0.7), transparent 70%)",
+          filter: "blur(20px)",
+        }}
+      />
+      {/* subtle vignette */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 30%, transparent 40%, rgba(7,8,12,0.35) 100%)" }}
       />
 
-      <div className="relative mx-auto max-w-[1200px] px-5 text-center sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-indigo/30 bg-indigo/10 px-3.5 py-1 text-[12px] font-medium text-indigo backdrop-blur"
-        >
-          <span className="grid h-1.5 w-1.5 place-items-center rounded-full bg-indigo live-dot" />
-          The agency OS with AI built in
-        </motion.div>
-
-        {/* Theatrical glyph entrance */}
-        <div className="relative mt-8">
-          <OrvioGlyph size={180} />
+      {/* Top label bar — omniworld style */}
+      <motion.header
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative z-10 flex items-center justify-between px-6 pt-7 sm:px-12 sm:pt-9"
+      >
+        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-white/85">
+          <span className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#5EEAD4] shadow-[0_0_10px_rgba(94,234,212,0.9)] live-dot" />
+          Orvio
         </div>
+        <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/85">
+          Agency&nbsp;Edition
+        </div>
+      </motion.header>
 
-        <h1 className="mt-6 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight sm:text-[64px] lg:text-[78px]">
-          <motion.span initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.9, ease: [0.22, 1, 0.36, 1] }} className="block">
-            Run your agency.
-          </motion.span>
-          <motion.span initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.96, ease: [0.22, 1, 0.36, 1] }} className="block">
-            Ship campaigns that{" "}
-            <TypeRotate words={["convert.", "scale.", "compound.", "stick."]} className="font-display" />
-          </motion.span>
-          <motion.span initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 1.02, ease: [0.22, 1, 0.36, 1] }} className="block text-gradient-orvio">
-            From one platform.
-          </motion.span>
-        </h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.15 }}
-          className="mx-auto mt-6 max-w-2xl text-base text-text-muted sm:text-lg"
-        >
-          The white-label operating system for lead-gen agencies — client portals, AI reports,
-          contracts, billing, and an AI creative studio that pushes Meta campaigns live. All under your brand.
-        </motion.p>
-
+      {/* Centerpiece glyph */}
+      <div className="relative z-10 flex flex-1 items-center justify-center px-6">
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.25 }}
-          className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          className="glyph-float relative"
         >
-          <MagneticButton
-            as={Link}
-            // @ts-expect-error TanStack Link props pass through
-            to="/signup"
-            className="inline-flex h-12 items-center justify-center rounded-lg bg-indigo px-6 text-sm font-semibold text-white shadow-[0_12px_40px_-12px_rgba(99,102,241,0.7)] transition-all hover:brightness-110 hover:shadow-[0_18px_56px_-12px_rgba(99,102,241,0.9)]"
-          >
-            Start free — 14 days
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </MagneticButton>
-          <Link
-            to="/"
-            hash="demo"
-            className="group inline-flex items-center gap-2 rounded-lg border border-border/80 bg-surface/40 px-5 py-3 text-sm font-medium text-foreground backdrop-blur transition-colors hover:bg-surface"
-          >
-            <span className="grid h-1.5 w-1.5 rounded-full bg-amber live-dot" />
-            Watch a live brief generate
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 1.35 }}
-          className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-text-faint"
-        >
-          <span className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> No credit card</span>
-          <span className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Cancel anytime</span>
-          <span className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Live in 20 minutes</span>
+          <CinematicGlyph />
         </motion.div>
       </div>
 
-      <ParallaxY range={40} className="mx-auto mt-16 max-w-[1200px] px-5 pb-12 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <DashboardMockup />
-        </motion.div>
-      </ParallaxY>
-    </MouseGlow>
+      {/* Floating glass action pill */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 mx-auto mb-12 flex w-fit max-w-[94vw] items-center gap-1 rounded-full glass-pill p-1.5 sm:mb-16"
+      >
+        <PillLink to="/demo" icon="sparkles">Studio</PillLink>
+        <PillLink to="/portal-preview" icon="arrow">Portal</PillLink>
+        <PillLink to="/signup" icon="box" primary>Explore</PillLink>
+      </motion.div>
+
+      {/* Bottom caption */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1.4 }}
+        className="relative z-10 mx-auto mb-8 max-w-xl px-6 text-center"
+      >
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/75">
+          The white-label operating system for lead-gen agencies
+        </p>
+      </motion.div>
+    </section>
+  );
+}
+
+function CinematicGlyph() {
+  return (
+    <div className="relative" aria-hidden>
+      {/* outer aura */}
+      <div
+        className="absolute -inset-32 -z-10 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(94,234,212,0.28), rgba(124,140,255,0.18) 35%, transparent 65%)",
+          filter: "blur(40px)",
+        }}
+      />
+      <svg
+        viewBox="0 0 360 460"
+        className="h-[58vh] max-h-[520px] w-auto drop-shadow-[0_0_30px_rgba(94,234,212,0.45)]"
+      >
+        <defs>
+          <linearGradient id="cg-stroke" x1="0" y1="0" x2="0" y2="460" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#7DF9E3" />
+            <stop offset="0.5" stopColor="#5EEAD4" />
+            <stop offset="1" stopColor="#A8C0FF" />
+          </linearGradient>
+          <filter id="cg-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* outer ellipse */}
+        <motion.ellipse
+          cx="180" cy="230" rx="150" ry="200"
+          fill="none"
+          stroke="url(#cg-stroke)"
+          strokeWidth="2"
+          filter="url(#cg-glow)"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+        />
+        {/* inner ellipse */}
+        <motion.ellipse
+          cx="180" cy="230" rx="92" ry="142"
+          fill="none"
+          stroke="url(#cg-stroke)"
+          strokeWidth="1.6"
+          opacity="0.85"
+          filter="url(#cg-glow)"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 0.85 }}
+          transition={{ duration: 2, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        />
+        {/* thin shimmer */}
+        <motion.ellipse
+          cx="180" cy="230" rx="150" ry="200"
+          fill="none"
+          stroke="#E8FFFA"
+          strokeWidth="0.6"
+          opacity="0.5"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: [0, 1, 1], opacity: [0, 0.8, 0.4] }}
+          transition={{ duration: 4, delay: 0.5, repeat: Infinity, repeatDelay: 2 }}
+        />
+      </svg>
+    </div>
+  );
+}
+
+function PillLink({
+  to, children, icon, primary,
+}: {
+  to: "/demo" | "/portal-preview" | "/signup";
+  children: React.ReactNode;
+  icon: "sparkles" | "arrow" | "box";
+  primary?: boolean;
+}) {
+  return (
+    <Link
+      to={to}
+      className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-medium transition-all ${
+        primary
+          ? "bg-white text-[#1B2552] shadow-[0_8px_24px_-8px_rgba(255,255,255,0.6)] hover:shadow-[0_14px_36px_-8px_rgba(255,255,255,0.8)]"
+          : "text-white/90 hover:bg-white/12 hover:text-white"
+      }`}
+    >
+      <PillIcon name={icon} primary={primary} />
+      <span>{children}</span>
+    </Link>
+  );
+}
+
+function PillIcon({ name, primary }: { name: "sparkles" | "arrow" | "box"; primary?: boolean }) {
+  const stroke = primary ? "#1B2552" : "currentColor";
+  if (name === "sparkles") {
+    return (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" />
+      </svg>
+    );
+  }
+  if (name === "arrow") {
+    return (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+      <path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12" />
+    </svg>
   );
 }
 
