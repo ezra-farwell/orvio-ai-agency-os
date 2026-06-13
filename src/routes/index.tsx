@@ -344,25 +344,26 @@ function PillIcon({ name, primary }: { name: "sparkles" | "arrow" | "box"; prima
 
 function SocialProof() {
   return (
-    <section className="border-y border-border bg-surface/50">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-5 py-8 sm:px-8 md:flex-row md:items-center md:justify-between md:gap-8">
-        <div className="flex flex-1 items-center gap-6 overflow-hidden">
-          <span className="shrink-0 text-xs uppercase tracking-wider text-text-muted">
-            Built for agencies serving:
-          </span>
-          <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="marquee flex w-max gap-8 whitespace-nowrap text-sm text-foreground/70">
-              {[...industries, ...industries].map((label, i) => (
-                <span key={i} className="flex items-center gap-8">
-                  {label}
-                  <span className="text-text-faint">·</span>
-                </span>
-              ))}
-            </div>
+    <section className="hairline-t hairline-b bg-background/60">
+      <div className="mx-auto flex max-w-[1280px] flex-col gap-5 px-6 py-8 sm:px-10 md:flex-row md:items-center md:justify-between md:gap-10">
+        <MonoEyebrow className="shrink-0 text-text-muted">
+          <span className="text-[#5EEAD4]">00</span>
+          <span className="text-text-faint">—</span>
+          Built for agencies serving
+        </MonoEyebrow>
+        <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="marquee flex w-max gap-10 whitespace-nowrap font-display text-base text-foreground/85">
+            {[...industries, ...industries].map((label, i) => (
+              <span key={i} className="flex items-center gap-10">
+                {label}
+                <span className="h-1 w-1 rounded-full bg-text-faint" />
+              </span>
+            ))}
           </div>
         </div>
-        <div className="shrink-0 text-sm font-medium text-indigo">
-          <span className="font-mono">$4.82</span> avg CPL for home service campaigns
+        <div className="shrink-0 mono-eyebrow text-text-muted">
+          <span className="font-mono text-[#5EEAD4]">$4.82</span>
+          <span className="ml-2">avg CPL</span>
         </div>
       </div>
     </section>
@@ -371,30 +372,38 @@ function SocialProof() {
 
 function Problem() {
   return (
-    <section className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section className="relative py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
-          <SectionHeader title={<>Your agency is held together by <span className="text-danger">copy-paste</span> and prayer.</>} />
+          <SectionHeader
+            center={false}
+            index="01"
+            eyebrow="The problem"
+            title={<>Your agency is held together<br />by <span className="text-danger">copy-paste</span> and prayer.</>}
+          />
         </Reveal>
 
-        <div className="mt-12 grid gap-4 sm:mt-16 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-20 grid divide-y divide-border border-y border-border md:grid-cols-2 md:divide-x md:divide-y-0 lg:grid-cols-3">
           {problems.map((p, i) => (
             <Reveal key={p.t} delay={i * 0.05}>
-              <SpotlightCard className="h-full p-6" glow="rgba(239,68,68,0.18)">
-                <div className="grid h-9 w-9 place-items-center rounded-lg bg-danger/10 text-danger">!</div>
-                <h3 className="mt-4 font-display text-lg font-bold">{p.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-muted">{p.d}</p>
-              </SpotlightCard>
+              <div className="group relative h-full p-8 transition-colors hover:bg-surface/40">
+                <div className="mono-eyebrow text-danger">
+                  Issue · {String(i + 1).padStart(2, "0")}
+                </div>
+                <h3 className="mt-4 font-display text-xl font-bold leading-tight">{p.t}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-text-muted">{p.d}</p>
+              </div>
             </Reveal>
           ))}
         </div>
 
         <Reveal delay={0.1}>
-          <div className="mt-16 text-center">
-            <span className="font-display text-2xl font-bold text-gradient-orvio sm:text-3xl">
-              There's a better way.
-            </span>
-          </div>
+          <p
+            className="mt-20 max-w-3xl font-display font-bold leading-[1.05]"
+            style={{ fontSize: "clamp(1.75rem, 3.4vw, 2.75rem)" }}
+          >
+            There's a <span className="text-gradient-orvio">better way</span> to run an agency.
+          </p>
         </Reveal>
       </div>
     </section>
