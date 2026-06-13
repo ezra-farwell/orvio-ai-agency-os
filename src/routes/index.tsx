@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Nav } from "@/components/orvio/Nav";
 import { Footer } from "@/components/orvio/Footer";
 import { CountUp, Reveal, SectionHeader, StatusBadge } from "@/components/orvio/primitives";
 import { DashboardMockup, ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/orvio/mockups";
 import { StudioDemo } from "@/components/orvio/StudioDemo";
+import { MagneticButton, MouseGlow, OrvioGlyph, ParallaxY, SpotlightCard, TypeRotate } from "@/components/orvio/interactive";
 import { useState } from "react";
 
 export const Route = createFileRoute("/")({
@@ -150,93 +151,103 @@ function Landing() {
 }
 
 function Hero() {
-  const lines = ["Run your agency.", "Ship your clients' campaigns.", "From one platform."];
   return (
-    <section className="relative overflow-hidden pt-32 sm:pt-40">
-      <div className="absolute inset-0 grid-dots opacity-50" aria-hidden />
-      <div
-        className="absolute left-1/2 top-0 -z-10 h-[600px] w-[1000px] -translate-x-1/2 rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.18), transparent 60%)" }}
+    <MouseGlow className="overflow-hidden pt-32 sm:pt-36" color="rgba(99,102,241,0.16)" size={720}>
+      {/* layered background */}
+      <div className="pointer-events-none absolute inset-0 -z-10 grid-lines opacity-60" aria-hidden />
+      <motion.div
+        className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-[720px] w-[1100px] -translate-x-1/2 rounded-full blur-[120px] aurora"
+        style={{ background: "radial-gradient(circle at 30% 40%, rgba(99,102,241,0.35), transparent 55%), radial-gradient(circle at 70% 60%, rgba(217,119,6,0.25), transparent 60%)" }}
         aria-hidden
       />
 
-      <div className="mx-auto max-w-[1200px] px-5 text-center sm:px-8">
+      <div className="relative mx-auto max-w-[1200px] px-5 text-center sm:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full border border-indigo/30 bg-indigo/10 px-3.5 py-1 text-[12px] font-medium text-indigo"
+          className="inline-flex items-center gap-2 rounded-full border border-indigo/30 bg-indigo/10 px-3.5 py-1 text-[12px] font-medium text-indigo backdrop-blur"
         >
-          <Sparkles className="h-3.5 w-3.5" />
+          <span className="grid h-1.5 w-1.5 place-items-center rounded-full bg-indigo live-dot" />
           The agency OS with AI built in
         </motion.div>
 
-        <h1 className="mt-6 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight sm:text-[64px] lg:text-[80px]">
-          {lines.map((line, i) => (
-            <motion.span
-              key={line}
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 + i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-              className="block"
-            >
-              {i === 2 ? <span className="text-gradient-orvio">{line}</span> : line}
-            </motion.span>
-          ))}
+        {/* Theatrical glyph entrance */}
+        <div className="relative mt-8">
+          <OrvioGlyph size={180} />
+        </div>
+
+        <h1 className="mt-6 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight sm:text-[64px] lg:text-[78px]">
+          <motion.span initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.9, ease: [0.22, 1, 0.36, 1] }} className="block">
+            Run your agency.
+          </motion.span>
+          <motion.span initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.96, ease: [0.22, 1, 0.36, 1] }} className="block">
+            Ship campaigns that{" "}
+            <TypeRotate words={["convert.", "scale.", "compound.", "stick."]} className="font-display" />
+          </motion.span>
+          <motion.span initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 1.02, ease: [0.22, 1, 0.36, 1] }} className="block text-gradient-orvio">
+            From one platform.
+          </motion.span>
         </h1>
 
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
+          transition={{ duration: 0.6, delay: 1.15 }}
           className="mx-auto mt-6 max-w-2xl text-base text-text-muted sm:text-lg"
         >
-          Orvio is the white-label operating system for lead-gen agencies — client portals, AI reports,
-          contracts, billing, and an AI creative studio that generates Meta campaigns and pushes them live.
-          All under your brand.
+          The white-label operating system for lead-gen agencies — client portals, AI reports,
+          contracts, billing, and an AI creative studio that pushes Meta campaigns live. All under your brand.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.45 }}
-          className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+          transition={{ duration: 0.6, delay: 1.25 }}
+          className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
-          <Link
+          <MagneticButton
+            as={Link}
+            // @ts-expect-error TanStack Link props pass through
             to="/signup"
-            className="inline-flex h-12 items-center justify-center rounded-lg bg-indigo px-6 text-sm font-semibold text-white shadow-[0_12px_40px_-12px_rgba(99,102,241,0.7)] transition-all hover:brightness-110 hover:shadow-[0_16px_48px_-12px_rgba(99,102,241,0.85)]"
+            className="inline-flex h-12 items-center justify-center rounded-lg bg-indigo px-6 text-sm font-semibold text-white shadow-[0_12px_40px_-12px_rgba(99,102,241,0.7)] transition-all hover:brightness-110 hover:shadow-[0_18px_56px_-12px_rgba(99,102,241,0.9)]"
           >
             Start free — 14 days
-          </Link>
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </MagneticButton>
           <Link
             to="/"
             hash="demo"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-foreground"
+            className="group inline-flex items-center gap-2 rounded-lg border border-border/80 bg-surface/40 px-5 py-3 text-sm font-medium text-foreground backdrop-blur transition-colors hover:bg-surface"
           >
-            See it in action
+            <span className="grid h-1.5 w-1.5 rounded-full bg-amber live-dot" />
+            Watch a live brief generate
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.div>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-6 text-xs text-text-faint"
+          transition={{ duration: 0.6, delay: 1.35 }}
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-text-faint"
         >
-          No credit card required · Cancel anytime · Setup in 20 minutes
-        </motion.p>
+          <span className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> No credit card</span>
+          <span className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Cancel anytime</span>
+          <span className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-success" /> Live in 20 minutes</span>
+        </motion.div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto mt-16 max-w-[1200px] px-5 pb-12 sm:px-8"
-      >
-        <DashboardMockup />
-      </motion.div>
-    </section>
+      <ParallaxY range={40} className="mx-auto mt-16 max-w-[1200px] px-5 pb-12 sm:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <DashboardMockup />
+        </motion.div>
+      </ParallaxY>
+    </MouseGlow>
   );
 }
 
@@ -278,11 +289,11 @@ function Problem() {
         <div className="mt-12 grid gap-4 sm:mt-16 md:grid-cols-2 lg:grid-cols-3">
           {problems.map((p, i) => (
             <Reveal key={p.t} delay={i * 0.05}>
-              <div className="surface-card h-full p-6 transition-colors hover:border-danger/30">
+              <SpotlightCard className="h-full p-6" glow="rgba(239,68,68,0.18)">
                 <div className="grid h-9 w-9 place-items-center rounded-lg bg-danger/10 text-danger">!</div>
                 <h3 className="mt-4 font-display text-lg font-bold">{p.t}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-text-muted">{p.d}</p>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
@@ -509,7 +520,7 @@ function Marketplace() {
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {models.map((m, i) => (
             <Reveal key={m.name} delay={i * 0.04}>
-              <div className="surface-card h-full p-6">
+              <SpotlightCard className="h-full p-6" glow={m.tone === "amber" ? "rgba(217,119,6,0.22)" : m.tone === "purple" ? "rgba(139,92,246,0.22)" : m.tone === "green" ? "rgba(16,185,129,0.18)" : "rgba(99,102,241,0.22)"}>
                 <div className="flex items-start justify-between gap-2">
                   <h4 className="font-display text-lg font-bold">{m.name}</h4>
                   <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${tone(m.tier)}`}>
@@ -518,7 +529,7 @@ function Marketplace() {
                 </div>
                 <div className="mt-1 font-mono text-sm text-amber">{m.credits} credits</div>
                 <p className="mt-4 text-sm text-text-muted">{m.copy}</p>
-              </div>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>

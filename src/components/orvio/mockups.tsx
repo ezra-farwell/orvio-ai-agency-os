@@ -1,18 +1,30 @@
 import { StatusBadge } from "./primitives";
+import { LiveTick, Sparkline } from "./interactive";
 
 export function DashboardMockup({ tilted = true }: { tilted?: boolean }) {
   return (
-    <div className="relative mx-auto w-full max-w-[1100px]" style={tilted ? { perspective: "1600px" } : undefined}>
+    <div className="relative mx-auto w-full max-w-[1100px]" style={tilted ? { perspective: "1800px" } : undefined}>
+      {/* halo */}
       <div
-        className="surface-elev overflow-hidden rounded-2xl shadow-[0_40px_120px_-40px_rgba(99,102,241,0.5)]"
-        style={tilted ? { transform: "rotateX(6deg) rotateY(-2deg)", transformStyle: "preserve-3d" } : undefined}
+        className="pointer-events-none absolute -inset-10 -z-10 rounded-[40px] opacity-70 blur-3xl"
+        style={{ background: "radial-gradient(60% 50% at 50% 30%, rgba(99,102,241,0.35), transparent 70%)" }}
+        aria-hidden
+      />
+      <div
+        className="surface-elev overflow-hidden rounded-2xl shadow-[0_60px_140px_-40px_rgba(99,102,241,0.55)]"
+        style={tilted ? { transform: "rotateX(7deg) rotateY(-2deg)", transformStyle: "preserve-3d" } : undefined}
       >
-        <div className="flex items-center gap-2 border-b border-border bg-background/40 px-4 py-3">
+        <div className="flex items-center gap-2 border-b border-border bg-background/60 px-4 py-3">
           <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
-          <div className="ml-4 rounded-md bg-background px-3 py-1 text-[11px] font-mono text-text-faint">
+          <div className="ml-4 flex items-center gap-2 rounded-md bg-background px-3 py-1 text-[11px] font-mono text-text-faint">
+            <span className="grid h-1.5 w-1.5 rounded-full bg-success live-dot" />
             portal.growthdesk.io
+          </div>
+          <div className="ml-auto hidden items-center gap-1.5 text-[10px] text-text-faint sm:flex">
+            <span className="grid h-1.5 w-1.5 rounded-full bg-success live-dot" />
+            Live · syncing Meta + Google
           </div>
         </div>
 
@@ -28,24 +40,42 @@ export function DashboardMockup({ tilted = true }: { tilted?: boolean }) {
           </div>
           <div className="flex items-center gap-3 text-xs">
             <span className="rounded-md border border-amber/30 bg-amber/10 px-2.5 py-1 font-mono text-amber">
-              847 credits
+              <LiveTick base={847} jitter={2} interval={3200} /> credits
             </span>
             <div className="h-7 w-7 rounded-full bg-gradient-to-br from-indigo to-[#8B5CF6]" />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 border-b border-border bg-background/40 p-5 sm:grid-cols-4">
-          {[
-            { v: "4", l: "Clients" },
-            { v: "847", l: "Credits" },
-            { v: "2", l: "Pending" },
-            { v: "1", l: "At risk" },
-          ].map((m) => (
-            <div key={m.l} className="surface-card p-3">
-              <div className="font-mono text-2xl font-semibold">{m.v}</div>
-              <div className="text-[11px] uppercase tracking-wider text-text-muted">{m.l}</div>
+        {/* Top metrics with embedded sparkline */}
+        <div className="grid grid-cols-1 gap-3 border-b border-border bg-background/40 p-5 md:grid-cols-[1.4fr_1fr]">
+          <div className="surface-card relative overflow-hidden p-4">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-[11px] uppercase tracking-wider text-text-muted">Aggregate CPL — last 30d</div>
+                <div className="mt-1 font-mono text-3xl font-semibold text-foreground">
+                  $<LiveTick base={4.82} jitter={0.08} interval={2200} format={(n) => n.toFixed(2)} />
+                </div>
+                <div className="mt-1 font-mono text-xs text-success">▼ 18.4% vs prev. period</div>
+              </div>
+              <span className="rounded-full border border-success/30 bg-success/10 px-2 py-0.5 text-[10px] font-medium text-success">Healthy</span>
             </div>
-          ))}
+            <div className="mt-2">
+              <Sparkline color="#6366F1" height={56} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { v: <LiveTick base={4} jitter={0} interval={9999} format={(n) => n.toFixed(0)} />, l: "Active clients" },
+              { v: <LiveTick base={43} jitter={1.6} interval={2600} format={(n) => n.toFixed(0)} />, l: "Leads today" },
+              { v: <LiveTick base={12} jitter={0.6} interval={3000} format={(n) => n.toFixed(0)} />, l: "Calls booked" },
+              { v: "1", l: "At risk" },
+            ].map((m) => (
+              <div key={m.l} className="surface-card p-3">
+                <div className="font-mono text-2xl font-semibold">{m.v}</div>
+                <div className="text-[11px] uppercase tracking-wider text-text-muted">{m.l}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="bg-background/40 p-5">
@@ -55,15 +85,19 @@ export function DashboardMockup({ tilted = true }: { tilted?: boolean }) {
           </div>
           <div className="surface-card divide-y divide-border overflow-hidden">
             {[
-              { name: "Summit Roofing", industry: "Roofing", status: "Healthy", tone: "green", cpl: "$4.82" },
-              { name: "Metro Movers", industry: "Moving", status: "Watch", tone: "yellow", cpl: "$8.20" },
-              { name: "Elite HVAC", industry: "HVAC", status: "Healthy", tone: "green", cpl: "$3.91" },
-              { name: "GrandView Remodeling", industry: "Remodeling", status: "At Risk", tone: "red", cpl: "$12.40" },
+              { name: "Summit Roofing", industry: "Roofing", status: "Healthy", tone: "green", cpl: "$4.82", trend: "▼ 12%" },
+              { name: "Metro Movers", industry: "Moving", status: "Watch", tone: "yellow", cpl: "$8.20", trend: "▲ 4%" },
+              { name: "Elite HVAC", industry: "HVAC", status: "Healthy", tone: "green", cpl: "$3.91", trend: "▼ 22%" },
+              { name: "GrandView Remodeling", industry: "Remodeling", status: "At Risk", tone: "red", cpl: "$12.40", trend: "▲ 31%" },
             ].map((c) => (
-              <div key={c.name} className="grid grid-cols-[1.6fr_1fr_auto_auto] items-center gap-3 px-4 py-3 text-sm">
-                <div className="truncate font-medium text-foreground">{c.name}</div>
+              <div key={c.name} className="group grid grid-cols-[1.4fr_1fr_auto_auto_auto] items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-surface">
+                <div className="flex items-center gap-2 truncate font-medium text-foreground">
+                  <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${c.tone === "green" ? "bg-success live-dot" : c.tone === "yellow" ? "bg-warning" : "bg-danger"}`} />
+                  {c.name}
+                </div>
                 <div className="truncate text-text-muted">{c.industry}</div>
                 <StatusBadge tone={c.tone as "green" | "yellow" | "red"}>{c.status}</StatusBadge>
+                <div className={`font-mono text-xs ${c.trend.startsWith("▼") ? "text-success" : "text-danger"}`}>{c.trend}</div>
                 <div className="font-mono text-foreground">{c.cpl}</div>
               </div>
             ))}
@@ -73,6 +107,7 @@ export function DashboardMockup({ tilted = true }: { tilted?: boolean }) {
     </div>
   );
 }
+
 
 export function ReportMockup() {
   return (
