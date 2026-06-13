@@ -477,30 +477,31 @@ function TwoLayers() {
 
 function DemoSection() {
   return (
-    <section id="demo" className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <SkyBand className="py-32 sm:py-48" variant="soft">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
           <SectionHeader
+            center={false}
+            index="02"
             eyebrow="Interactive demo"
-            title="Watch it work."
-            subtitle="Real AI output. Real campaign structure. Click through it."
+            title={<>Watch it <span className="text-gradient-orvio">work</span>.</>}
+            subtitle="Real AI output. Real campaign structure. Click through it — no account, no sign-up."
           />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-12">
+          <div className="mt-20">
             <StudioDemo />
           </div>
         </Reveal>
 
         <Reveal delay={0.15}>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-xs text-text-faint">
-            This output structure comes from real Claude API calls in the live product. Model, industry,
-            and brief drive the output — you control all three.
+          <p className="mt-8 max-w-2xl mono-eyebrow text-text-muted">
+            Output structure from real Claude API calls in the live product.
           </p>
         </Reveal>
       </div>
-    </section>
+    </SkyBand>
   );
 }
 
