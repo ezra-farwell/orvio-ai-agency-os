@@ -125,9 +125,9 @@ export function Diamond({ className }: { className?: string }) {
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
       <defs>
         <linearGradient id="og-diamond" x1="0" y1="0" x2="24" y2="24">
-          <stop offset="0" stopColor="#5EEAD4" />
-          <stop offset="0.55" stopColor="#7C8CFF" />
-          <stop offset="1" stopColor="#FBBF24" />
+          <stop offset="0" stopColor="#F76B15" />
+          <stop offset="0.55" stopColor="#F76B15" />
+          <stop offset="1" stopColor="#F76B15" />
         </linearGradient>
       </defs>
       <circle cx="12" cy="12" r="9" stroke="url(#og-diamond)" strokeWidth="1.5" fill="none" />
@@ -168,7 +168,7 @@ export function SectionHeader({
             center ? "justify-center" : ""
           }`}
         >
-          {index && <span className="text-[#5EEAD4]">{index}</span>}
+          {index && <span className="text-[#F76B15]">{index}</span>}
           {index && eyebrow && <span className="text-text-faint">—</span>}
           {eyebrow && <span>{eyebrow}</span>}
         </div>

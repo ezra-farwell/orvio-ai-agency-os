@@ -33,7 +33,7 @@ function DemoPage() {
           </Reveal>
           <Reveal delay={0.05}>
             <div className="mono-eyebrow mt-8 flex items-center justify-center gap-3 text-white/85">
-              <span className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#5EEAD4] live-dot" style={{ boxShadow: "0 0 10px rgba(94,234,212,0.85)" }} />
+              <span className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#F76B15] live-dot" style={{ boxShadow: "0 0 10px rgba(247,107,21,0.85)" }} />
               Live demo · No account required
             </div>
           </Reveal>

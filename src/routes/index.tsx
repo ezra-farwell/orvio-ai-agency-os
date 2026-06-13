@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Nav } from "@/components/orvio/Nav";
 import { Footer } from "@/components/orvio/Footer";
@@ -9,6 +9,7 @@ import { ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/or
 import { StudioDemo } from "@/components/orvio/StudioDemo";
 import { ArrowIcon, GlyphEcho, Hairline, MonoEyebrow, PillCTA, SkyBand } from "@/components/orvio/lattice";
 import { useState } from "react";
+import heroMountains from "@/assets/hero-mountains.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -152,193 +153,158 @@ function Landing() {
 
 function Hero() {
   return (
-    <section className="sky-hero relative isolate flex h-screen min-h-[760px] w-full flex-col overflow-hidden">
-      {/* Soft cloud band near horizon */}
+    <section className="relative isolate flex h-screen min-h-[780px] w-full flex-col overflow-hidden bg-black">
+      {/* Cinematic photo background with slow ken-burns */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[55%] cloud-drift"
+        className="absolute inset-0 -z-20 ken-burns"
         style={{
-          background:
-            "radial-gradient(ellipse 70% 60% at 30% 80%, rgba(255,220,190,0.55), transparent 60%), radial-gradient(ellipse 60% 50% at 75% 70%, rgba(255,200,210,0.5), transparent 60%), radial-gradient(ellipse 90% 40% at 50% 100%, rgba(255,240,220,0.7), transparent 70%)",
-          filter: "blur(20px)",
+          backgroundImage: `url(${heroMountains})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center 55%",
         }}
+        initial={{ opacity: 0, scale: 1.08 }}
+        animate={{ opacity: 1, scale: 1.04 }}
+        transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1] }}
       />
-      {/* subtle vignette */}
+      {/* Top sky → horizon haze gradient overlay (deepens edges, preserves orange glow) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10"
-        style={{ background: "radial-gradient(ellipse 80% 60% at 50% 30%, transparent 40%, rgba(7,8,12,0.35) 100%)" }}
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.55) 100%)",
+        }}
+      />
+      {/* Subtle vignette */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse 90% 70% at 50% 40%, transparent 50%, rgba(0,0,0,0.55) 100%)",
+        }}
       />
 
-      {/* Top label bar — omniworld style */}
-      <motion.header
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-10 flex items-center justify-between px-6 pt-7 sm:px-12 sm:pt-9"
-      >
-        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-white/85">
-          <span className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#5EEAD4] shadow-[0_0_10px_rgba(94,234,212,0.9)] live-dot" />
-          Orvio
-        </div>
-        <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-white/85">
-          Agency&nbsp;Edition
-        </div>
-      </motion.header>
+      {/* Spacer for fixed nav */}
+      <div className="h-20" />
 
-      {/* Centerpiece glyph */}
-      <div className="relative z-10 flex flex-1 items-center justify-center px-6">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-          className="glyph-float relative"
+      {/* Centered content stack */}
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 text-center">
+        {/* Announcement pill */}
+        <motion.a
+          href="#two-layers"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="group inline-flex items-center gap-2.5 rounded-full glass-pill px-4 py-2 text-[11px] uppercase tracking-[0.22em] text-white/90 hover:text-white"
         >
-          <CinematicGlyph />
+          <span
+            className="grid h-1.5 w-1.5 place-items-center rounded-full bg-[#F76B15] live-dot"
+            style={{ boxShadow: "0 0 10px rgba(247,107,21,0.9)" }}
+          />
+          <span className="font-mono">Orvio raises $61M Series A</span>
+          <ArrowRight className="h-3 w-3 -mr-0.5 transition-transform group-hover:translate-x-0.5" />
+        </motion.a>
+
+        {/* Serif display headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-8 max-w-[18ch] font-display font-normal leading-[0.98] tracking-[-0.02em] text-white"
+          style={{ fontSize: "clamp(2.6rem, 7.4vw, 6.5rem)" }}
+        >
+          AI that runs ads<br />
+          <em className="italic font-normal text-white/95">like a senior buyer.</em><br />
+          Scales like an agency.
+        </motion.h1>
+
+        {/* Subhead */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.85 }}
+          className="mt-7 max-w-md text-[15px] font-normal text-white/75"
+        >
+          The white-label operating system for lead-gen agencies.
+        </motion.p>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 1.05 }}
+          className="mt-9 flex items-center gap-3"
+        >
+          <Link
+            to="/signup"
+            className="inline-flex h-12 items-center gap-2 rounded-full bg-white px-7 text-[14px] font-medium text-black transition-all hover:shadow-[0_14px_40px_-10px_rgba(255,255,255,0.55)]"
+          >
+            Talk to us
+          </Link>
+          <Link
+            to="/demo"
+            className="group inline-flex h-12 items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 text-[14px] text-white backdrop-blur-md transition-all hover:bg-white/10"
+          >
+            Watch demo
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+          </Link>
         </motion.div>
       </div>
 
-      {/* Floating glass action pill */}
+      {/* Floating preview card (video / product peek) — bottom-left */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 mx-auto mb-12 flex w-fit max-w-[94vw] items-center gap-1 rounded-full glass-pill p-1.5 sm:mb-16"
+        transition={{ duration: 1, delay: 1.3, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute bottom-8 left-6 z-10 hidden items-center gap-3 rounded-xl glass-dark p-2.5 pr-4 md:flex"
       >
-        <PillLink to="/demo" icon="sparkles">Studio</PillLink>
-        <PillLink to="/portal-preview" icon="arrow">Portal</PillLink>
-        <PillLink to="/signup" icon="box" primary>Explore</PillLink>
+        <div
+          className="relative h-14 w-20 shrink-0 overflow-hidden rounded-md"
+          style={{
+            backgroundImage: `url(${heroMountains})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 grid place-items-center">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-white/95 text-black">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+          </div>
+        </div>
+        <div className="leading-tight">
+          <div className="text-[13px] font-medium text-white">You can&rsquo;t hire a senior buyer overnight.</div>
+          <div className="text-[11px] text-white/55">Until now. <span className="text-white/85">Watch (1:30)</span></div>
+        </div>
       </motion.div>
 
-      {/* Bottom caption */}
+      {/* Logo strip — bottom */}
+      <div className="relative z-10 mx-auto mb-6 hidden w-full max-w-[1100px] items-center justify-between gap-10 px-10 pb-2 sm:flex">
+        {["POSTMAN", "Rio", "DOORDASH", "capital.com", "afriex"].map((logo) => (
+          <span
+            key={logo}
+            className="font-display text-[15px] font-normal tracking-wide text-white/55"
+          >
+            {logo}
+          </span>
+        ))}
+      </div>
+
+      {/* Scroll hint */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.4 }}
-        className="relative z-10 mx-auto mb-8 max-w-xl px-6 text-center"
+        transition={{ delay: 1.8, duration: 0.8 }}
+        className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.3em] text-white/45"
       >
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/75">
-          The white-label operating system for lead-gen agencies
-        </p>
+        Scroll
       </motion.div>
     </section>
-  );
-}
-
-function CinematicGlyph() {
-  return (
-    <div className="relative" aria-hidden>
-      {/* outer aura */}
-      <div
-        className="absolute -inset-32 -z-10 rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(94,234,212,0.28), rgba(124,140,255,0.18) 35%, transparent 65%)",
-          filter: "blur(40px)",
-        }}
-      />
-      <svg
-        viewBox="0 0 360 460"
-        className="h-[58vh] max-h-[520px] w-auto drop-shadow-[0_0_30px_rgba(94,234,212,0.45)]"
-      >
-        <defs>
-          <linearGradient id="cg-stroke" x1="0" y1="0" x2="0" y2="460" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stopColor="#7DF9E3" />
-            <stop offset="0.5" stopColor="#5EEAD4" />
-            <stop offset="1" stopColor="#A8C0FF" />
-          </linearGradient>
-          <filter id="cg-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        {/* outer ellipse */}
-        <motion.ellipse
-          cx="180" cy="230" rx="150" ry="200"
-          fill="none"
-          stroke="url(#cg-stroke)"
-          strokeWidth="2"
-          filter="url(#cg-glow)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
-        />
-        {/* inner ellipse */}
-        <motion.ellipse
-          cx="180" cy="230" rx="92" ry="142"
-          fill="none"
-          stroke="url(#cg-stroke)"
-          strokeWidth="1.6"
-          opacity="0.85"
-          filter="url(#cg-glow)"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.85 }}
-          transition={{ duration: 2, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        />
-        {/* thin shimmer */}
-        <motion.ellipse
-          cx="180" cy="230" rx="150" ry="200"
-          fill="none"
-          stroke="#E8FFFA"
-          strokeWidth="0.6"
-          opacity="0.5"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0, 1, 1], opacity: [0, 0.8, 0.4] }}
-          transition={{ duration: 4, delay: 0.5, repeat: Infinity, repeatDelay: 2 }}
-        />
-      </svg>
-    </div>
-  );
-}
-
-function PillLink({
-  to, children, icon, primary,
-}: {
-  to: "/demo" | "/portal-preview" | "/signup";
-  children: React.ReactNode;
-  icon: "sparkles" | "arrow" | "box";
-  primary?: boolean;
-}) {
-  return (
-    <Link
-      to={to}
-      className={`group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-medium transition-all ${
-        primary
-          ? "bg-white text-[#1B2552] shadow-[0_8px_24px_-8px_rgba(255,255,255,0.6)] hover:shadow-[0_14px_36px_-8px_rgba(255,255,255,0.8)]"
-          : "text-white/90 hover:bg-white/12 hover:text-white"
-      }`}
-    >
-      <PillIcon name={icon} primary={primary} />
-      <span>{children}</span>
-    </Link>
-  );
-}
-
-function PillIcon({ name, primary }: { name: "sparkles" | "arrow" | "box"; primary?: boolean }) {
-  const stroke = primary ? "#1B2552" : "currentColor";
-  if (name === "sparkles") {
-    return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5EEAD4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" />
-      </svg>
-    );
-  }
-  if (name === "arrow") {
-    return (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M5 12h14M13 6l6 6-6 6" />
-      </svg>
-    );
-  }
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-      <path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12" />
-    </svg>
   );
 }
 
@@ -347,7 +313,7 @@ function SocialProof() {
     <section className="hairline-t hairline-b bg-background/60">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-5 px-6 py-8 sm:px-10 md:flex-row md:items-center md:justify-between md:gap-10">
         <MonoEyebrow className="shrink-0 text-text-muted">
-          <span className="text-[#5EEAD4]">00</span>
+          <span className="text-[#F76B15]">00</span>
           <span className="text-text-faint">—</span>
           Built for agencies serving
         </MonoEyebrow>
@@ -362,7 +328,7 @@ function SocialProof() {
           </div>
         </div>
         <div className="shrink-0 mono-eyebrow text-text-muted">
-          <span className="font-mono text-[#5EEAD4]">$4.82</span>
+          <span className="font-mono text-[#F76B15]">$4.82</span>
           <span className="ml-2">avg CPL</span>
         </div>
       </div>
@@ -415,7 +381,7 @@ function TwoLayers() {
     {
       num: "02",
       label: "Client OS",
-      accent: "#5EEAD4",
+      accent: "#F76B15",
       title: "Operations, reporting, and retention.",
       lede: "Everything that happens after you sign a client. Reports, contracts, billing, churn detection — all in one branded portal.",
       list: clientOS,
@@ -423,7 +389,7 @@ function TwoLayers() {
     {
       num: "03",
       label: "Creative Studio",
-      accent: "#FBBF24",
+      accent: "#F76B15",
       title: "AI campaign production, from brief to Meta.",
       lede: "Generate, audit, and approve ad creatives. Push them live to your client's Meta account in one click.",
       list: studio,
@@ -575,7 +541,7 @@ function FeatureRow({
     <div className="grid items-center gap-12 md:grid-cols-2 md:gap-20">
       <Reveal className={reversed ? "md:order-2" : ""}>
         <div className="mono-eyebrow flex items-center gap-3">
-          <span className="text-[#5EEAD4]">{index}</span>
+          <span className="text-[#F76B15]">{index}</span>
           <span className="text-text-faint">—</span>
           <span>{eyebrow}</span>
         </div>
@@ -589,7 +555,7 @@ function FeatureRow({
         <ul className="mt-7 space-y-3">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-3 text-sm">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#F76B15]" />
               <span className="text-foreground/90">{b}</span>
             </li>
           ))}
@@ -629,8 +595,8 @@ function Stats() {
 function Marketplace() {
   const tone = (t: string) =>
     t === "Free" ? "text-success"
-    : t === "Standard" ? "text-[#5EEAD4]"
-    : t === "Premium" ? "text-[#A78BFA]"
+    : t === "Standard" ? "text-[#F76B15]"
+    : t === "Premium" ? "text-[#F76B15]"
     : "text-amber";
 
   return (
@@ -770,17 +736,17 @@ export function PricingBlock() {
           aria-label="Toggle annual billing"
         >
           <span
-            className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#5EEAD4] transition-all ${
+            className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#F76B15] transition-all ${
               annual ? "left-[24px]" : "left-0.5"
             }`}
-            style={{ boxShadow: "0 0 12px rgba(94,234,212,0.7)" }}
+            style={{ boxShadow: "0 0 12px rgba(247,107,21,0.7)" }}
           />
         </button>
         <button
           onClick={() => setAnnual(true)}
           className={`mono-eyebrow flex items-center gap-2 transition-colors ${annual ? "text-foreground" : "text-text-muted"}`}
         >
-          Annual <span className="text-[#5EEAD4]">−20%</span>
+          Annual <span className="text-[#F76B15]">−20%</span>
         </button>
       </div>
 
@@ -793,7 +759,7 @@ export function PricingBlock() {
             }`}
           >
             {t.featured && (
-              <span className="mono-eyebrow absolute right-10 top-10 text-[#5EEAD4]">
+              <span className="mono-eyebrow absolute right-10 top-10 text-[#F76B15]">
                 ★ Most popular
               </span>
             )}
@@ -838,7 +804,7 @@ export function PricingBlock() {
               {t.features.map((f) => (
                 <li key={f.t} className="flex items-start gap-3">
                   {f.y ? (
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#F76B15]" />
                   ) : (
                     <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center text-text-faint">·</span>
                   )}
@@ -853,7 +819,7 @@ export function PricingBlock() {
 
       <div className="mt-16">
         <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
-          <span className="text-[#5EEAD4]">06</span>
+          <span className="text-[#F76B15]">06</span>
           <span className="text-text-faint">—</span>
           <span>Top-up packs</span>
         </div>
@@ -867,7 +833,7 @@ export function PricingBlock() {
           {topUps.map((t) => (
             <div key={t.credits} className="relative p-6">
               {t.badge && (
-                <span className="mono-eyebrow absolute right-6 top-6 text-[#5EEAD4]">
+                <span className="mono-eyebrow absolute right-6 top-6 text-[#F76B15]">
                   ★ {t.badge}
                 </span>
               )}
@@ -925,9 +891,9 @@ const compareRows = [
 
 function Comparison() {
   const cell = (v: string, isOrvio: boolean) => {
-    if (v === "✓") return <span className={isOrvio ? "text-[#5EEAD4]" : "text-foreground/60"}>✓</span>;
+    if (v === "✓") return <span className={isOrvio ? "text-[#F76B15]" : "text-foreground/60"}>✓</span>;
     if (v === "✗") return <span className="text-text-faint">—</span>;
-    return <span className={`text-sm ${isOrvio ? "font-mono text-[#5EEAD4]" : "text-text-muted"}`}>{v}</span>;
+    return <span className={`text-sm ${isOrvio ? "font-mono text-[#F76B15]" : "text-text-muted"}`}>{v}</span>;
   };
 
   return (
@@ -949,7 +915,7 @@ function Comparison() {
                 <tr className="hairline-b">
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Feature</th>
                   <th className="py-5 pr-4 text-left">
-                    <span className="mono-eyebrow text-[#5EEAD4]">Orvio</span>
+                    <span className="mono-eyebrow text-[#F76B15]">Orvio</span>
                   </th>
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">GoHighLevel</th>
                   <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Generic CRM</th>
@@ -960,7 +926,7 @@ function Comparison() {
                 {compareRows.map((row, i) => (
                   <tr key={i} className="group transition-colors hover:bg-surface/30">
                     <td className="border-b border-border/60 py-5 pr-4 text-foreground/90">{row[0]}</td>
-                    <td className="border-b border-[#5EEAD4]/30 bg-[#5EEAD4]/[0.04] py-5 pr-4">{cell(row[1], true)}</td>
+                    <td className="border-b border-[#F76B15]/30 bg-[#F76B15]/[0.04] py-5 pr-4">{cell(row[1], true)}</td>
                     <td className="border-b border-border/60 py-5 pr-4">{cell(row[2], false)}</td>
                     <td className="border-b border-border/60 py-5 pr-4">{cell(row[3], false)}</td>
                     <td className="border-b border-border/60 py-5">{cell(row[4], false)}</td>

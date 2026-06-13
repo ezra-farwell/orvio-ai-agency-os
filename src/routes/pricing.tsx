@@ -42,7 +42,7 @@ function PricingPage() {
           </Reveal>
           <Reveal delay={0.05}>
             <div className="mono-eyebrow mt-8 flex items-center justify-center gap-3 text-white/85">
-              <span className="text-[#5EEAD4]">01</span>
+              <span className="text-[#F76B15]">01</span>
               <span>—</span>
               <span>Pricing</span>
             </div>
@@ -130,7 +130,7 @@ function CreditCalculator() {
                 onClick={() => setTier(k)}
                 className={`flex-1 rounded-full border px-4 py-2.5 text-sm font-medium transition-all ${
                   tier === k
-                    ? "border-[#5EEAD4] bg-[#5EEAD4]/10 text-[#5EEAD4]"
+                    ? "border-[#F76B15] bg-[#F76B15]/10 text-[#F76B15]"
                     : "border-border bg-transparent text-text-muted hover:text-foreground"
                 }`}
               >
@@ -150,7 +150,7 @@ function CreditCalculator() {
         <div className="mt-10 hairline-t pt-6">
           <div className="flex items-center justify-between">
             <span className="mono-eyebrow text-text-muted">Recommended plan</span>
-            <span className="mono-eyebrow text-[#5EEAD4]">{recommended.name}</span>
+            <span className="mono-eyebrow text-[#F76B15]">{recommended.name}</span>
           </div>
           <div className="mt-3 text-sm text-text-muted">
             Includes <span className="font-mono text-foreground">{recommended.name === "Enterprise" ? "custom" : `${included.toLocaleString()}`}</span> credits/month
