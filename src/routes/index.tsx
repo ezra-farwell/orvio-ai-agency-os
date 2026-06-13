@@ -1405,6 +1405,26 @@ function Landing() {
   );
 }
 
-interface MessageSquareIcon {}
-// keep tree-shaking happy for unused imports
 void MessageSquare;
+
+// Re-exports consumed by /pricing route
+export const tierData = PLANS.map((p) => ({
+  name: p.name,
+  price: p.price,
+  cadence: p.cadence,
+  description: p.desc,
+  features: p.features,
+  cta: p.cta,
+  href: p.href,
+  popular: !!(p as { popular?: boolean }).popular,
+}));
+
+export function PricingBlock() {
+  return (
+    <div className="grid gap-4 lg:grid-cols-3">
+      {PLANS.map((p) => (
+        <PlanCard key={p.name} plan={p} />
+      ))}
+    </div>
+  );
+}
