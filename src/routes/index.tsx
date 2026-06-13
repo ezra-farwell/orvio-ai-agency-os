@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Nav } from "@/components/orvio/Nav";
 import { Footer } from "@/components/orvio/Footer";
 import { CountUp, Reveal, SectionHeader, StatusBadge } from "@/components/orvio/primitives";
-import { DashboardMockup, ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/orvio/mockups";
+import { ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/orvio/mockups";
 import { StudioDemo } from "@/components/orvio/StudioDemo";
-import { MagneticButton, MouseGlow, OrvioGlyph, ParallaxY, SpotlightCard, TypeRotate } from "@/components/orvio/interactive";
+import { SpotlightCard } from "@/components/orvio/interactive";
 import { useState } from "react";
 
 export const Route = createFileRoute("/")({
