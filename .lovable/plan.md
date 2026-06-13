@@ -1,101 +1,65 @@
-# Orvio — Full Marketing Site, Demo, Pricing, Signup, Portal Preview
+# Orvio — Site-Wide Cohesion Pass
 
-A complete dark-themed, deploy-ready multi-page site built to the exact spec. No vibe-coded shortcuts: every section uses real copy, custom CSS/HTML mockups (no stock images), and considered motion. Interactive demo runs entirely client-side.
+The home hero now has a strong identity (sky gradient, cyan outlined glyph, glass pill nav, monospace micro-labels). Right now the rest of the site doesn't match — the inner pages are dark-mode SaaS, the home is luminous and editorial. This pass aligns every route to one design language.
 
-## Stack adaptation
+## Design language (locked)
 
-Spec calls for `react-router-dom`; this project uses **TanStack Start** with file-based routing under `src/routes/`. I'll use TanStack `<Link>` + per-route `head()` for unique SEO meta. Framer Motion handles all animation. No backend calls anywhere.
+Pulled from the sky hero + Skiff/Framer-906 references:
 
-## Routes
+- **Surfaces**: light, atmospheric. Soft gradient washes (lavender → peach → cream) at section seams. Dark panels only for the product mockups themselves — never for whole sections.
+- **Type scale**: Bricolage Grotesque, tight tracking, very large display sizes (clamp 56–96px on hero blocks). Monospace `[11px]/0.28em uppercase` for all eyebrow labels and section index numbers.
+- **Section rhythm**: `01 — Studio`, `02 — Portal`, `03 — Pricing` index labels. Generous whitespace (160px+ vertical between sections at desktop).
+- **Color**: cyan (#5EEAD4) + amber (#FBBF24) accents only. No purple/indigo gradients in copy. Glyph cyan stays the brand signal.
+- **Motion**: slow draw-on (1.4–2s eased), 7s float on hero element, scroll-reveal `y: 24 → 0` with 0.8s ease. No bouncy springs, no parallax stacking.
+- **Components**: glass pill = the universal CTA. Inline links use the `story-link` underline animation.
 
-```text
-src/routes/
-  __root.tsx           → loads fonts, wraps everything in <Nav /> + <Footer />
-  index.tsx            → / — 14-section landing
-  demo.tsx             → /demo — full Studio + Structure/Landing/Audit tabs
-  pricing.tsx          → /pricing — pricing + credit calculator
-  signup.tsx           → /signup — split-layout form
-  portal-preview.tsx   → /portal-preview — branded client portal
-```
+## Route-by-route changes
 
-Each route ships unique `title`, `description`, `og:title`, `og:description`.
+### `/` (index)
+Hero already done. Below the fold, restructure into a Skiff-style scroll narrative:
+- `01 — The Problem`: single-line headline + 6 problems as a horizontal scroll-snap rail (not a 3-col grid)
+- `02 — Client OS`: split layout, big type left, PortalMockup right, sticky on scroll
+- `03 — Creative Studio`: full-bleed StudioDemo with a sky-gradient backdrop band
+- `04 — Models`: marketplace as a clean table, not cards
+- `05 — Pricing`: 3 plans, lighter surfaces
+- `06 — FAQ`: minimal accordion, no card chrome
+- Final CTA: mini sky band echoing the hero
 
-## Design tokens (added to `src/styles.css` via `@theme inline`)
+### `/demo`
+Replace dark-mode tabs with a cinematic showcase: vertical scrollytelling. Each step (Brief → Generate → Approve → Push) gets a full viewport panel with the mockup pinned center and copy fading in. Same monospace eyebrow numbering.
 
-- Colors: background `#0A0B0F`, surface `#13151F`, surface-elevated `#1C1F30`, border `#252840`, indigo `#6366F1`, amber `#D97706`, success `#10B981`, warning `#F59E0B`, danger `#EF4444`, text `#F1F5F9` / `#94A3B8` / `#475569`. Gradient indigo→violet→amber.
-- Fonts loaded via Google Fonts `<link>` in `__root.tsx`: **Bricolage Grotesque 800** (display), **Inter 400/500/600/700** (body), **JetBrains Mono 400/500/600** (data).
-- Custom utilities: `.text-gradient-orvio`, `.glow-indigo`, `.glow-amber`, `.surface-card`, `.surface-elev`, `.marquee`, `.pulse-amber`, `.grid-dots`.
-- Dark-only (no toggle). Radius 12 cards, 8 buttons.
+### `/pricing`
+Light atmospheric background. Hero pulls a smaller version of the sky gradient. Plan cards become tall vertical panels separated by hairlines instead of boxed cards. Credit calculator gets a glass-pill container matching the hero.
 
-## Shared components — `src/components/orvio/`
+### `/signup`
+Split-screen but the marketing side becomes the sky gradient with the glyph. Form side stays light/neutral. Mono labels on all inputs.
 
-- `primitives.tsx` — `Reveal` (IntersectionObserver via Framer `whileInView`), `CountUp` (rAF, eased), `StatusBadge`, `MetricCard`, `Diamond`, `Wordmark`.
-- `Nav.tsx` — fixed, blur backdrop after 50px, mobile full-screen overlay, TanStack `<Link>`.
-- `Footer.tsx` — three-column.
-- `mockups.tsx` — `DashboardMockup` (hero, perspective tilt), `ReportMockup`, `ModelDropdownMockup`, `PortalMockup`. All pure CSS/HTML.
-- `StudioDemo.tsx` — the full interactive brief→generate→cards flow with custom Dropdown, animated progress bar, per-card approve/reject states, success toast.
+### `/portal-preview`
+This is the *product showcase* — keep the dark dashboard chrome since it represents the actual product UI, but wrap it in a sky-band header announcing "What your clients see" with the same mono eyebrow + display headline.
 
-## Landing page — 14 sections, exact spec copy
+### Shared chrome
+- **Nav**: stays transparent-until-scroll. Add the monospace `ORVIO · AGENCY EDITION` lockup so it matches the hero corners on inner routes (hero corners hide it on `/`).
+- **Footer**: drop the dark surface — use a thin sky-gradient band with mono links and a small cyan glyph echo.
 
-1. **Nav** (fixed, blur on scroll).
-2. **Hero** — staggered fade-up 3-line headline, eyebrow pill, subhead, two CTAs, proof row, tilted `DashboardMockup`.
-3. **Social proof strip** — infinite-marquee industry list + CPL stat.
-4. **Problem** — 2×3 card grid.
-5. **Two Layers** — Client OS (indigo border) + Creative Studio (amber border), 8 bullets each.
-6. **Interactive Demo** (`#demo`) — embedded `StudioDemo`.
-7. **Three feature deep-dives** — alternating rows with `ReportMockup`, `ModelDropdownMockup`, `PortalMockup`.
-8. **Stats strip** — four `CountUp` stats.
-9. **Model marketplace** — 3×2 grid of 6 model cards with tier badges.
-10. **Pricing** (`#pricing`) — monthly/annual toggle (20% off), 3 tier cards (Professional highlighted), 4 credit top-up packs row.
-11. **Comparison table** — Orvio column highlighted indigo.
-12. **FAQ** — 8 accordion items (shadcn `Accordion`).
-13. **Final CTA** — gradient wash background, two CTAs.
-14. **Footer**.
+## Technical details
 
-## /demo
+- New shared primitives in `src/components/orvio/`:
+  - `SectionIndex.tsx` — renders `01 — Label` mono eyebrow
+  - `SkyBand.tsx` — reusable gradient section wrapper with optional cloud drift
+  - `DisplayHeading.tsx` — locked clamp() type ramp
+  - `ScrollPanel.tsx` — viewport-pinned scrollytelling panel for `/demo`
+- Extend `src/styles.css`: add `--gradient-sky-soft` (lighter variant for inner pages), `.sky-band` utility, `.story-link` underline utility, mono eyebrow utility.
+- Refactor `src/routes/index.tsx` sections to use `SectionIndex` + `SkyBand`.
+- Rewrite `src/routes/demo.tsx` as scrollytelling.
+- Rework `src/routes/pricing.tsx`, `signup.tsx`, `portal-preview.tsx` to the new surface system.
+- Update `Nav.tsx` and `Footer.tsx` to the unified chrome.
+- Remove now-unused dark-card styling paths; keep `surface-card` for product mockups only.
+- Typecheck after each file batch.
 
-Reuses `StudioDemo` and adds `Tabs` (shadcn) for **Creatives / Structure / Landing / Audit**, each with the exact content listed in the spec (campaign structure skeleton, generated landing page block, audit with 3 flags + 84/100 score). Bottom CTA → `/signup`.
+## Out of scope
 
-## /pricing
+- No new product features or content copy beyond what's already written.
+- No backend, no auth, no data wiring.
+- No new fonts or asset generation — sticking with Bricolage + Inter + JetBrains Mono already loaded.
 
-Full pricing section + a **Credit Calculator** widget using shadcn `Slider`s: clients (1–20), briefs/client/mo (1–5), reports/client/mo (1), audits/client/mo (0–2), primary tier (Standard/Premium/Maximum). Recomputes monthly credit estimate live and compares against tier inclusion ("You're covered ✓" / "You'll need X more credits").
-
-## /signup
-
-Split 40/60. Left = value reminder (Wordmark + 3 proof bullets). Right = form (name, work email, password, agency name, client count select). React-only validation; submit shows inline "Account created (demo) — this is a UI preview" success state. No backend.
-
-## /portal-preview
-
-Simulated branded GrowthDesk portal: header, "Welcome back, Summit Roofing Co.", four plain-English metric cards, green health banner, recent reports list with Download PDF buttons (no-op), invoices list, bottom CTA back to `/signup`.
-
-## Interactive demo state machine (client-only)
-
-`useState` controls phase (`idle | generating | ready`), progress (rAF over 2.5s), four card states (`idle | approved | rejected`). Strategy + image model dropdowns update credit estimate live. Approving a card shows a toast bottom-right: "N of 4 approved · Push to Meta when ready →". Custom dropdown component avoids native `<select>` styling.
-
-## Motion rules
-
-- Hero stagger 60ms via Framer variants.
-- Scroll reveals via `whileInView` + `viewport={{ once: true }}` (IntersectionObserver under the hood — never scroll listeners).
-- Count-ups via rAF on first intersection.
-- Nav backdrop transitions at `scrollY > 50`.
-- No floating particles, mesh, or generic gradient blobs.
-
-## Responsive
-
-- 12-col grid, max-width 1200px.
-- Section padding 120px desktop / 64px mobile.
-- Mobile: stacks, hamburger nav overlay, demo cards scroll-snap horizontally on narrow viewports.
-- Tested mentally at 375 / 768 / 1280 / 1920.
-
-## Dependencies
-
-- `framer-motion` (install via `bun add`).
-- Everything else (Tailwind v4, shadcn Accordion / Tabs / Slider, lucide-react, TanStack Router) already in template.
-
-## Out of scope (per spec)
-
-No blog, testimonials, team page, social links, cookie banner, chat widget, newsletter, stock photography, lorem ipsum, light mode.
-
-## Deliverable
-
-Five fully implemented routes with the exact spec copy, an interactive Studio demo, a live credit calculator, polished motion, and a custom dark visual system. Deploy-ready.
+Approve and I'll execute the whole pass in one batch.

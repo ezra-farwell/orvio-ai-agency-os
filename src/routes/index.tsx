@@ -4,10 +4,10 @@ import { Check } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Nav } from "@/components/orvio/Nav";
 import { Footer } from "@/components/orvio/Footer";
-import { CountUp, Reveal, SectionHeader, StatusBadge } from "@/components/orvio/primitives";
+import { CountUp, Reveal, SectionHeader } from "@/components/orvio/primitives";
 import { ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/orvio/mockups";
 import { StudioDemo } from "@/components/orvio/StudioDemo";
-import { SpotlightCard } from "@/components/orvio/interactive";
+import { ArrowIcon, GlyphEcho, Hairline, MonoEyebrow, PillCTA, SkyBand } from "@/components/orvio/lattice";
 import { useState } from "react";
 
 export const Route = createFileRoute("/")({
@@ -344,25 +344,26 @@ function PillIcon({ name, primary }: { name: "sparkles" | "arrow" | "box"; prima
 
 function SocialProof() {
   return (
-    <section className="border-y border-border bg-surface/50">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-5 py-8 sm:px-8 md:flex-row md:items-center md:justify-between md:gap-8">
-        <div className="flex flex-1 items-center gap-6 overflow-hidden">
-          <span className="shrink-0 text-xs uppercase tracking-wider text-text-muted">
-            Built for agencies serving:
-          </span>
-          <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="marquee flex w-max gap-8 whitespace-nowrap text-sm text-foreground/70">
-              {[...industries, ...industries].map((label, i) => (
-                <span key={i} className="flex items-center gap-8">
-                  {label}
-                  <span className="text-text-faint">·</span>
-                </span>
-              ))}
-            </div>
+    <section className="hairline-t hairline-b bg-background/60">
+      <div className="mx-auto flex max-w-[1280px] flex-col gap-5 px-6 py-8 sm:px-10 md:flex-row md:items-center md:justify-between md:gap-10">
+        <MonoEyebrow className="shrink-0 text-text-muted">
+          <span className="text-[#5EEAD4]">00</span>
+          <span className="text-text-faint">—</span>
+          Built for agencies serving
+        </MonoEyebrow>
+        <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="marquee flex w-max gap-10 whitespace-nowrap font-display text-base text-foreground/85">
+            {[...industries, ...industries].map((label, i) => (
+              <span key={i} className="flex items-center gap-10">
+                {label}
+                <span className="h-1 w-1 rounded-full bg-text-faint" />
+              </span>
+            ))}
           </div>
         </div>
-        <div className="shrink-0 text-sm font-medium text-indigo">
-          <span className="font-mono">$4.82</span> avg CPL for home service campaigns
+        <div className="shrink-0 mono-eyebrow text-text-muted">
+          <span className="font-mono text-[#5EEAD4]">$4.82</span>
+          <span className="ml-2">avg CPL</span>
         </div>
       </div>
     </section>
@@ -371,30 +372,38 @@ function SocialProof() {
 
 function Problem() {
   return (
-    <section className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section className="relative py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
-          <SectionHeader title={<>Your agency is held together by <span className="text-danger">copy-paste</span> and prayer.</>} />
+          <SectionHeader
+            center={false}
+            index="01"
+            eyebrow="The problem"
+            title={<>Your agency is held together<br />by <span className="text-danger">copy-paste</span> and prayer.</>}
+          />
         </Reveal>
 
-        <div className="mt-12 grid gap-4 sm:mt-16 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-20 grid divide-y divide-border border-y border-border md:grid-cols-2 md:divide-x md:divide-y-0 lg:grid-cols-3">
           {problems.map((p, i) => (
             <Reveal key={p.t} delay={i * 0.05}>
-              <SpotlightCard className="h-full p-6" glow="rgba(239,68,68,0.18)">
-                <div className="grid h-9 w-9 place-items-center rounded-lg bg-danger/10 text-danger">!</div>
-                <h3 className="mt-4 font-display text-lg font-bold">{p.t}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-muted">{p.d}</p>
-              </SpotlightCard>
+              <div className="group relative h-full p-8 transition-colors hover:bg-surface/40">
+                <div className="mono-eyebrow text-danger">
+                  Issue · {String(i + 1).padStart(2, "0")}
+                </div>
+                <h3 className="mt-4 font-display text-xl font-bold leading-tight">{p.t}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-text-muted">{p.d}</p>
+              </div>
             </Reveal>
           ))}
         </div>
 
         <Reveal delay={0.1}>
-          <div className="mt-16 text-center">
-            <span className="font-display text-2xl font-bold text-gradient-orvio sm:text-3xl">
-              There's a better way.
-            </span>
-          </div>
+          <p
+            className="mt-20 max-w-3xl font-display font-bold leading-[1.05]"
+            style={{ fontSize: "clamp(1.75rem, 3.4vw, 2.75rem)" }}
+          >
+            There's a <span className="text-gradient-orvio">better way</span> to run an agency.
+          </p>
         </Reveal>
       </div>
     </section>
@@ -402,56 +411,65 @@ function Problem() {
 }
 
 function TwoLayers() {
+  const layers = [
+    {
+      num: "02",
+      label: "Client OS",
+      accent: "#5EEAD4",
+      title: "Operations, reporting, and retention.",
+      lede: "Everything that happens after you sign a client. Reports, contracts, billing, churn detection — all in one branded portal.",
+      list: clientOS,
+    },
+    {
+      num: "03",
+      label: "Creative Studio",
+      accent: "#FBBF24",
+      title: "AI campaign production, from brief to Meta.",
+      lede: "Generate, audit, and approve ad creatives. Push them live to your client's Meta account in one click.",
+      list: studio,
+    },
+  ];
   return (
-    <section id="two-layers" className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section id="two-layers" className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
           <SectionHeader
-            title="One platform. Two modes. Total control."
+            center={false}
+            index="01"
+            eyebrow="The platform"
+            title={<>One platform. Two modes.<br />Total control.</>}
             subtitle="Client OS handles everything after you sign a client. Creative Studio handles everything before a campaign goes live."
           />
         </Reveal>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          <Reveal>
-            <div className="surface-card relative h-full overflow-hidden p-7 pl-9">
-              <div className="absolute inset-y-0 left-0 w-1.5 bg-indigo" />
-              <div className="text-xs font-medium uppercase tracking-wider text-indigo">Client OS</div>
-              <h3 className="mt-1 font-display text-2xl font-bold">Operations, reporting, and retention.</h3>
-              <ul className="mt-6 space-y-3">
-                {clientOS.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-indigo" />
-                    <span className="text-foreground/90">{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <div className="surface-card relative h-full overflow-hidden p-7 pl-9">
-              <div className="absolute inset-y-0 left-0 w-1.5 bg-amber" />
-              <div className="text-xs font-medium uppercase tracking-wider text-amber">Creative Studio</div>
-              <h3 className="mt-1 font-display text-2xl font-bold">AI campaign production, from brief to Meta.</h3>
-              <ul className="mt-6 space-y-3">
-                {studio.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-amber" />
-                    <span className="text-foreground/90">{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
+        <div className="mt-20 grid divide-y divide-border border-y border-border md:grid-cols-2 md:divide-x md:divide-y-0">
+          {layers.map((l, idx) => (
+            <Reveal key={l.label} delay={idx * 0.08}>
+              <div className="group relative h-full p-10 transition-colors hover:bg-surface/40">
+                <div className="mono-eyebrow flex items-center gap-2.5" style={{ color: l.accent }}>
+                  <span>{l.num}</span>
+                  <span className="text-text-faint">—</span>
+                  <span>{l.label}</span>
+                </div>
+                <h3
+                  className="mt-6 font-display font-extrabold leading-[1.05]"
+                  style={{ fontSize: "clamp(1.75rem, 2.6vw, 2.5rem)" }}
+                >
+                  {l.title}
+                </h3>
+                <p className="mt-5 max-w-md text-base text-text-muted">{l.lede}</p>
+                <ul className="mt-8 grid grid-cols-1 gap-2.5">
+                  {l.list.map((b) => (
+                    <li key={b} className="flex items-start gap-3 text-sm">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0" style={{ color: l.accent }} />
+                      <span className="text-foreground/85">{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
         </div>
-
-        <Reveal delay={0.15}>
-          <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-text-muted">
-            Both layers share the same workspace. Every creative links to a client. Every brief syncs to
-            campaign history. Credits are shared across your entire team.
-          </p>
-        </Reveal>
       </div>
     </section>
   );
@@ -459,45 +477,47 @@ function TwoLayers() {
 
 function DemoSection() {
   return (
-    <section id="demo" className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <SkyBand className="py-32 sm:py-48" variant="soft">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
           <SectionHeader
+            center={false}
+            index="02"
             eyebrow="Interactive demo"
-            title="Watch it work."
-            subtitle="Real AI output. Real campaign structure. Click through it."
+            title={<>Watch it <span className="text-gradient-orvio">work</span>.</>}
+            subtitle="Real AI output. Real campaign structure. Click through it — no account, no sign-up."
           />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-12">
+          <div className="mt-20">
             <StudioDemo />
           </div>
         </Reveal>
 
         <Reveal delay={0.15}>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-xs text-text-faint">
-            This output structure comes from real Claude API calls in the live product. Model, industry,
-            and brief drive the output — you control all three.
+          <p className="mt-8 max-w-2xl mono-eyebrow text-text-muted">
+            Output structure from real Claude API calls in the live product.
           </p>
         </Reveal>
       </div>
-    </section>
+    </SkyBand>
   );
 }
 
 function FeatureDeepDives() {
   return (
-    <section id="features" className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] space-y-24 px-5 sm:px-8">
+    <section id="features" className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] space-y-32 px-6 sm:px-10 sm:space-y-40">
         <FeatureRow
           mockup={<ReportMockup />}
+          index="03a"
           eyebrow="AI Reports"
           title="Reports that write themselves."
           body="Tell Orvio to generate a report. In 30 seconds, the AI reads your client's campaign data and writes a plain-English performance summary — what worked, what didn't, what's next. Your logo on every page."
           bullets={[
             "Generated in under 30 seconds",
-            "Adapts to your tone: Professional, Casual, Data-Heavy, Executive",
+            "Adapts tone: Professional, Casual, Data-Heavy, Executive",
             "Branded PDF, auto-delivered to client",
             "Full report archive per client, forever",
           ]}
@@ -505,21 +525,23 @@ function FeatureDeepDives() {
         <FeatureRow
           reversed
           mockup={<ModelDropdownMockup />}
+          index="03b"
           eyebrow="Model Selector"
           title="Six models. You pick the right one."
-          body="Not every campaign needs your most expensive model. Use Flash for rapid draft cycles. Use Standard models for most client work. Reserve Opus or GPT-5.5 for campaigns that have to convert. One credit balance, shared across your whole team."
+          body="Not every campaign needs your most expensive model. Use Flash for rapid draft cycles. Standard for most client work. Reserve Opus or GPT-5.5 for campaigns that have to convert."
           bullets={[
             "Six AI models across four tiers",
             "Credit cost shown before you generate",
-            "Image model selection for static ad concepts",
-            "Workspace credits shared — no per-user fragmentation",
+            "Image models for static ad concepts",
+            "Shared workspace credits — no per-user fragmentation",
           ]}
         />
         <FeatureRow
           mockup={<PortalMockup />}
+          index="03c"
           eyebrow="White-label Portal"
           title="Your clients log in. They see you."
-          body="Every client gets a branded portal under your name, your logo, your colors, your domain. They see their numbers in plain English, download reports, sign contracts, and pay invoices. Orvio is invisible. You get the credit."
+          body="Every client gets a branded portal under your name, your logo, your colors, your domain. They see their numbers in plain English, download reports, sign contracts, and pay invoices."
           bullets={[
             "Your brand on every pixel clients see",
             "Custom domain: portal.youragency.com",
@@ -535,6 +557,7 @@ function FeatureDeepDives() {
 function FeatureRow({
   mockup,
   eyebrow,
+  index,
   title,
   body,
   bullets,
@@ -542,21 +565,31 @@ function FeatureRow({
 }: {
   mockup: React.ReactNode;
   eyebrow: string;
+  index: string;
   title: string;
   body: string;
   bullets: string[];
   reversed?: boolean;
 }) {
   return (
-    <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
+    <div className="grid items-center gap-12 md:grid-cols-2 md:gap-20">
       <Reveal className={reversed ? "md:order-2" : ""}>
-        <div className="text-xs font-medium uppercase tracking-wider text-indigo">{eyebrow}</div>
-        <h3 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">{title}</h3>
-        <p className="mt-4 text-base text-text-muted">{body}</p>
-        <ul className="mt-6 space-y-3">
+        <div className="mono-eyebrow flex items-center gap-3">
+          <span className="text-[#5EEAD4]">{index}</span>
+          <span className="text-text-faint">—</span>
+          <span>{eyebrow}</span>
+        </div>
+        <h3
+          className="mt-5 font-display font-extrabold leading-[1.05]"
+          style={{ fontSize: "clamp(1.875rem, 3.2vw, 3rem)" }}
+        >
+          {title}
+        </h3>
+        <p className="mt-5 text-base text-text-muted">{body}</p>
+        <ul className="mt-7 space-y-3">
           {bullets.map((b) => (
             <li key={b} className="flex items-start gap-3 text-sm">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-indigo" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
               <span className="text-foreground/90">{b}</span>
             </li>
           ))}
@@ -571,64 +604,74 @@ function FeatureRow({
 
 function Stats() {
   return (
-    <section className="border-y border-border bg-surface/50">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-8 px-5 py-16 sm:px-8 md:grid-cols-4">
-        {[
-          { v: <><span className="text-text-muted text-3xl">&lt;</span> <CountUp to={20} /> <span className="text-text-muted text-3xl">min</span></>, l: "Average time to onboard a new client", c: "text-indigo" },
-          { v: <><span>$</span><CountUp to={97} />/mo</>, l: "vs $497+ for GHL white-label", c: "text-success" },
-          { v: <><CountUp to={30} /> sec</>, l: "Average AI report generation time", c: "text-indigo" },
-          { v: <><CountUp to={6} /> models</>, l: "AI models. You choose the right one.", c: "text-amber" },
-        ].map((s, i) => (
-          <Reveal key={i} delay={i * 0.05}>
-            <div>
-              <div className={`font-mono text-4xl font-semibold sm:text-5xl ${s.c}`}>{s.v}</div>
-              <div className="mt-2 text-xs text-text-muted">{s.l}</div>
-            </div>
-          </Reveal>
-        ))}
+    <SkyBand className="py-24" variant="soft">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
+        <div className="grid grid-cols-2 gap-y-12 gap-x-8 md:grid-cols-4">
+          {[
+            { v: <><span className="text-text-muted text-3xl">&lt;</span><CountUp to={20} /><span className="text-text-muted text-3xl ml-1">min</span></>, l: "Average client onboarding" },
+            { v: <><span>$</span><CountUp to={97} /><span className="text-text-muted text-3xl">/mo</span></>, l: "vs $497+ for GHL white-label" },
+            { v: <><CountUp to={30} /><span className="text-text-muted text-3xl ml-1">sec</span></>, l: "Avg. AI report generation" },
+            { v: <><CountUp to={6} /><span className="text-text-muted text-3xl ml-1">models</span></>, l: "Pick the right one per task" },
+          ].map((s, i) => (
+            <Reveal key={i} delay={i * 0.05}>
+              <div>
+                <div className="font-mono text-4xl font-semibold text-foreground sm:text-5xl">{s.v}</div>
+                <div className="mt-3 mono-eyebrow text-text-muted">{s.l}</div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </div>
-    </section>
+    </SkyBand>
   );
 }
 
 function Marketplace() {
   const tone = (t: string) =>
-    t === "Free" ? "border-success/30 bg-success/10 text-success"
-    : t === "Standard" ? "border-indigo/30 bg-indigo/10 text-indigo"
-    : t === "Premium" ? "border-[#8B5CF6]/30 bg-[#8B5CF6]/10 text-[#8B5CF6]"
-    : "border-amber/30 bg-amber/10 text-amber";
+    t === "Free" ? "text-success"
+    : t === "Standard" ? "text-[#5EEAD4]"
+    : t === "Premium" ? "text-[#A78BFA]"
+    : "text-amber";
 
   return (
-    <section className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
           <SectionHeader
-            title="The right model for every job."
-            subtitle="Don't pay premium rates for every task. Route intelligently."
+            center={false}
+            index="04"
+            eyebrow="Model marketplace"
+            title={<>The right model<br />for every job.</>}
+            subtitle="Don't pay premium rates for every task. Route intelligently — six models across four tiers, one shared credit balance."
           />
         </Reveal>
 
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {models.map((m, i) => (
-            <Reveal key={m.name} delay={i * 0.04}>
-              <SpotlightCard className="h-full p-6" glow={m.tone === "amber" ? "rgba(217,119,6,0.22)" : m.tone === "purple" ? "rgba(139,92,246,0.22)" : m.tone === "green" ? "rgba(16,185,129,0.18)" : "rgba(99,102,241,0.22)"}>
-                <div className="flex items-start justify-between gap-2">
-                  <h4 className="font-display text-lg font-bold">{m.name}</h4>
-                  <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${tone(m.tier)}`}>
-                    {m.tier}
-                  </span>
+        <Reveal delay={0.1}>
+          <div className="mt-20 hairline-t hairline-b">
+            <div className="hidden grid-cols-[2fr_1fr_120px_3fr] gap-6 py-4 mono-eyebrow text-text-muted md:grid">
+              <span>Model</span>
+              <span>Tier</span>
+              <span className="text-right">Credits</span>
+              <span>Best for</span>
+            </div>
+          </div>
+          <div className="divide-y divide-border">
+            {models.map((m, i) => (
+              <Reveal key={m.name} delay={i * 0.03}>
+                <div className="grid grid-cols-1 gap-3 py-7 transition-colors hover:bg-surface/30 md:grid-cols-[2fr_1fr_120px_3fr] md:items-center md:gap-6 md:px-2">
+                  <div className="font-display text-xl font-bold">{m.name}</div>
+                  <div className={`mono-eyebrow ${tone(m.tier)}`}>{m.tier}</div>
+                  <div className="font-mono text-base text-amber md:text-right">{m.credits} cr</div>
+                  <p className="text-sm text-text-muted">{m.copy}</p>
                 </div>
-                <div className="mt-1 font-mono text-sm text-amber">{m.credits} credits</div>
-                <p className="mt-4 text-sm text-text-muted">{m.copy}</p>
-              </SpotlightCard>
-            </Reveal>
-          ))}
-        </div>
+              </Reveal>
+            ))}
+          </div>
+        </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-text-muted">
-            Credits are purchased per workspace, not per user. One balance, shared across your entire team.
-            They never expire.
+          <p className="mt-10 max-w-2xl mono-eyebrow text-text-muted">
+            One balance, shared across your team. Credits never expire.
           </p>
         </Reveal>
       </div>
@@ -714,87 +757,92 @@ export function PricingBlock() {
 
   return (
     <>
-      <div className="mt-10 flex items-center justify-center gap-3">
-        <span className={`text-sm ${!annual ? "text-foreground" : "text-text-muted"}`}>Monthly</span>
+      <div className="mt-12 flex items-center justify-center gap-4">
+        <button
+          onClick={() => setAnnual(false)}
+          className={`mono-eyebrow transition-colors ${!annual ? "text-foreground" : "text-text-muted"}`}
+        >
+          Monthly
+        </button>
         <button
           onClick={() => setAnnual((v) => !v)}
-          className="relative h-7 w-12 rounded-full border border-border bg-surface transition-colors"
+          className="relative h-6 w-11 rounded-full border border-border bg-surface transition-colors"
           aria-label="Toggle annual billing"
         >
           <span
-            className={`absolute top-0.5 h-5 w-5 rounded-full bg-indigo transition-all ${
-              annual ? "left-[26px]" : "left-0.5"
+            className={`absolute top-0.5 h-4 w-4 rounded-full bg-[#5EEAD4] transition-all ${
+              annual ? "left-[24px]" : "left-0.5"
             }`}
+            style={{ boxShadow: "0 0 12px rgba(94,234,212,0.7)" }}
           />
         </button>
-        <span className={`text-sm ${annual ? "text-foreground" : "text-text-muted"}`}>
-          Annual <span className="ml-1 rounded-full border border-success/30 bg-success/10 px-1.5 py-0.5 text-[10px] font-medium text-success">20% off</span>
-        </span>
+        <button
+          onClick={() => setAnnual(true)}
+          className={`mono-eyebrow flex items-center gap-2 transition-colors ${annual ? "text-foreground" : "text-text-muted"}`}
+        >
+          Annual <span className="text-[#5EEAD4]">−20%</span>
+        </button>
       </div>
 
-      <div className="mt-10 grid gap-4 lg:grid-cols-3">
+      <div className="mt-16 grid divide-y divide-border border-y border-border lg:grid-cols-3 lg:divide-x lg:divide-y-0">
         {tierData.map((t) => (
           <div
             key={t.name}
-            className={`relative flex h-full flex-col p-7 ${
-              t.featured
-                ? "rounded-2xl border-2 border-indigo bg-gradient-to-b from-indigo/5 to-transparent shadow-[0_30px_80px_-30px_rgba(99,102,241,0.5)]"
-                : "surface-card"
+            className={`relative flex h-full flex-col p-10 transition-colors ${
+              t.featured ? "bg-surface/30" : "hover:bg-surface/30"
             }`}
           >
             {t.featured && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">
-                Most popular
-              </div>
+              <span className="mono-eyebrow absolute right-10 top-10 text-[#5EEAD4]">
+                ★ Most popular
+              </span>
             )}
-            <div className="text-xs font-medium uppercase tracking-wider text-text-muted">{t.name}</div>
-            <div className="mt-3 flex items-baseline gap-1">
+            <div className="mono-eyebrow text-text-muted">{t.name}</div>
+            <div className="mt-6 flex items-baseline gap-2">
               {t.price === null ? (
-                <span className="font-display text-4xl font-extrabold">Custom</span>
+                <span className="font-display text-5xl font-extrabold">Custom</span>
               ) : (
                 <>
-                  <span className="font-display text-5xl font-extrabold">${annual ? t.annual : t.price}</span>
-                  <span className="text-sm text-text-muted">/mo</span>
+                  <span className="font-display text-6xl font-extrabold tracking-tight">${annual ? t.annual : t.price}</span>
+                  <span className="mono-eyebrow text-text-muted">/mo</span>
                   {annual && (
-                    <span className="ml-2 text-xs text-text-faint line-through">${t.price}</span>
+                    <span className="ml-2 font-mono text-xs text-text-faint line-through">${t.price}</span>
                   )}
                 </>
               )}
             </div>
-            <div className="mt-1 text-sm text-text-muted">{t.blurb}</div>
-            <div className="mt-4 rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm text-amber">
-              {t.credits}
-            </div>
+            <div className="mt-2 text-sm text-text-muted">{t.blurb}</div>
+            <div className="mt-5 font-mono text-sm text-amber">{t.credits}</div>
 
             {t.name === "Enterprise" ? (
               <a
                 href="mailto:ezra@scaledsolutions.net?subject=Orvio%20Enterprise%20Inquiry"
-                className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg border border-foreground/30 text-sm font-medium hover:bg-foreground/5"
+                className="group mt-8 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-border text-sm font-medium hover:bg-surface"
               >
-                {t.cta}
+                {t.cta} <ArrowIcon />
               </a>
             ) : (
               <Link
                 to="/signup"
-                className={`mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg text-sm font-semibold transition-all ${
+                className={`group mt-8 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full text-sm font-medium transition-all ${
                   t.featured
-                    ? "bg-indigo text-white shadow-[0_8px_24px_-8px_rgba(99,102,241,0.7)] hover:brightness-110"
-                    : "border border-indigo/50 text-indigo hover:bg-indigo/10"
+                    ? "bg-foreground text-background hover:shadow-[0_14px_36px_-10px_rgba(255,255,255,0.45)]"
+                    : "border border-border text-foreground hover:bg-surface"
                 }`}
               >
-                {t.cta}
+                {t.cta} <ArrowIcon />
               </Link>
             )}
 
-            <ul className="mt-6 space-y-2.5 text-sm">
+            <ul className="mt-8 space-y-3 text-sm">
               {t.features.map((f) => (
-                <li key={f.t} className="flex items-start gap-2.5">
+                <li key={f.t} className="flex items-start gap-3">
                   {f.y ? (
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-indigo" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#5EEAD4]" />
                   ) : (
-                    <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center text-text-faint">✕</span>
+                    <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center text-text-faint">·</span>
                   )}
-                  <span className={f.y ? "text-foreground/90" : "text-text-faint line-through"}>{f.t}</span>
+                  <span className={f.y ? "text-foreground/90" : "text-text-faint"}>{f.t}</span>
                 </li>
               ))}
             </ul>
@@ -802,37 +850,54 @@ export function PricingBlock() {
         ))}
       </div>
 
-      <div className="mt-14">
-        <h3 className="font-display text-xl font-bold sm:text-2xl">Need more credits? Top up anytime.</h3>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+
+      <div className="mt-16">
+        <div className="mono-eyebrow flex items-center gap-3 text-text-muted">
+          <span className="text-[#5EEAD4]">06</span>
+          <span className="text-text-faint">—</span>
+          <span>Top-up packs</span>
+        </div>
+        <h3
+          className="mt-4 font-display font-extrabold leading-tight"
+          style={{ fontSize: "clamp(1.5rem, 2.4vw, 2rem)" }}
+        >
+          Need more credits? Top up anytime.
+        </h3>
+        <div className="mt-8 grid divide-y divide-border border-y border-border sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
           {topUps.map((t) => (
-            <div key={t.credits} className="surface-card relative p-5">
+            <div key={t.credits} className="relative p-6">
               {t.badge && (
-                <StatusBadge tone="indigo">{t.badge}</StatusBadge>
+                <span className="mono-eyebrow absolute right-6 top-6 text-[#5EEAD4]">
+                  ★ {t.badge}
+                </span>
               )}
-              <div className="mt-2 font-mono text-2xl font-semibold">{t.credits}</div>
-              <div className="text-xs text-text-muted">credits</div>
-              <div className="mt-3 font-mono text-lg font-semibold text-amber">{t.price}</div>
+              <div className="font-mono text-3xl font-semibold text-foreground">{t.credits}</div>
+              <div className="mono-eyebrow mt-1 text-text-muted">credits</div>
+              <div className="mt-4 font-mono text-xl font-semibold text-amber">{t.price}</div>
               <div className="font-mono text-xs text-text-faint">{t.per}</div>
             </div>
           ))}
         </div>
-        <p className="mt-6 text-sm text-text-muted">
-          Credits never expire. Shared across your team. Roll over indefinitely.
+        <p className="mt-6 mono-eyebrow text-text-muted">
+          Credits never expire · Shared across team · Roll over indefinitely
         </p>
       </div>
     </>
   );
 }
 
+
 function Pricing() {
   return (
-    <section id="pricing" className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section id="pricing" className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
           <SectionHeader
-            title="Simple pricing. No surprises."
-            subtitle="Flat monthly subscription. Credits for AI usage. No per-seat fees."
+            center={false}
+            index="05"
+            eyebrow="Pricing"
+            title={<>Simple pricing.<br />No surprises.</>}
+            subtitle="Flat monthly subscription. Credits for AI usage. No per-seat fees. Cancel anytime."
           />
         </Reveal>
         <Reveal delay={0.1}>
@@ -860,48 +925,45 @@ const compareRows = [
 
 function Comparison() {
   const cell = (v: string, isOrvio: boolean) => {
-    if (v === "✓") return <span className={isOrvio ? "text-indigo" : "text-foreground/80"}>✓</span>;
+    if (v === "✓") return <span className={isOrvio ? "text-[#5EEAD4]" : "text-foreground/60"}>✓</span>;
     if (v === "✗") return <span className="text-text-faint">—</span>;
-    return <span className={`text-sm ${isOrvio ? "font-mono text-indigo" : "text-text-muted"}`}>{v}</span>;
+    return <span className={`text-sm ${isOrvio ? "font-mono text-[#5EEAD4]" : "text-text-muted"}`}>{v}</span>;
   };
 
   return (
-    <section className="py-20 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+    <section className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-10">
         <Reveal>
-          <SectionHeader title="Orvio vs. the alternatives" />
+          <SectionHeader
+            center={false}
+            index="06"
+            eyebrow="Comparison"
+            title={<>Orvio vs.<br />the alternatives.</>}
+          />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-12 overflow-x-auto">
-            <table className="w-full min-w-[700px] border-separate border-spacing-0 text-sm">
+          <div className="mt-16 overflow-x-auto">
+            <table className="w-full min-w-[760px] border-separate border-spacing-0 text-sm">
               <thead>
-                <tr>
-                  <th className="border-b border-border p-4 text-left text-xs font-medium uppercase tracking-wider text-text-muted">
-                    Feature
+                <tr className="hairline-b">
+                  <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Feature</th>
+                  <th className="py-5 pr-4 text-left">
+                    <span className="mono-eyebrow text-[#5EEAD4]">Orvio</span>
                   </th>
-                  <th className="border-b-2 border-indigo bg-indigo/10 p-4 text-left font-display text-base font-bold text-indigo">
-                    Orvio
-                  </th>
-                  <th className="border-b border-border p-4 text-left text-sm font-medium text-text-muted">
-                    GoHighLevel
-                  </th>
-                  <th className="border-b border-border p-4 text-left text-sm font-medium text-text-muted">
-                    Generic CRM
-                  </th>
-                  <th className="border-b border-border p-4 text-left text-sm font-medium text-text-muted">
-                    Manual Stack
-                  </th>
+                  <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">GoHighLevel</th>
+                  <th className="py-5 pr-4 text-left mono-eyebrow text-text-muted">Generic CRM</th>
+                  <th className="py-5 text-left mono-eyebrow text-text-muted">Manual Stack</th>
                 </tr>
               </thead>
               <tbody>
                 {compareRows.map((row, i) => (
-                  <tr key={i}>
-                    <td className="border-b border-border/60 p-4 text-foreground/90">{row[0]}</td>
-                    <td className="border-b border-border/60 bg-indigo/[0.04] p-4">{cell(row[1], true)}</td>
-                    <td className="border-b border-border/60 p-4">{cell(row[2], false)}</td>
-                    <td className="border-b border-border/60 p-4">{cell(row[3], false)}</td>
-                    <td className="border-b border-border/60 p-4">{cell(row[4], false)}</td>
+                  <tr key={i} className="group transition-colors hover:bg-surface/30">
+                    <td className="border-b border-border/60 py-5 pr-4 text-foreground/90">{row[0]}</td>
+                    <td className="border-b border-[#5EEAD4]/30 bg-[#5EEAD4]/[0.04] py-5 pr-4">{cell(row[1], true)}</td>
+                    <td className="border-b border-border/60 py-5 pr-4">{cell(row[2], false)}</td>
+                    <td className="border-b border-border/60 py-5 pr-4">{cell(row[3], false)}</td>
+                    <td className="border-b border-border/60 py-5">{cell(row[4], false)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -909,9 +971,8 @@ function Comparison() {
           </div>
         </Reveal>
 
-        <p className="mt-6 text-xs text-text-faint">
-          *GHL white-label requires the $497/month SaaS plan. Usage fees for SMS, email, and AI push real
-          monthly cost to $600–$900+.
+        <p className="mt-8 mono-eyebrow text-text-faint">
+          * GHL white-label requires the $497/mo SaaS plan. Usage fees push real monthly cost to $600–$900+
         </p>
       </div>
     </section>
@@ -920,19 +981,24 @@ function Comparison() {
 
 function FAQ() {
   return (
-    <section className="py-20 sm:py-32">
-      <div className="mx-auto max-w-3xl px-5 sm:px-8">
+    <section className="hairline-t py-32 sm:py-48">
+      <div className="mx-auto grid max-w-[1280px] gap-16 px-6 sm:px-10 md:grid-cols-[1fr_2fr]">
         <Reveal>
-          <SectionHeader title="Questions." />
+          <SectionHeader
+            center={false}
+            index="07"
+            eyebrow="FAQ"
+            title={<>Questions,<br />answered.</>}
+          />
         </Reveal>
         <Reveal delay={0.1}>
-          <Accordion type="single" collapsible className="mt-12">
+          <Accordion type="single" collapsible className="w-full">
             {faqs.map((f, i) => (
               <AccordionItem key={i} value={`item-${i}`} className="border-border">
-                <AccordionTrigger className="text-left font-display text-base font-semibold hover:no-underline sm:text-lg">
+                <AccordionTrigger className="py-6 text-left font-display text-lg font-bold leading-tight hover:no-underline sm:text-xl">
                   {f.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-text-muted">{f.a}</AccordionContent>
+                <AccordionContent className="pb-6 text-base leading-relaxed text-text-muted">{f.a}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -944,47 +1010,55 @@ function FAQ() {
 
 function FinalCTA() {
   return (
-    <section className="relative overflow-hidden py-24 sm:py-32">
-      <div
-        className="absolute inset-0 -z-10"
-        style={{ background: "radial-gradient(ellipse at center, rgba(99,102,241,0.15), transparent 70%)" }}
-        aria-hidden
-      />
-      <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
+    <SkyBand variant="full" className="py-32 sm:py-48">
+      <div className="mx-auto max-w-4xl px-6 text-center sm:px-10">
         <Reveal>
-          <h2 className="font-display text-4xl font-extrabold leading-tight sm:text-6xl">
-            Your agency deserves <span className="text-gradient-orvio">better infrastructure</span>.
-          </h2>
+          <div className="mb-8 flex justify-center">
+            <GlyphEcho size={120} />
+          </div>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <MonoEyebrow className="justify-center text-white/85" dot="live">
+            08 — Start
+          </MonoEyebrow>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-6 max-w-2xl text-base text-text-muted sm:text-lg">
-            Stop running on copy-paste reports, Google Drive contracts, and Slack brief threads. Orvio
-            gives your agency the operating system it's been missing — and the creative studio to ship
-            faster than ever.
-          </p>
+          <h2
+            className="mt-6 font-display font-extrabold leading-[1.02] tracking-tight text-white"
+            style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
+          >
+            Your agency deserves<br />
+            <span className="italic">better infrastructure.</span>
+          </h2>
         </Reveal>
         <Reveal delay={0.15}>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <p className="mx-auto mt-8 max-w-2xl text-base text-white/85 sm:text-lg">
+            Stop running on copy-paste reports, Google Drive contracts, and Slack brief threads. Orvio is
+            the operating system your agency has been missing.
+          </p>
+        </Reveal>
+        <Reveal delay={0.2}>
+          <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/signup"
-              className="inline-flex h-12 items-center justify-center rounded-lg bg-indigo px-6 text-sm font-semibold text-white shadow-[0_12px_40px_-12px_rgba(99,102,241,0.7)] transition-all hover:brightness-110"
+              className="group inline-flex h-12 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-[#1B2552] shadow-[0_14px_36px_-10px_rgba(255,255,255,0.6)] hover:shadow-[0_20px_50px_-10px_rgba(255,255,255,0.8)]"
             >
-              Start free — 14 days
+              Start free — 14 days <ArrowIcon />
             </Link>
             <a
               href="mailto:ezra@scaledsolutions.net"
-              className="inline-flex h-12 items-center justify-center rounded-lg border border-border px-6 text-sm font-medium text-foreground hover:bg-surface"
+              className="group inline-flex h-12 items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 text-sm font-medium text-white backdrop-blur hover:bg-white/20"
             >
               Talk to us first
             </a>
           </div>
         </Reveal>
-        <Reveal delay={0.2}>
-          <p className="mt-6 text-xs text-text-faint">
-            No credit card required · Cancel anytime · Setup takes 20 minutes
+        <Reveal delay={0.25}>
+          <p className="mt-8 mono-eyebrow text-white/70">
+            No credit card · Cancel anytime · Setup in 20 minutes
           </p>
         </Reveal>
       </div>
-    </section>
+    </SkyBand>
   );
 }

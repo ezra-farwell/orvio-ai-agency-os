@@ -1,34 +1,100 @@
 import { Link } from "@tanstack/react-router";
 import { Wordmark } from "./primitives";
+import { Hairline } from "./lattice";
+
+const cols: { num: string; label: string; links: { label: string; to: "/" | "/demo" | "/pricing" | "/signup" | "/portal-preview"; href?: undefined }[] }[] = [
+  {
+    num: "01",
+    label: "Product",
+    links: [
+      { label: "Overview", to: "/" },
+      { label: "Interactive demo", to: "/demo" },
+      { label: "Client portal", to: "/portal-preview" },
+    ],
+  },
+  {
+    num: "02",
+    label: "Plans",
+    links: [
+      { label: "Pricing", to: "/pricing" },
+      { label: "Start free", to: "/signup" },
+    ],
+  },
+];
+
+const colsExternal: { num: string; label: string; links: { label: string; href: string }[] }[] = [
+  {
+    num: "03",
+    label: "Company",
+    links: [
+      { label: "ezra@scaledsolutions.net", href: "mailto:ezra@scaledsolutions.net" },
+      { label: "Privacy", href: "#" },
+      { label: "Terms", href: "#" },
+    ],
+  },
+];
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-background">
-      <div className="mx-auto grid max-w-[1200px] gap-10 px-5 py-16 sm:px-8 md:grid-cols-3">
-        <div>
-          <Wordmark />
-          <p className="mt-4 max-w-xs text-sm text-text-muted">The agency OS with AI built in.</p>
-          <p className="mt-8 text-xs text-text-faint">© 2026 Orvio</p>
+    <footer className="hairline-t bg-background">
+      <div className="mx-auto max-w-[1280px] px-6 py-20 sm:px-10">
+        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div>
+            <Wordmark />
+            <p
+              className="mt-6 max-w-xs font-display font-extrabold leading-[1.1] text-foreground"
+              style={{ fontSize: "clamp(1.5rem, 2.2vw, 2rem)" }}
+            >
+              The agency OS with AI built in.
+            </p>
+            <p className="mt-6 mono-eyebrow text-text-faint">© 2026 · Scaled Solutions LLC</p>
+          </div>
+
+          {cols.map((col) => (
+            <div key={col.label}>
+              <div className="mono-eyebrow flex items-center gap-2 text-text-muted">
+                <span className="text-[#5EEAD4]">{col.num}</span>
+                {col.label}
+              </div>
+              <ul className="mt-6 space-y-3">
+                {col.links.map((l) => (
+                  <li key={l.label}>
+                    <Link
+                      to={l.to}
+                      className="story-link-underline text-sm text-foreground/85 hover:text-foreground"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          {colsExternal.map((col) => (
+            <div key={col.label}>
+              <div className="mono-eyebrow flex items-center gap-2 text-text-muted">
+                <span className="text-[#5EEAD4]">{col.num}</span>
+                {col.label}
+              </div>
+              <ul className="mt-6 space-y-3">
+                {col.links.map((l) => (
+                  <li key={l.label}>
+                    <a
+                      href={l.href}
+                      className="story-link-underline text-sm text-foreground/85 hover:text-foreground"
+                    >
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div className="grid grid-cols-2 gap-2 text-sm md:justify-self-center">
-          <Link to="/" hash="two-layers" className="text-text-muted hover:text-foreground">Product</Link>
-          <Link to="/" hash="features" className="text-text-muted hover:text-foreground">Features</Link>
-          <Link to="/pricing" className="text-text-muted hover:text-foreground">Pricing</Link>
-          <Link to="/demo" className="text-text-muted hover:text-foreground">Demo</Link>
-          <Link to="/signup" className="text-text-muted hover:text-foreground">Sign in</Link>
-          <Link to="/signup" className="text-text-muted hover:text-foreground">Sign up</Link>
-        </div>
-        <div className="space-y-2 text-sm md:justify-self-end">
-          <a href="mailto:ezra@scaledsolutions.net" className="block text-text-muted hover:text-foreground">
-            ezra@scaledsolutions.net
-          </a>
-          <a href="#" className="block text-text-muted hover:text-foreground">Privacy Policy</a>
-          <a href="#" className="block text-text-muted hover:text-foreground">Terms of Service</a>
-        </div>
-      </div>
-      <div className="border-t border-border">
-        <div className="mx-auto max-w-[1200px] px-5 py-6 text-center text-xs text-text-faint sm:px-8">
-          Built for agencies that are serious about scale.
+
+        <div className="mt-16">
+          <Hairline label="Built for agencies serious about scale" />
         </div>
       </div>
     </footer>
