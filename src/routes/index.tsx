@@ -4,10 +4,10 @@ import { Check } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Nav } from "@/components/orvio/Nav";
 import { Footer } from "@/components/orvio/Footer";
-import { CountUp, Reveal, SectionHeader, StatusBadge } from "@/components/orvio/primitives";
+import { CountUp, Reveal, SectionHeader } from "@/components/orvio/primitives";
 import { ModelDropdownMockup, PortalMockup, ReportMockup } from "@/components/orvio/mockups";
 import { StudioDemo } from "@/components/orvio/StudioDemo";
-import { SpotlightCard } from "@/components/orvio/interactive";
+import { ArrowIcon, GlyphEcho, Hairline, MonoEyebrow, PillCTA, SkyBand } from "@/components/orvio/lattice";
 import { useState } from "react";
 
 export const Route = createFileRoute("/")({
