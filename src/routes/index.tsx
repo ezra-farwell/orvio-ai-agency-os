@@ -572,7 +572,7 @@ function OSOverview() {
 
           <Reveal>
             <SurfaceCard
-              kicker="Surface 01"
+              icon={Users}
               title="Agency Workspace"
               desc="Internal team dashboard for clients, reports, campaigns, billing, notes, approvals, and credits."
               chips={["Clients", "Reports", "Billing"]}
@@ -581,7 +581,7 @@ function OSOverview() {
           </Reveal>
           <Reveal delay={0.06}>
             <SurfaceCard
-              kicker="Surface 02"
+              icon={Wand2}
               title="Creative Studio"
               desc="Client-scoped briefs, AI concepts, audit scores, approval workflow, and push to Meta."
               chips={["Briefs", "Approvals", "Meta push"]}
@@ -591,7 +591,7 @@ function OSOverview() {
           </Reveal>
           <Reveal delay={0.12}>
             <SurfaceCard
-              kicker="Surface 03"
+              icon={Layers}
               title="Client Portal"
               desc="White-labeled portal for client-facing reports, invoices, contracts, and campaign dashboards."
               chips={["Reports", "Invoices", "Contracts"]}
