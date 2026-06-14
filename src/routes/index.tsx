@@ -1682,7 +1682,7 @@ function ModelMarketplace() {
           <SectionHeading
             eyebrow="Model marketplace"
             title="The right model for every job."
-            subtitle="Don't pay premium rates for every task."
+            sub="Don't pay premium rates for every task."
           />
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -1746,7 +1746,7 @@ function ComparisonTable() {
           <SectionHeading
             eyebrow="Compare"
             title="Orvio vs. the alternatives"
-            subtitle="One workspace replaces a tangled stack and an overpriced incumbent."
+            sub="One workspace replaces a tangled stack and an overpriced incumbent."
           />
         </Reveal>
 
