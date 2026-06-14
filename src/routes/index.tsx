@@ -240,11 +240,10 @@ function AppSidebar({
   const defaultItems: { l: string; icon: LucideIcon }[] = [
     { l: "Dashboard", icon: Gauge },
     { l: "Clients", icon: Users },
-    { l: "Reports", icon: FileText },
     { l: "Creative Studio", icon: Wand2 },
+    { l: "Reports", icon: FileText },
     { l: "Contracts", icon: FileSignature },
     { l: "Billing", icon: CreditCard },
-    { l: "Team", icon: Boxes },
     { l: "Settings", icon: Settings },
   ];
   const list = items ?? defaultItems;
