@@ -899,20 +899,23 @@ function CreativeStudioPanel() {
                   <span className="text-[12px] font-medium">Generated concepts · 4 of 4</span>
                   <StatusPill tone="warn">3 awaiting AM</StatusPill>
                 </div>
-                <div className="mt-2.5 grid grid-cols-4 gap-2">
+                <div className="mt-2.5 grid grid-cols-2 gap-2">
                   {[
-                    { s: 94, st: "approved", tone: "good" as const },
-                    { s: 91, st: "pending", tone: "warn" as const },
-                    { s: 88, st: "pending", tone: "warn" as const },
-                    { s: 86, st: "pending", tone: "warn" as const },
-                  ].map((c, i) => (
-                    <div key={i} className="rounded-md border border-border bg-background/40 p-1.5">
-                      <div className="aspect-[4/5] rounded bg-gradient-to-br from-surface-elevated to-background" />
-                      <div className="mt-1.5 flex items-center justify-between">
-                        <span className="mono text-[9.5px] text-text-muted">0{i + 1}</span>
-                        <span className={`mono text-[9.5px] ${c.s >= 90 ? "text-success" : "text-warning"}`}>{c.s}</span>
+                    { hook: "Problem→Solution", head: "Cooling out before guests arrive?", s: 94, st: "approved", tone: "good" as const },
+                    { hook: "Social proof", head: "Tampa's most-booked HVAC team", s: 91, st: "pending", tone: "warn" as const },
+                    { hook: "Offer-first", head: "$89 full system tune-up — Nov only", s: 88, st: "pending", tone: "warn" as const },
+                    { hook: "Urgency", head: "Beat the holiday rush — book this week", s: 86, st: "pending", tone: "warn" as const },
+                  ].map((c) => (
+                    <div key={c.hook} className="rounded-md border border-border bg-background/40 p-2">
+                      <div className="flex items-center justify-between">
+                        <span className="mono text-[9.5px] uppercase tracking-wider text-text-faint">{c.hook}</span>
+                        <span className={`mono text-[9.5px] ${c.s >= 90 ? "text-success" : "text-warning"}`}>audit {c.s}</span>
                       </div>
-                      <div className="mt-1"><StatusPill tone={c.tone}>{c.st}</StatusPill></div>
+                      <div className="mt-1 text-[10.5px] leading-snug">"{c.head}"</div>
+                      <div className="mt-1.5 flex items-center justify-between">
+                        <StatusPill tone={c.tone}>{c.st}</StatusPill>
+                        <span className="mono text-[9px] text-text-faint">view details</span>
+                      </div>
                     </div>
                   ))}
                 </div>
