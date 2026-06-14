@@ -646,7 +646,7 @@ function StudioPreview() {
         ].map((c) => (
           <div key={c.hook} className="flex items-center justify-between rounded border border-border bg-surface-elevated px-2 py-1.5 text-[10px]">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="grid h-5 w-5 shrink-0 place-items-center rounded bg-gradient-to-br from-amber/40 to-amber/10 mono text-[8px] text-amber">{c.score}</span>
+              <span className="inline-flex items-center gap-1 rounded-full border border-amber/30 bg-amber/10 px-1.5 py-0.5 mono text-[9px] text-amber">audit {c.score}</span>
               <span className="truncate">{c.hook}</span>
             </div>
             <StatusPill tone={c.tone}>{c.st}</StatusPill>
