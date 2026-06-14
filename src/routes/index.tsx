@@ -282,7 +282,17 @@ function AppSidebar({
   );
 }
 
-function AppTopBar({ title, subtitle, client = "Apex HVAC · Tampa" }: { title: string; subtitle?: string; client?: string }) {
+function AppTopBar({
+  title,
+  subtitle,
+  client = "Apex HVAC · Tampa",
+  showWorkspaceMeta = false,
+}: {
+  title: string;
+  subtitle?: string;
+  client?: string;
+  showWorkspaceMeta?: boolean;
+}) {
   return (
     <div className="flex items-center justify-between border-b border-border bg-background/40 px-4 py-2.5">
       <div className="min-w-0">
@@ -295,6 +305,18 @@ function AppTopBar({ title, subtitle, client = "Apex HVAC · Tampa" }: { title: 
           <span className="mono text-[10px] text-text-muted">{client}</span>
           <ChevronDown className="h-3 w-3 text-text-faint" />
         </div>
+        {showWorkspaceMeta && (
+          <>
+            <div className="hidden items-center gap-1.5 rounded-md border border-border bg-surface-elevated px-2 py-1 mono text-[10px] text-text-muted md:flex">
+              <Sparkles className="h-3 w-3 text-indigo" />
+              <span>847 / 1,000</span>
+            </div>
+            <div className="hidden items-center gap-1.5 rounded-md border border-success/30 bg-success/10 px-2 py-1 mono text-[10px] text-success md:flex">
+              <span className="h-1.5 w-1.5 rounded-full bg-success live-dot" />
+              Live
+            </div>
+          </>
+        )}
         <span className="grid h-6 w-6 place-items-center rounded-md border border-border bg-surface-elevated text-text-muted">
           <Bell className="h-3 w-3" />
         </span>
@@ -309,6 +331,12 @@ function AppTopBar({ title, subtitle, client = "Apex HVAC · Tampa" }: { title: 
    ============================================================ */
 
 function HeroMockup() {
+  const clients = [
+    { n: "Apex HVAC", h: 94, t: "good" as const },
+    { n: "Sunbelt Remodelers", h: 88, t: "good" as const },
+    { n: "Northshore Movers", h: 64, t: "bad" as const },
+  ];
+
   return (
     <div className="relative">
       <div className="pointer-events-none absolute -inset-20 -z-10">
@@ -321,78 +349,59 @@ function HeroMockup() {
           <AppSidebar />
 
           <div>
-            <AppTopBar title="Agency overview" subtitle="last 30 days · all clients" />
+            <AppTopBar title="GrowthDesk · Agency overview" subtitle="last 30 days · all clients" showWorkspaceMeta />
 
             <div className="p-4">
               <div className="grid grid-cols-4 gap-2">
-                <Stat label="Spend" value="$184.7k" delta="+12.4%" tone="good" />
-                <Stat label="Leads" value="3,412" delta="+8.1%" tone="good" />
-                <Stat label="CPL" value="$54.12" delta="-5.2%" tone="good" />
-                <Stat label="Booked" value="412" delta="+18.0%" tone="good" />
-              </div>
-
-              <div className="mt-3 grid grid-cols-[1.4fr_1fr] gap-2.5">
-                <div className="surface-elev p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-text-muted">Spend · last 12 weeks</span>
-                    <span className="mono text-[10px] text-success">+12.4%</span>
-                  </div>
-                  <div className="mt-2">
-                    <MiniBars />
-                  </div>
-                </div>
-                <div className="surface-elev p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-text-muted">Leads by source</span>
-                    <Activity className="h-3 w-3 text-text-faint" />
-                  </div>
-                  <div className="mt-2 space-y-1.5 text-[10.5px]">
-                    {[
-                      { l: "Meta", v: "1,840", pct: 78 },
-                      { l: "Google", v: "1,210", pct: 52 },
-                      { l: "TikTok", v: "362", pct: 18 },
-                    ].map((r) => (
-                      <div key={r.l}>
-                        <div className="flex items-center justify-between">
-                          <span className="text-text-muted">{r.l}</span>
-                          <span className="mono">{r.v}</span>
-                        </div>
-                        <div className="mt-1 h-1 overflow-hidden rounded-full bg-background">
-                          <div className="h-full rounded-full bg-gradient-to-r from-indigo to-[#4F46E5]" style={{ width: `${r.pct}%` }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <Stat label="Spend" value="$24,840" delta="+12.4%" tone="good" />
+                <Stat label="Leads" value="612" delta="+18.0%" tone="good" />
+                <Stat label="CPL" value="$40.59" delta="-5.2%" tone="good" />
+                <Stat label="Booked calls" value="84" delta="+9.8%" tone="good" />
               </div>
 
               <div className="mt-3 surface-elev p-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="grid h-6 w-6 place-items-center rounded-md bg-indigo/15 text-indigo">
-                      <Wand2 className="h-3 w-3" />
-                    </span>
-                    <span className="text-[11.5px] font-medium">Summer HVAC promo — concept 03</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <StatusPill tone="warn">awaiting AM</StatusPill>
-                    <button className="rounded-md bg-indigo px-2.5 py-1 text-[10.5px] font-medium text-white">Approve</button>
+                  <span className="text-[11.5px] font-medium">Campaign performance</span>
+                  <span className="mono text-[10px] text-success">+12.4% MoM</span>
+                </div>
+                <div className="mt-2">
+                  <Sparkline values={[34, 42, 48, 44, 56, 62, 60, 68, 74, 82, 88, 94]} />
+                </div>
+              </div>
+
+              <div className="mt-3 grid grid-cols-[1fr_1fr] gap-2.5">
+                <div className="surface-elev p-3">
+                  <div className="mono text-[9.5px] uppercase tracking-[0.18em] text-text-faint">Client health</div>
+                  <div className="mt-2 space-y-1.5">
+                    {clients.map((c) => (
+                      <div key={c.n} className="flex items-center justify-between text-[11px]">
+                        <span>{c.n}</span>
+                        <span className="flex items-center gap-1.5">
+                          <span className="mono text-text-muted">{c.h}</span>
+                          <span className="h-1 w-10 overflow-hidden rounded-full bg-background">
+                            <span
+                              className={`block h-full ${c.t === "good" ? "bg-success" : "bg-danger"}`}
+                              style={{ width: `${c.h}%` }}
+                            />
+                          </span>
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="mt-2.5 grid grid-cols-4 gap-1.5">
-                  {[
-                    { i: 1, s: 94 },
-                    { i: 2, s: 91 },
-                    { i: 3, s: 88 },
-                    { i: 4, s: 86 },
-                  ].map((c) => (
-                    <div key={c.i} className="aspect-[4/5] rounded-md border border-border bg-gradient-to-br from-surface-elevated to-background">
-                      <div className="flex h-full flex-col justify-between p-1.5">
-                        <span className="mono text-[9px] text-text-faint">0{c.i}</span>
-                        <span className="mono text-[9px] text-success">{c.s}</span>
-                      </div>
-                    </div>
-                  ))}
+
+                <div className="surface-elev p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11.5px] font-medium">Pending approval</span>
+                    <StatusPill tone="warn">awaiting</StatusPill>
+                  </div>
+                  <div className="mt-2 text-[11px] leading-snug text-text-muted">
+                    Apex HVAC — Fall tune-up, concept 03
+                  </div>
+                  <div className="mt-1 mono text-[10px] text-text-faint">Audit 94 · Sonnet · 4 variants</div>
+                  <button className="mt-2.5 inline-flex items-center gap-1.5 rounded-md bg-amber px-2.5 py-1 text-[10.5px] font-medium text-white">
+                    <Check className="h-3 w-3" /> Approve & push
+                  </button>
                 </div>
               </div>
             </div>
@@ -401,22 +410,12 @@ function HeroMockup() {
           {/* Right activity panel */}
           <div className="border-l border-border bg-background/40 p-3">
             <div className="mono text-[9.5px] font-semibold uppercase tracking-[0.18em] text-text-faint">Activity</div>
-
-            <div className="mt-3 rounded-md border border-danger/30 bg-danger/5 p-2.5">
-              <div className="flex items-center gap-2">
-                <CircleDot className="h-3 w-3 text-danger" />
-                <span className="text-[11px] font-medium">Churn alert</span>
-              </div>
-              <div className="mt-1 text-[10.5px] leading-snug text-text-muted">
-                Northshore Movers · CPL <span className="mono text-danger">+31%</span>, portal logins <span className="mono text-danger">-42%</span>
-              </div>
-            </div>
-
-            <div className="mt-2.5 space-y-1.5">
+            <div className="mt-3 space-y-1.5">
               {[
-                { who: "Maya · AM", t: "Sent November report to Apex", d: "2m", tone: "good" as const },
-                { who: "Jordan · Buyer", t: "Pushed 4 creatives to Meta", d: "12m", tone: "indigo" as const },
-                { who: "Owner", t: "Approved Q1 SOW", d: "1h", tone: "good" as const },
+                { who: "Maya · AM", t: "Report sent to Apex HVAC", d: "2m" },
+                { who: "Jordan", t: "Creative approved · concept 03", d: "12m" },
+                { who: "Billing", t: "Invoice paid · INV-2031", d: "1h" },
+                { who: "System", t: "Meta Ads synced", d: "3h" },
               ].map((n) => (
                 <div key={n.t} className="rounded-md border border-border bg-surface-elevated px-2 py-1.5">
                   <div className="flex items-center justify-between">
@@ -426,26 +425,6 @@ function HeroMockup() {
                   <p className="mt-0.5 text-[10.5px] leading-snug">{n.t}</p>
                 </div>
               ))}
-            </div>
-
-            <div className="mt-3 rounded-md border border-border bg-surface-elevated p-2.5">
-              <div className="mono text-[9.5px] uppercase tracking-[0.16em] text-text-faint">Integrations</div>
-              <div className="mt-1.5 space-y-1 text-[10.5px]">
-                {[
-                  { l: "Meta Ads", ok: true },
-                  { l: "Google Ads", ok: true },
-                  { l: "GA4", ok: true },
-                  { l: "Stripe", ok: true },
-                ].map((r) => (
-                  <div key={r.l} className="flex items-center justify-between">
-                    <span className="text-text-muted">{r.l}</span>
-                    <span className="flex items-center gap-1">
-                      <span className="h-1.5 w-1.5 rounded-full bg-success live-dot" />
-                      <span className="mono text-[9.5px] text-success">synced</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
