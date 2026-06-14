@@ -1175,11 +1175,10 @@ function WorkflowFlow() {
               {FLOW.map((n, i) => (
                 <Reveal key={n.l} delay={i * 0.04}>
                   <div className="flex flex-col items-center text-center">
-                    <div className="relative z-10 grid h-[84px] w-full place-items-center surface-card transition-all hover:-translate-y-0.5 hover:border-indigo/40">
-                      <div className="flex flex-col items-center gap-1.5">
-                        <n.icon className="h-4 w-4 text-indigo" />
-                        <span className="mono text-[9.5px] text-text-faint">0{i + 1}</span>
-                      </div>
+                    <div className="relative z-10 grid h-[72px] w-full place-items-center surface-card transition-all hover:-translate-y-0.5 hover:border-indigo/40">
+                      <span className="grid h-8 w-8 place-items-center rounded-md bg-indigo/15 text-indigo">
+                        <n.icon className="h-4 w-4" />
+                      </span>
                     </div>
                     <div className="mt-2.5 text-[12px] font-medium">{n.l}</div>
                     <div className="mt-1"><StatusPill tone={pillTone(n.pill)}>{n.pill}</StatusPill></div>
