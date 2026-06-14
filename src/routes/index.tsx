@@ -1636,12 +1636,155 @@ function Landing() {
         <ProductShowcase />
         <WorkflowFlow />
         <WhiteLabelSplit />
+        <ModelMarketplace />
+        <ComparisonTable />
         <PricingSection />
         <TrustFAQ />
         <FinalCTA />
       </main>
       <Footer />
     </div>
+  );
+}
+
+/* ============================================================
+   Model marketplace
+   ============================================================ */
+
+const MODELS = [
+  { name: "Gemini 2.5 Flash", badge: "Free", tone: "good" as const, credits: 5, desc: "Fast drafts and bulk generation" },
+  { name: "Gemini 2.5 Pro", badge: "Standard", tone: "indigo" as const, credits: 20, desc: "Solid all-around quality for most campaigns" },
+  { name: "Command R+", badge: "Standard", tone: "indigo" as const, credits: 25, desc: "Research-backed copy and grounded output" },
+  { name: "Mistral Large", badge: "Standard", tone: "indigo" as const, credits: 30, desc: "Precise reasoning for audits and contracts" },
+  { name: "Claude Opus 4.8", badge: "Premium", tone: "purple" as const, credits: 60, desc: "Deep reasoning for high-stakes campaigns" },
+  { name: "GPT-5.5", badge: "Maximum", tone: "amber" as const, credits: 75, desc: "OpenAI frontier model. Maximum quality." },
+];
+
+function ModelBadge({ tone, children }: { tone: "good" | "indigo" | "purple" | "amber"; children: React.ReactNode }) {
+  const styles: Record<string, string> = {
+    good: "border-success/40 bg-success/10 text-success",
+    indigo: "border-indigo/40 bg-indigo/10 text-indigo",
+    purple: "border-[#A855F7]/40 bg-[#A855F7]/10 text-[#C084FC]",
+    amber: "border-amber/40 bg-amber/10 text-amber",
+  };
+  return (
+    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10.5px] font-medium uppercase tracking-wider ${styles[tone]}`}>
+      {children}
+    </span>
+  );
+}
+
+function ModelMarketplace() {
+  return (
+    <section className="border-t border-border py-[88px]">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
+        <Reveal>
+          <SectionHeading
+            eyebrow="Model marketplace"
+            title="The right model for every job."
+            subtitle="Don't pay premium rates for every task."
+          />
+        </Reveal>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {MODELS.map((m, i) => (
+            <Reveal key={m.name} delay={i * 0.04}>
+              <div className="surface-elev group h-full rounded-xl border border-border bg-surface/60 p-5 transition-all hover:border-indigo/40 hover:bg-surface">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-[15px] font-semibold tracking-tight text-foreground">{m.name}</h3>
+                  <ModelBadge tone={m.tone}>{m.badge}</ModelBadge>
+                </div>
+                <div className="mt-3 flex items-baseline gap-1.5">
+                  <span className="font-mono text-2xl font-semibold text-foreground">{m.credits}</span>
+                  <span className="text-xs text-text-muted">credits / generation</span>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-foreground/70">{m.desc}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   Comparison table
+   ============================================================ */
+
+const COMPARISON_ROWS: Array<{ feature: string; orvio: string; ghl: string; crm: string; manual: string }> = [
+  { feature: "White-label client portal", orvio: "✓", ghl: "✓", crm: "✗", manual: "✗" },
+  { feature: "AI report generation", orvio: "✓", ghl: "Add-on", crm: "✗", manual: "✗" },
+  { feature: "Creative Studio (AI ads)", orvio: "✓", ghl: "✗", crm: "✗", manual: "✗" },
+  { feature: "Six AI model options", orvio: "✓", ghl: "✗", crm: "✗", manual: "✗" },
+  { feature: "Client contracts + e-sign", orvio: "✓", ghl: "✓", crm: "✗", manual: "✗" },
+  { feature: "Client invoicing", orvio: "✓", ghl: "✓", crm: "✗", manual: "✗" },
+  { feature: "AI churn detection", orvio: "✓", ghl: "✗", crm: "✗", manual: "✗" },
+  { feature: "Push creatives to Meta", orvio: "✓", ghl: "✗", crm: "✗", manual: "✗" },
+  { feature: "White-label entry price", orvio: "$97/mo", ghl: "$497/mo", crm: "N/A", manual: "—" },
+  { feature: "Setup time", orvio: "20 min", ghl: "2–4 weeks", crm: "Varies", manual: "—" },
+];
+
+function Cell({ value, emphasis = false }: { value: string; emphasis?: boolean }) {
+  const isCheck = value === "✓";
+  const isCross = value === "✗";
+  if (isCheck)
+    return (
+      <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full ${emphasis ? "bg-white/15 text-white" : "bg-success/15 text-success"}`}>
+        <Check className="h-3.5 w-3.5" strokeWidth={3} />
+      </span>
+    );
+  if (isCross)
+    return <span className="text-text-faint">—</span>;
+  return <span className={`text-[13px] ${emphasis ? "font-semibold text-white" : "text-foreground/85"}`}>{value}</span>;
+}
+
+function ComparisonTable() {
+  return (
+    <section className="border-t border-border py-[88px]">
+      <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
+        <Reveal>
+          <SectionHeading
+            eyebrow="Compare"
+            title="Orvio vs. the alternatives"
+            subtitle="One workspace replaces a tangled stack and an overpriced incumbent."
+          />
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <div className="mt-12 overflow-hidden rounded-2xl border border-border bg-surface/40">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[760px] border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="px-5 py-4 text-[11px] font-medium uppercase tracking-wider text-text-muted">Feature</th>
+                    <th className="bg-indigo px-5 py-4 text-center text-[12px] font-semibold uppercase tracking-wider text-white">Orvio</th>
+                    <th className="px-5 py-4 text-center text-[11px] font-medium uppercase tracking-wider text-text-muted">GoHighLevel</th>
+                    <th className="px-5 py-4 text-center text-[11px] font-medium uppercase tracking-wider text-text-muted">Generic CRM</th>
+                    <th className="px-5 py-4 text-center text-[11px] font-medium uppercase tracking-wider text-text-muted">Manual Stack</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPARISON_ROWS.map((row, i) => (
+                    <tr key={row.feature} className={`border-b border-border/60 ${i % 2 === 1 ? "bg-background/30" : ""}`}>
+                      <td className="px-5 py-3.5 text-[13.5px] text-foreground/90">{row.feature}</td>
+                      <td className="bg-indigo/10 px-5 py-3.5 text-center">
+                        <Cell value={row.orvio} emphasis />
+                      </td>
+                      <td className="px-5 py-3.5 text-center"><Cell value={row.ghl} /></td>
+                      <td className="px-5 py-3.5 text-center"><Cell value={row.crm} /></td>
+                      <td className="px-5 py-3.5 text-center"><Cell value={row.manual} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="border-t border-border bg-background/40 px-5 py-3 text-[11.5px] text-text-muted">
+              *GHL white-label requires $497/month plan. Usage fees push real cost to $600–$900+/month.
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
   );
 }
 
