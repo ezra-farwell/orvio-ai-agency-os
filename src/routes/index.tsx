@@ -439,7 +439,7 @@ function HeroMockup() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden hero-bg pt-32 pb-20 sm:pt-36 sm:pb-24">
+    <section className="relative overflow-hidden hero-bg pt-28 pb-16 sm:pt-32 sm:pb-20">
       <div className="absolute inset-0 grid-bg" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo/40 to-transparent" />
 
@@ -501,21 +501,27 @@ function Hero() {
    ============================================================ */
 
 function SurfaceCard({
-  kicker,
   title,
   desc,
   chips,
   preview,
   tone = "indigo",
+  icon: Icon,
 }: {
-  kicker: string;
   title: string;
   desc: string;
   chips: string[];
   preview: React.ReactNode;
   tone?: "indigo" | "amber" | "emerald";
+  icon: LucideIcon;
 }) {
   const glow = tone === "amber" ? "from-amber/20" : tone === "emerald" ? "from-emerald-400/20" : "from-indigo/25";
+  const iconCls =
+    tone === "amber"
+      ? "bg-amber/10 text-amber"
+      : tone === "emerald"
+        ? "bg-emerald-500/10 text-emerald-300"
+        : "bg-indigo/10 text-indigo";
   const chipCls =
     tone === "amber"
       ? "border-amber/30 bg-amber/10 text-amber"
@@ -526,9 +532,13 @@ function SurfaceCard({
     <div className="group relative h-full overflow-hidden surface-card transition-all hover:-translate-y-1 hover:border-indigo/40">
       <div className={`pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gradient-to-br ${glow} to-transparent blur-3xl opacity-70`} />
       <div className="relative p-6">
-        <div className="mono-eyebrow">{kicker}</div>
-        <h3 className="mt-3 text-[20px] font-semibold tracking-tight">{title}</h3>
-        <p className="mt-2 text-[13.5px] leading-relaxed text-text-muted">{desc}</p>
+        <div className="flex items-center gap-2.5">
+          <span className={`grid h-8 w-8 place-items-center rounded-md ${iconCls}`}>
+            <Icon className="h-4 w-4" />
+          </span>
+          <h3 className="text-[18px] font-semibold tracking-tight">{title}</h3>
+        </div>
+        <p className="mt-3 text-[13.5px] leading-relaxed text-text-muted">{desc}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {chips.map((c) => (
             <span key={c} className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10.5px] font-medium ${chipCls}`}>
@@ -546,7 +556,7 @@ function SurfaceCard({
 
 function OSOverview() {
   return (
-    <section id="platform" className="relative border-t border-border py-20">
+    <section id="platform" className="relative border-t border-border py-[88px]">
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
         <SectionHeading
           eyebrow="Platform"
@@ -562,7 +572,7 @@ function OSOverview() {
 
           <Reveal>
             <SurfaceCard
-              kicker="Surface 01"
+              icon={Users}
               title="Agency Workspace"
               desc="Internal team dashboard for clients, reports, campaigns, billing, notes, approvals, and credits."
               chips={["Clients", "Reports", "Billing"]}
@@ -571,7 +581,7 @@ function OSOverview() {
           </Reveal>
           <Reveal delay={0.06}>
             <SurfaceCard
-              kicker="Surface 02"
+              icon={Wand2}
               title="Creative Studio"
               desc="Client-scoped briefs, AI concepts, audit scores, approval workflow, and push to Meta."
               chips={["Briefs", "Approvals", "Meta push"]}
@@ -581,7 +591,7 @@ function OSOverview() {
           </Reveal>
           <Reveal delay={0.12}>
             <SurfaceCard
-              kicker="Surface 03"
+              icon={Layers}
               title="Client Portal"
               desc="White-labeled portal for client-facing reports, invoices, contracts, and campaign dashboards."
               chips={["Reports", "Invoices", "Contracts"]}
@@ -636,7 +646,7 @@ function StudioPreview() {
         ].map((c) => (
           <div key={c.hook} className="flex items-center justify-between rounded border border-border bg-surface-elevated px-2 py-1.5 text-[10px]">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="grid h-5 w-5 shrink-0 place-items-center rounded bg-gradient-to-br from-amber/40 to-amber/10 mono text-[8px] text-amber">{c.score}</span>
+              <span className="inline-flex items-center gap-1 rounded-full border border-amber/30 bg-amber/10 px-1.5 py-0.5 mono text-[9px] text-amber">audit {c.score}</span>
               <span className="truncate">{c.hook}</span>
             </div>
             <StatusPill tone={c.tone}>{c.st}</StatusPill>
@@ -693,7 +703,7 @@ function ProductShowcase() {
   const [tab, setTab] = useState<(typeof SHOWCASE_TABS)[number]["id"]>("agency");
 
   return (
-    <section id="client-os" className="relative border-t border-border py-20">
+    <section id="client-os" className="relative border-t border-border py-[88px]">
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
         <SectionHeading
           eyebrow="Product tour"
@@ -1161,7 +1171,7 @@ function WorkflowFlow() {
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section ref={ref} id="studio" className="relative border-t border-border py-20">
+    <section ref={ref} id="studio" className="relative border-t border-border py-[88px]">
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
         <SectionHeading
           eyebrow="Workflow"
@@ -1217,7 +1227,7 @@ function WorkflowFlow() {
 
 function WhiteLabelSplit() {
   return (
-    <section className="relative border-t border-border py-20">
+    <section className="relative border-t border-border py-[88px]">
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
         <SectionHeading
           eyebrow="White label"
@@ -1469,7 +1479,7 @@ function PlanCard({ plan }: { plan: (typeof PLANS)[number] }) {
 
 function PricingSection() {
   return (
-    <section id="pricing" className="relative border-t border-border py-20">
+    <section id="pricing" className="relative border-t border-border py-[88px]">
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
         <SectionHeading
           eyebrow="Pricing"
@@ -1533,7 +1543,7 @@ function TrustFAQ() {
   ];
 
   return (
-    <section className="relative border-t border-border py-20">
+    <section className="relative border-t border-border py-[88px]">
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
         <SectionHeading
           eyebrow="Trust"
