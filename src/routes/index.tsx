@@ -501,21 +501,27 @@ function Hero() {
    ============================================================ */
 
 function SurfaceCard({
-  kicker,
   title,
   desc,
   chips,
   preview,
   tone = "indigo",
+  icon: Icon,
 }: {
-  kicker: string;
   title: string;
   desc: string;
   chips: string[];
   preview: React.ReactNode;
   tone?: "indigo" | "amber" | "emerald";
+  icon: LucideIcon;
 }) {
   const glow = tone === "amber" ? "from-amber/20" : tone === "emerald" ? "from-emerald-400/20" : "from-indigo/25";
+  const iconCls =
+    tone === "amber"
+      ? "bg-amber/10 text-amber"
+      : tone === "emerald"
+        ? "bg-emerald-500/10 text-emerald-300"
+        : "bg-indigo/10 text-indigo";
   const chipCls =
     tone === "amber"
       ? "border-amber/30 bg-amber/10 text-amber"
@@ -526,9 +532,13 @@ function SurfaceCard({
     <div className="group relative h-full overflow-hidden surface-card transition-all hover:-translate-y-1 hover:border-indigo/40">
       <div className={`pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gradient-to-br ${glow} to-transparent blur-3xl opacity-70`} />
       <div className="relative p-6">
-        <div className="mono-eyebrow">{kicker}</div>
-        <h3 className="mt-3 text-[20px] font-semibold tracking-tight">{title}</h3>
-        <p className="mt-2 text-[13.5px] leading-relaxed text-text-muted">{desc}</p>
+        <div className="flex items-center gap-2.5">
+          <span className={`grid h-8 w-8 place-items-center rounded-md ${iconCls}`}>
+            <Icon className="h-4 w-4" />
+          </span>
+          <h3 className="text-[18px] font-semibold tracking-tight">{title}</h3>
+        </div>
+        <p className="mt-3 text-[13.5px] leading-relaxed text-text-muted">{desc}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {chips.map((c) => (
             <span key={c} className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10.5px] font-medium ${chipCls}`}>
