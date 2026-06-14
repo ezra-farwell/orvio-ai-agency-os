@@ -240,11 +240,10 @@ function AppSidebar({
   const defaultItems: { l: string; icon: LucideIcon }[] = [
     { l: "Dashboard", icon: Gauge },
     { l: "Clients", icon: Users },
-    { l: "Reports", icon: FileText },
     { l: "Creative Studio", icon: Wand2 },
+    { l: "Reports", icon: FileText },
     { l: "Contracts", icon: FileSignature },
     { l: "Billing", icon: CreditCard },
-    { l: "Team", icon: Boxes },
     { l: "Settings", icon: Settings },
   ];
   const list = items ?? defaultItems;
@@ -283,7 +282,17 @@ function AppSidebar({
   );
 }
 
-function AppTopBar({ title, subtitle, client = "Apex HVAC · Tampa" }: { title: string; subtitle?: string; client?: string }) {
+function AppTopBar({
+  title,
+  subtitle,
+  client = "Apex HVAC · Tampa",
+  showWorkspaceMeta = false,
+}: {
+  title: string;
+  subtitle?: string;
+  client?: string;
+  showWorkspaceMeta?: boolean;
+}) {
   return (
     <div className="flex items-center justify-between border-b border-border bg-background/40 px-4 py-2.5">
       <div className="min-w-0">
@@ -296,6 +305,18 @@ function AppTopBar({ title, subtitle, client = "Apex HVAC · Tampa" }: { title: 
           <span className="mono text-[10px] text-text-muted">{client}</span>
           <ChevronDown className="h-3 w-3 text-text-faint" />
         </div>
+        {showWorkspaceMeta && (
+          <>
+            <div className="hidden items-center gap-1.5 rounded-md border border-border bg-surface-elevated px-2 py-1 mono text-[10px] text-text-muted md:flex">
+              <Sparkles className="h-3 w-3 text-indigo" />
+              <span>847 / 1,000</span>
+            </div>
+            <div className="hidden items-center gap-1.5 rounded-md border border-success/30 bg-success/10 px-2 py-1 mono text-[10px] text-success md:flex">
+              <span className="h-1.5 w-1.5 rounded-full bg-success live-dot" />
+              Live
+            </div>
+          </>
+        )}
         <span className="grid h-6 w-6 place-items-center rounded-md border border-border bg-surface-elevated text-text-muted">
           <Bell className="h-3 w-3" />
         </span>
@@ -310,6 +331,12 @@ function AppTopBar({ title, subtitle, client = "Apex HVAC · Tampa" }: { title: 
    ============================================================ */
 
 function HeroMockup() {
+  const clients = [
+    { n: "Apex HVAC", h: 94, t: "good" as const },
+    { n: "Sunbelt Remodelers", h: 88, t: "good" as const },
+    { n: "Northshore Movers", h: 64, t: "bad" as const },
+  ];
+
   return (
     <div className="relative">
       <div className="pointer-events-none absolute -inset-20 -z-10">
@@ -322,78 +349,59 @@ function HeroMockup() {
           <AppSidebar />
 
           <div>
-            <AppTopBar title="Agency overview" subtitle="last 30 days · all clients" />
+            <AppTopBar title="GrowthDesk · Agency overview" subtitle="last 30 days · all clients" showWorkspaceMeta />
 
             <div className="p-4">
               <div className="grid grid-cols-4 gap-2">
-                <Stat label="Spend" value="$184.7k" delta="+12.4%" tone="good" />
-                <Stat label="Leads" value="3,412" delta="+8.1%" tone="good" />
-                <Stat label="CPL" value="$54.12" delta="-5.2%" tone="good" />
-                <Stat label="Booked" value="412" delta="+18.0%" tone="good" />
-              </div>
-
-              <div className="mt-3 grid grid-cols-[1.4fr_1fr] gap-2.5">
-                <div className="surface-elev p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-text-muted">Spend · last 12 weeks</span>
-                    <span className="mono text-[10px] text-success">+12.4%</span>
-                  </div>
-                  <div className="mt-2">
-                    <MiniBars />
-                  </div>
-                </div>
-                <div className="surface-elev p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-text-muted">Leads by source</span>
-                    <Activity className="h-3 w-3 text-text-faint" />
-                  </div>
-                  <div className="mt-2 space-y-1.5 text-[10.5px]">
-                    {[
-                      { l: "Meta", v: "1,840", pct: 78 },
-                      { l: "Google", v: "1,210", pct: 52 },
-                      { l: "TikTok", v: "362", pct: 18 },
-                    ].map((r) => (
-                      <div key={r.l}>
-                        <div className="flex items-center justify-between">
-                          <span className="text-text-muted">{r.l}</span>
-                          <span className="mono">{r.v}</span>
-                        </div>
-                        <div className="mt-1 h-1 overflow-hidden rounded-full bg-background">
-                          <div className="h-full rounded-full bg-gradient-to-r from-indigo to-[#4F46E5]" style={{ width: `${r.pct}%` }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <Stat label="Spend" value="$24,840" delta="+12.4%" tone="good" />
+                <Stat label="Leads" value="612" delta="+18.0%" tone="good" />
+                <Stat label="CPL" value="$40.59" delta="-5.2%" tone="good" />
+                <Stat label="Booked calls" value="84" delta="+9.8%" tone="good" />
               </div>
 
               <div className="mt-3 surface-elev p-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="grid h-6 w-6 place-items-center rounded-md bg-indigo/15 text-indigo">
-                      <Wand2 className="h-3 w-3" />
-                    </span>
-                    <span className="text-[11.5px] font-medium">Summer HVAC promo — concept 03</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <StatusPill tone="warn">awaiting AM</StatusPill>
-                    <button className="rounded-md bg-indigo px-2.5 py-1 text-[10.5px] font-medium text-white">Approve</button>
+                  <span className="text-[11.5px] font-medium">Campaign performance</span>
+                  <span className="mono text-[10px] text-success">+12.4% MoM</span>
+                </div>
+                <div className="mt-2">
+                  <Sparkline values={[34, 42, 48, 44, 56, 62, 60, 68, 74, 82, 88, 94]} />
+                </div>
+              </div>
+
+              <div className="mt-3 grid grid-cols-[1fr_1fr] gap-2.5">
+                <div className="surface-elev p-3">
+                  <div className="mono text-[9.5px] uppercase tracking-[0.18em] text-text-faint">Client health</div>
+                  <div className="mt-2 space-y-1.5">
+                    {clients.map((c) => (
+                      <div key={c.n} className="flex items-center justify-between text-[11px]">
+                        <span>{c.n}</span>
+                        <span className="flex items-center gap-1.5">
+                          <span className="mono text-text-muted">{c.h}</span>
+                          <span className="h-1 w-10 overflow-hidden rounded-full bg-background">
+                            <span
+                              className={`block h-full ${c.t === "good" ? "bg-success" : "bg-danger"}`}
+                              style={{ width: `${c.h}%` }}
+                            />
+                          </span>
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="mt-2.5 grid grid-cols-4 gap-1.5">
-                  {[
-                    { i: 1, s: 94 },
-                    { i: 2, s: 91 },
-                    { i: 3, s: 88 },
-                    { i: 4, s: 86 },
-                  ].map((c) => (
-                    <div key={c.i} className="aspect-[4/5] rounded-md border border-border bg-gradient-to-br from-surface-elevated to-background">
-                      <div className="flex h-full flex-col justify-between p-1.5">
-                        <span className="mono text-[9px] text-text-faint">0{c.i}</span>
-                        <span className="mono text-[9px] text-success">{c.s}</span>
-                      </div>
-                    </div>
-                  ))}
+
+                <div className="surface-elev p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11.5px] font-medium">Pending approval</span>
+                    <StatusPill tone="warn">awaiting</StatusPill>
+                  </div>
+                  <div className="mt-2 text-[11px] leading-snug text-text-muted">
+                    Apex HVAC — Fall tune-up, concept 03
+                  </div>
+                  <div className="mt-1 mono text-[10px] text-text-faint">Audit 94 · Sonnet · 4 variants</div>
+                  <button className="mt-2.5 inline-flex items-center gap-1.5 rounded-md bg-amber px-2.5 py-1 text-[10.5px] font-medium text-white">
+                    <Check className="h-3 w-3" /> Approve & push
+                  </button>
                 </div>
               </div>
             </div>
@@ -402,22 +410,12 @@ function HeroMockup() {
           {/* Right activity panel */}
           <div className="border-l border-border bg-background/40 p-3">
             <div className="mono text-[9.5px] font-semibold uppercase tracking-[0.18em] text-text-faint">Activity</div>
-
-            <div className="mt-3 rounded-md border border-danger/30 bg-danger/5 p-2.5">
-              <div className="flex items-center gap-2">
-                <CircleDot className="h-3 w-3 text-danger" />
-                <span className="text-[11px] font-medium">Churn alert</span>
-              </div>
-              <div className="mt-1 text-[10.5px] leading-snug text-text-muted">
-                Northshore Movers · CPL <span className="mono text-danger">+31%</span>, portal logins <span className="mono text-danger">-42%</span>
-              </div>
-            </div>
-
-            <div className="mt-2.5 space-y-1.5">
+            <div className="mt-3 space-y-1.5">
               {[
-                { who: "Maya · AM", t: "Sent November report to Apex", d: "2m", tone: "good" as const },
-                { who: "Jordan · Buyer", t: "Pushed 4 creatives to Meta", d: "12m", tone: "indigo" as const },
-                { who: "Owner", t: "Approved Q1 SOW", d: "1h", tone: "good" as const },
+                { who: "Maya · AM", t: "Report sent to Apex HVAC", d: "2m" },
+                { who: "Jordan", t: "Creative approved · concept 03", d: "12m" },
+                { who: "Billing", t: "Invoice paid · INV-2031", d: "1h" },
+                { who: "System", t: "Meta Ads synced", d: "3h" },
               ].map((n) => (
                 <div key={n.t} className="rounded-md border border-border bg-surface-elevated px-2 py-1.5">
                   <div className="flex items-center justify-between">
@@ -427,26 +425,6 @@ function HeroMockup() {
                   <p className="mt-0.5 text-[10.5px] leading-snug">{n.t}</p>
                 </div>
               ))}
-            </div>
-
-            <div className="mt-3 rounded-md border border-border bg-surface-elevated p-2.5">
-              <div className="mono text-[9.5px] uppercase tracking-[0.16em] text-text-faint">Integrations</div>
-              <div className="mt-1.5 space-y-1 text-[10.5px]">
-                {[
-                  { l: "Meta Ads", ok: true },
-                  { l: "Google Ads", ok: true },
-                  { l: "GA4", ok: true },
-                  { l: "Stripe", ok: true },
-                ].map((r) => (
-                  <div key={r.l} className="flex items-center justify-between">
-                    <span className="text-text-muted">{r.l}</span>
-                    <span className="flex items-center gap-1">
-                      <span className="h-1.5 w-1.5 rounded-full bg-success live-dot" />
-                      <span className="mono text-[9.5px] text-success">synced</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
@@ -483,7 +461,7 @@ function Hero() {
 
           <Reveal delay={0.1}>
             <p className="mt-5 max-w-xl text-[15.5px] leading-relaxed text-text-muted">
-              Manage clients, prove performance, generate reports, build ad creative, route approvals, and deliver a white-labeled client portal — from one workspace.
+              Manage clients, reports, billing, approvals, campaign data, and AI creative production from one white-labeled workspace.
             </p>
           </Reveal>
 
@@ -495,17 +473,16 @@ function Hero() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-2.5 max-w-md">
+            <div className="mt-7 flex flex-wrap gap-2">
               {[
-                "White-label client portals",
+                "White-label portals",
+                "Client OS + Creative Studio",
                 "Shared workspace credits",
-                "Role-based approvals",
-                "Push approved ads to Meta",
               ].map((t) => (
-                <div key={t} className="flex items-center gap-2 text-[12.5px] text-text-muted">
-                  <Check className="h-3.5 w-3.5 text-indigo shrink-0" />
+                <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/60 px-3 py-1 text-[11.5px] text-text-muted backdrop-blur">
+                  <Check className="h-3 w-3 text-indigo" />
                   {t}
-                </div>
+                </span>
               ))}
             </div>
           </Reveal>
@@ -527,16 +504,24 @@ function SurfaceCard({
   kicker,
   title,
   desc,
+  chips,
   preview,
   tone = "indigo",
 }: {
   kicker: string;
   title: string;
   desc: string;
+  chips: string[];
   preview: React.ReactNode;
   tone?: "indigo" | "amber" | "emerald";
 }) {
   const glow = tone === "amber" ? "from-amber/20" : tone === "emerald" ? "from-emerald-400/20" : "from-indigo/25";
+  const chipCls =
+    tone === "amber"
+      ? "border-amber/30 bg-amber/10 text-amber"
+      : tone === "emerald"
+        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+        : "border-indigo/30 bg-indigo/10 text-indigo";
   return (
     <div className="group relative h-full overflow-hidden surface-card transition-all hover:-translate-y-1 hover:border-indigo/40">
       <div className={`pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gradient-to-br ${glow} to-transparent blur-3xl opacity-70`} />
@@ -544,6 +529,13 @@ function SurfaceCard({
         <div className="mono-eyebrow">{kicker}</div>
         <h3 className="mt-3 text-[20px] font-semibold tracking-tight">{title}</h3>
         <p className="mt-2 text-[13.5px] leading-relaxed text-text-muted">{desc}</p>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {chips.map((c) => (
+            <span key={c} className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10.5px] font-medium ${chipCls}`}>
+              {c}
+            </span>
+          ))}
+        </div>
       </div>
       <div className="relative mx-6 mb-6 overflow-hidden rounded-[10px] border border-border bg-background/40">
         {preview}
@@ -558,23 +550,14 @@ function OSOverview() {
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
         <SectionHeading
           eyebrow="Platform"
-          title={<>One platform. <span className="text-gradient-orvio">Three connected surfaces.</span></>}
-          sub="Agency workspace, creative production, and the white-labeled client portal — backed by a single client record, one credit pool, and one team."
+          title={<>One operating system. <span className="text-gradient-orvio">Three connected surfaces.</span></>}
+          sub="Agency work, creative production, and client delivery stay attached to the same client record."
         />
 
         <div className="relative mt-12 grid gap-4 lg:grid-cols-3">
           {/* Connector lines */}
-          <div className="pointer-events-none absolute inset-0 hidden lg:block">
-            <svg className="h-full w-full" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="conn" x1="0" x2="1">
-                  <stop offset="0" stopColor="#6366F1" stopOpacity="0" />
-                  <stop offset="0.5" stopColor="#6366F1" stopOpacity="0.45" />
-                  <stop offset="1" stopColor="#6366F1" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <line x1="33%" y1="50%" x2="33%" y2="50%" stroke="url(#conn)" strokeWidth="1" strokeDasharray="3 3" />
-            </svg>
+          <div className="pointer-events-none absolute inset-x-12 top-1/2 hidden h-px -translate-y-1/2 lg:block">
+            <div className="h-full w-full bg-gradient-to-r from-transparent via-indigo/40 to-transparent" />
           </div>
 
           <Reveal>
@@ -582,6 +565,7 @@ function OSOverview() {
               kicker="Surface 01"
               title="Agency Workspace"
               desc="Internal team dashboard for clients, reports, campaigns, billing, notes, approvals, and credits."
+              chips={["Clients", "Reports", "Billing"]}
               preview={<AgencyPreview />}
             />
           </Reveal>
@@ -590,6 +574,7 @@ function OSOverview() {
               kicker="Surface 02"
               title="Creative Studio"
               desc="Client-scoped briefs, AI concepts, audit scores, approval workflow, and push to Meta."
+              chips={["Briefs", "Approvals", "Meta push"]}
               preview={<StudioPreview />}
               tone="amber"
             />
@@ -599,6 +584,7 @@ function OSOverview() {
               kicker="Surface 03"
               title="Client Portal"
               desc="White-labeled portal for client-facing reports, invoices, contracts, and campaign dashboards."
+              chips={["Reports", "Invoices", "Contracts"]}
               preview={<PortalPreview />}
               tone="emerald"
             />
@@ -642,13 +628,18 @@ function StudioPreview() {
         <span className="mono text-text-muted">Brief · Fall tune-up</span>
         <StatusPill tone="indigo">Sonnet · 85 cr</StatusPill>
       </div>
-      <div className="mt-2 grid grid-cols-4 gap-1.5">
-        {[94, 91, 88, 86].map((s, i) => (
-          <div key={i} className="aspect-[4/5] rounded border border-border bg-gradient-to-br from-surface-elevated to-background">
-            <div className="flex h-full flex-col justify-between p-1">
-              <span className="mono text-[8px] text-text-faint">0{i + 1}</span>
-              <span className="mono text-[8px] text-success">{s}</span>
+      <div className="mt-2 space-y-1">
+        {[
+          { hook: "Problem→Solution", score: 94, st: "approved", tone: "good" as const },
+          { hook: "Social proof", score: 91, st: "pending", tone: "warn" as const },
+          { hook: "Offer-first", score: 88, st: "pending", tone: "warn" as const },
+        ].map((c) => (
+          <div key={c.hook} className="flex items-center justify-between rounded border border-border bg-surface-elevated px-2 py-1.5 text-[10px]">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="grid h-5 w-5 shrink-0 place-items-center rounded bg-gradient-to-br from-amber/40 to-amber/10 mono text-[8px] text-amber">{c.score}</span>
+              <span className="truncate">{c.hook}</span>
             </div>
+            <StatusPill tone={c.tone}>{c.st}</StatusPill>
           </div>
         ))}
       </div>
@@ -768,10 +759,10 @@ function AgencyDashboardPanel() {
           <AppTopBar title="All clients" subtitle="24 active · 2 at risk · 6 pending approval" />
           <div className="p-4">
             <div className="grid grid-cols-4 gap-2">
-              <Stat label="Active clients" value="24" delta="+3" tone="good" />
-              <Stat label="Avg health" value="92" delta="+4" tone="good" />
-              <Stat label="Pending approvals" value="6" delta="3 urgent" tone="warn" />
-              <Stat label="Churn risk" value="2" delta="watch" tone="bad" />
+              <Stat label="Active clients" value="24" />
+              <Stat label="At-risk clients" value="2" tone="bad" />
+              <Stat label="Pending approvals" value="6" tone="warn" />
+              <Stat label="Credits used" value="153" delta="this month" />
             </div>
 
             <div className="mt-3 overflow-hidden rounded-[10px] border border-border bg-surface-elevated">
@@ -908,20 +899,23 @@ function CreativeStudioPanel() {
                   <span className="text-[12px] font-medium">Generated concepts · 4 of 4</span>
                   <StatusPill tone="warn">3 awaiting AM</StatusPill>
                 </div>
-                <div className="mt-2.5 grid grid-cols-4 gap-2">
+                <div className="mt-2.5 grid grid-cols-2 gap-2">
                   {[
-                    { s: 94, st: "approved", tone: "good" as const },
-                    { s: 91, st: "pending", tone: "warn" as const },
-                    { s: 88, st: "pending", tone: "warn" as const },
-                    { s: 86, st: "pending", tone: "warn" as const },
-                  ].map((c, i) => (
-                    <div key={i} className="rounded-md border border-border bg-background/40 p-1.5">
-                      <div className="aspect-[4/5] rounded bg-gradient-to-br from-surface-elevated to-background" />
-                      <div className="mt-1.5 flex items-center justify-between">
-                        <span className="mono text-[9.5px] text-text-muted">0{i + 1}</span>
-                        <span className={`mono text-[9.5px] ${c.s >= 90 ? "text-success" : "text-warning"}`}>{c.s}</span>
+                    { hook: "Problem→Solution", head: "Cooling out before guests arrive?", s: 94, st: "approved", tone: "good" as const },
+                    { hook: "Social proof", head: "Tampa's most-booked HVAC team", s: 91, st: "pending", tone: "warn" as const },
+                    { hook: "Offer-first", head: "$89 full system tune-up — Nov only", s: 88, st: "pending", tone: "warn" as const },
+                    { hook: "Urgency", head: "Beat the holiday rush — book this week", s: 86, st: "pending", tone: "warn" as const },
+                  ].map((c) => (
+                    <div key={c.hook} className="rounded-md border border-border bg-background/40 p-2">
+                      <div className="flex items-center justify-between">
+                        <span className="mono text-[9.5px] uppercase tracking-wider text-text-faint">{c.hook}</span>
+                        <span className={`mono text-[9.5px] ${c.s >= 90 ? "text-success" : "text-warning"}`}>audit {c.s}</span>
                       </div>
-                      <div className="mt-1"><StatusPill tone={c.tone}>{c.st}</StatusPill></div>
+                      <div className="mt-1 text-[10.5px] leading-snug">"{c.head}"</div>
+                      <div className="mt-1.5 flex items-center justify-between">
+                        <StatusPill tone={c.tone}>{c.st}</StatusPill>
+                        <span className="mono text-[9px] text-text-faint">view details</span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -1184,11 +1178,10 @@ function WorkflowFlow() {
               {FLOW.map((n, i) => (
                 <Reveal key={n.l} delay={i * 0.04}>
                   <div className="flex flex-col items-center text-center">
-                    <div className="relative z-10 grid h-[84px] w-full place-items-center surface-card transition-all hover:-translate-y-0.5 hover:border-indigo/40">
-                      <div className="flex flex-col items-center gap-1.5">
-                        <n.icon className="h-4 w-4 text-indigo" />
-                        <span className="mono text-[9.5px] text-text-faint">0{i + 1}</span>
-                      </div>
+                    <div className="relative z-10 grid h-[72px] w-full place-items-center surface-card transition-all hover:-translate-y-0.5 hover:border-indigo/40">
+                      <span className="grid h-8 w-8 place-items-center rounded-md bg-indigo/15 text-indigo">
+                        <n.icon className="h-4 w-4" />
+                      </span>
                     </div>
                     <div className="mt-2.5 text-[12px] font-medium">{n.l}</div>
                     <div className="mt-1"><StatusPill tone={pillTone(n.pill)}>{n.pill}</StatusPill></div>
@@ -1206,7 +1199,6 @@ function WorkflowFlow() {
                   <n.icon className="h-4 w-4" />
                 </span>
                 <div className="flex-1">
-                  <div className="mono text-[9.5px] text-text-faint">step {i + 1}</div>
                   <div className="text-[13px] font-medium">{n.l}</div>
                 </div>
                 <StatusPill tone={pillTone(n.pill)}>{n.pill}</StatusPill>
