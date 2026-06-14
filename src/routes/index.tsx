@@ -504,16 +504,24 @@ function SurfaceCard({
   kicker,
   title,
   desc,
+  chips,
   preview,
   tone = "indigo",
 }: {
   kicker: string;
   title: string;
   desc: string;
+  chips: string[];
   preview: React.ReactNode;
   tone?: "indigo" | "amber" | "emerald";
 }) {
   const glow = tone === "amber" ? "from-amber/20" : tone === "emerald" ? "from-emerald-400/20" : "from-indigo/25";
+  const chipCls =
+    tone === "amber"
+      ? "border-amber/30 bg-amber/10 text-amber"
+      : tone === "emerald"
+        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+        : "border-indigo/30 bg-indigo/10 text-indigo";
   return (
     <div className="group relative h-full overflow-hidden surface-card transition-all hover:-translate-y-1 hover:border-indigo/40">
       <div className={`pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-gradient-to-br ${glow} to-transparent blur-3xl opacity-70`} />
@@ -521,6 +529,13 @@ function SurfaceCard({
         <div className="mono-eyebrow">{kicker}</div>
         <h3 className="mt-3 text-[20px] font-semibold tracking-tight">{title}</h3>
         <p className="mt-2 text-[13.5px] leading-relaxed text-text-muted">{desc}</p>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {chips.map((c) => (
+            <span key={c} className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10.5px] font-medium ${chipCls}`}>
+              {c}
+            </span>
+          ))}
+        </div>
       </div>
       <div className="relative mx-6 mb-6 overflow-hidden rounded-[10px] border border-border bg-background/40">
         {preview}
@@ -535,23 +550,14 @@ function OSOverview() {
       <div className="mx-auto max-w-[1280px] px-6 sm:px-8">
         <SectionHeading
           eyebrow="Platform"
-          title={<>One platform. <span className="text-gradient-orvio">Three connected surfaces.</span></>}
-          sub="Agency workspace, creative production, and the white-labeled client portal — backed by a single client record, one credit pool, and one team."
+          title={<>One operating system. <span className="text-gradient-orvio">Three connected surfaces.</span></>}
+          sub="Agency work, creative production, and client delivery stay attached to the same client record."
         />
 
         <div className="relative mt-12 grid gap-4 lg:grid-cols-3">
           {/* Connector lines */}
-          <div className="pointer-events-none absolute inset-0 hidden lg:block">
-            <svg className="h-full w-full" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="conn" x1="0" x2="1">
-                  <stop offset="0" stopColor="#6366F1" stopOpacity="0" />
-                  <stop offset="0.5" stopColor="#6366F1" stopOpacity="0.45" />
-                  <stop offset="1" stopColor="#6366F1" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <line x1="33%" y1="50%" x2="33%" y2="50%" stroke="url(#conn)" strokeWidth="1" strokeDasharray="3 3" />
-            </svg>
+          <div className="pointer-events-none absolute inset-x-12 top-1/2 hidden h-px -translate-y-1/2 lg:block">
+            <div className="h-full w-full bg-gradient-to-r from-transparent via-indigo/40 to-transparent" />
           </div>
 
           <Reveal>
@@ -559,6 +565,7 @@ function OSOverview() {
               kicker="Surface 01"
               title="Agency Workspace"
               desc="Internal team dashboard for clients, reports, campaigns, billing, notes, approvals, and credits."
+              chips={["Clients", "Reports", "Billing"]}
               preview={<AgencyPreview />}
             />
           </Reveal>
@@ -567,6 +574,7 @@ function OSOverview() {
               kicker="Surface 02"
               title="Creative Studio"
               desc="Client-scoped briefs, AI concepts, audit scores, approval workflow, and push to Meta."
+              chips={["Briefs", "Approvals", "Meta push"]}
               preview={<StudioPreview />}
               tone="amber"
             />
@@ -576,6 +584,7 @@ function OSOverview() {
               kicker="Surface 03"
               title="Client Portal"
               desc="White-labeled portal for client-facing reports, invoices, contracts, and campaign dashboards."
+              chips={["Reports", "Invoices", "Contracts"]}
               preview={<PortalPreview />}
               tone="emerald"
             />
