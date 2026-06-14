@@ -628,13 +628,18 @@ function StudioPreview() {
         <span className="mono text-text-muted">Brief · Fall tune-up</span>
         <StatusPill tone="indigo">Sonnet · 85 cr</StatusPill>
       </div>
-      <div className="mt-2 grid grid-cols-4 gap-1.5">
-        {[94, 91, 88, 86].map((s, i) => (
-          <div key={i} className="aspect-[4/5] rounded border border-border bg-gradient-to-br from-surface-elevated to-background">
-            <div className="flex h-full flex-col justify-between p-1">
-              <span className="mono text-[8px] text-text-faint">0{i + 1}</span>
-              <span className="mono text-[8px] text-success">{s}</span>
+      <div className="mt-2 space-y-1">
+        {[
+          { hook: "Problem→Solution", score: 94, st: "approved", tone: "good" as const },
+          { hook: "Social proof", score: 91, st: "pending", tone: "warn" as const },
+          { hook: "Offer-first", score: 88, st: "pending", tone: "warn" as const },
+        ].map((c) => (
+          <div key={c.hook} className="flex items-center justify-between rounded border border-border bg-surface-elevated px-2 py-1.5 text-[10px]">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="grid h-5 w-5 shrink-0 place-items-center rounded bg-gradient-to-br from-amber/40 to-amber/10 mono text-[8px] text-amber">{c.score}</span>
+              <span className="truncate">{c.hook}</span>
             </div>
+            <StatusPill tone={c.tone}>{c.st}</StatusPill>
           </div>
         ))}
       </div>
