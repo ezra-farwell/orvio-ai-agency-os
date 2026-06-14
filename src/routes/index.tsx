@@ -759,10 +759,10 @@ function AgencyDashboardPanel() {
           <AppTopBar title="All clients" subtitle="24 active · 2 at risk · 6 pending approval" />
           <div className="p-4">
             <div className="grid grid-cols-4 gap-2">
-              <Stat label="Active clients" value="24" delta="+3" tone="good" />
-              <Stat label="Avg health" value="92" delta="+4" tone="good" />
-              <Stat label="Pending approvals" value="6" delta="3 urgent" tone="warn" />
-              <Stat label="Churn risk" value="2" delta="watch" tone="bad" />
+              <Stat label="Active clients" value="24" />
+              <Stat label="At-risk clients" value="2" tone="bad" />
+              <Stat label="Pending approvals" value="6" tone="warn" />
+              <Stat label="Credits used" value="153" delta="this month" />
             </div>
 
             <div className="mt-3 overflow-hidden rounded-[10px] border border-border bg-surface-elevated">
