@@ -461,7 +461,7 @@ function Hero() {
 
           <Reveal delay={0.1}>
             <p className="mt-5 max-w-xl text-[15.5px] leading-relaxed text-text-muted">
-              Manage clients, prove performance, generate reports, build ad creative, route approvals, and deliver a white-labeled client portal — from one workspace.
+              Manage clients, reports, billing, approvals, campaign data, and AI creative production from one white-labeled workspace.
             </p>
           </Reveal>
 
@@ -473,17 +473,16 @@ function Hero() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-2.5 max-w-md">
+            <div className="mt-7 flex flex-wrap gap-2">
               {[
-                "White-label client portals",
+                "White-label portals",
+                "Client OS + Creative Studio",
                 "Shared workspace credits",
-                "Role-based approvals",
-                "Push approved ads to Meta",
               ].map((t) => (
-                <div key={t} className="flex items-center gap-2 text-[12.5px] text-text-muted">
-                  <Check className="h-3.5 w-3.5 text-indigo shrink-0" />
+                <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/60 px-3 py-1 text-[11.5px] text-text-muted backdrop-blur">
+                  <Check className="h-3 w-3 text-indigo" />
                   {t}
-                </div>
+                </span>
               ))}
             </div>
           </Reveal>
