@@ -30,7 +30,7 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between gap-6 px-6 sm:px-8">
-        {/* Left: logo + beta pill */}
+        {/* Left: logo */}
         <div className="flex shrink-0 items-center gap-3">
           <Link to="/" className="flex items-center gap-2.5 text-foreground">
             <span className="relative grid h-7 w-7 place-items-center rounded-md bg-gradient-to-br from-indigo to-[#4F46E5]">
@@ -39,13 +39,6 @@ export function Nav() {
             </span>
             <span className="text-[16px] font-semibold tracking-tight">Orvio</span>
           </Link>
-          <span className="hidden items-center gap-1.5 rounded-full border border-border bg-surface/70 px-2.5 py-1 sm:inline-flex">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo/70 opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-indigo" />
-            </span>
-            <span className="mono text-[10.5px] uppercase tracking-[0.14em] text-text-muted">Private beta</span>
-          </span>
         </div>
 
         {/* Center: nav links */}
