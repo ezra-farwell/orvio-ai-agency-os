@@ -1196,7 +1196,6 @@ function WorkflowFlow() {
                   <n.icon className="h-4 w-4" />
                 </span>
                 <div className="flex-1">
-                  <div className="mono text-[9.5px] text-text-faint">step {i + 1}</div>
                   <div className="text-[13px] font-medium">{n.l}</div>
                 </div>
                 <StatusPill tone={pillTone(n.pill)}>{n.pill}</StatusPill>
