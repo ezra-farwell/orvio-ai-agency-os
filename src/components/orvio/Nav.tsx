@@ -57,11 +57,11 @@ export function Nav() {
 
         {/* Right: CTAs */}
         <div className="hidden items-center gap-3 md:flex">
-          <Link to="/signup" className="text-[13.5px] text-foreground/70 transition-colors hover:text-foreground">
+          <Link to="/login" className="text-[13.5px] text-foreground/70 transition-colors hover:text-foreground">
             Sign in
           </Link>
           <Link
-            to="/signup"
+            to="/login"
             className="inline-flex h-9 items-center gap-2 rounded-lg bg-indigo px-4 text-[13px] font-medium text-white transition-all hover:bg-[#4F46E5] shadow-[0_6px_24px_-8px_rgba(99,102,241,0.6)]"
           >
             Start free trial
@@ -91,14 +91,14 @@ export function Nav() {
             </Link>
           ))}
           <Link
-            to="/signup"
+            to="/login"
             onClick={() => setOpen(false)}
             className="mt-2 inline-flex h-11 items-center justify-center rounded-lg border border-border px-5 text-sm font-medium text-foreground"
           >
             Sign in
           </Link>
           <Link
-            to="/signup"
+            to="/login"
             onClick={() => setOpen(false)}
             className="mt-2 inline-flex h-11 items-center justify-center rounded-lg bg-indigo px-5 text-sm font-medium text-white"
           >
