@@ -148,9 +148,6 @@ function DashboardMock() {
                 <motion.div
                   key={l as string}
                   className="rounded-lg border border-border bg-background p-2.5"
-                  animate={{ opacity: [0.7, 1] }}
-                  transition={{ duration: 0.5 }}
-                  key-extra={tick}
                 >
                   <div className="text-[10px] text-muted-foreground md:text-[10.5px]">{l}</div>
                   <motion.div
