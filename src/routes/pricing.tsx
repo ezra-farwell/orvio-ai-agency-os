@@ -75,7 +75,7 @@ function Pricing() {
       <section className="hairline-t py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <h2 className="text-[24px] font-semibold tracking-tight">Compare plans</h2>
-          <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-background">
+          <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-background">
             <table className="w-full text-[13.5px]">
               <thead className="bg-[var(--surface-2)] text-left text-[12px] uppercase tracking-wider text-muted-foreground">
                 <tr><th className="p-4 font-semibold">Feature</th>{tiers.map(t => <th key={t.name} className="p-4 text-center font-semibold">{t.name}</th>)}</tr>
