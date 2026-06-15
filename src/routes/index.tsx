@@ -1112,3 +1112,179 @@ function FinalCTA() {
     </section>
   );
 }
+
+/* ---------------- White-label showcase ---------------- */
+
+function WhiteLabelShowcase() {
+  const brands = [
+    { name: "Northstar Growth", domain: "portal.northstargrowth.com", initials: "NS", primary: "#4F46E5", accent: "#8B5CF6", client: "Hartland Plumbing" },
+    { name: "Tidewater Media", domain: "clients.tidewater.io", initials: "TW", primary: "#0EA5E9", accent: "#06B6D4", client: "Brighton HVAC" },
+    { name: "Foundry Local", domain: "app.foundry.co", initials: "FL", primary: "#F97316", accent: "#EF4444", client: "Apex Remodeling" },
+  ];
+  return (
+    <section className="hairline-t bg-[var(--surface-2)]/40 py-20 md:py-24">
+      <div className="mx-auto max-w-[1240px] px-6">
+        <div className="grid items-start gap-10 md:grid-cols-[1fr_1.4fr]">
+          <div>
+            <div className="chip-indigo">White-label</div>
+            <h2 className="mt-3 text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] sm:text-[32px] md:text-[36px]">Your brand on every screen. Even the login.</h2>
+            <p className="mt-3 text-[14.5px] leading-relaxed text-muted-foreground">Three steps to a portal that looks built in-house: upload a logo, pick a primary color, and point a custom domain. We handle SSL and email DNS verification.</p>
+            <ol className="mt-6 space-y-3 text-[13.5px]">
+              {[
+                ["Upload your logo", "Drop a PNG or SVG — we render light and dark variants automatically."],
+                ["Pick a primary color", "One hex value drives every button, chart and accent in the portal."],
+                ["Connect your domain", "Add a CNAME to portals.orvio.app. SSL provisions in minutes."],
+              ].map(([t, b], i) => (
+                <li key={t} className="flex gap-3">
+                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-foreground text-[11px] font-semibold text-background">{i + 1}</span>
+                  <div><div className="font-semibold">{t}</div><div className="text-muted-foreground">{b}</div></div>
+                </li>
+              ))}
+            </ol>
+            <Link to="/app/settings/white-label" className="mt-6 inline-flex items-center gap-1 text-[13.5px] font-medium text-[var(--accent)] hover:underline">
+              See the white-label settings <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            {brands.map(b => (
+              <div key={b.name} className="relative overflow-hidden rounded-2xl border border-border bg-background shadow-soft">
+                <DemoBadge className="absolute right-3 top-3 z-10" />
+                <div className="flex items-center gap-2 border-b border-border px-3 py-2.5" style={{ background: `linear-gradient(135deg, ${b.primary}10, ${b.accent}10)` }}>
+                  <span className="grid h-6 w-6 place-items-center rounded text-[10px] font-bold text-white" style={{ background: b.primary }}>{b.initials}</span>
+                  <div className="min-w-0">
+                    <div className="truncate text-[11.5px] font-semibold">{b.name}</div>
+                    <div className="truncate text-[9.5px] text-muted-foreground mono">{b.domain}</div>
+                  </div>
+                </div>
+                <div className="p-3">
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Client</div>
+                  <div className="text-[12.5px] font-semibold">{b.client}</div>
+                  <div className="mt-2.5 grid grid-cols-2 gap-1.5">
+                    {[["Leads","63"],["CPL","$67"],["Spend","$4.2k"],["Booked","18"]].map(([l,v]) => (
+                      <div key={l} className="rounded-md border border-border p-1.5">
+                        <div className="text-[8.5px] text-muted-foreground">{l}</div>
+                        <div className="text-[11.5px] font-semibold">{v}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="mt-2.5 w-full rounded-md py-1.5 text-[10.5px] font-medium text-white" style={{ background: b.primary }}>
+                    View this month
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Health score explainer ---------------- */
+
+function HealthScoreExplainer() {
+  const signals = [
+    { label: "Lead volume", weight: "40%", body: "Week-over-week leads trend across Meta + Google." },
+    { label: "Cost per lead", weight: "35%", body: "CPL movement relative to the client's 30-day baseline." },
+    { label: "Client engagement", weight: "25%", body: "Portal logins, approvals answered, messages read." },
+  ];
+  return (
+    <section className="hairline-t py-20 md:py-24">
+      <div className="mx-auto max-w-[1240px] px-6">
+        <div className="grid items-center gap-10 md:grid-cols-[1fr_1.1fr]">
+          <div>
+            <div className="chip">Client health</div>
+            <h2 className="mt-3 text-[26px] font-semibold leading-[1.1] tracking-[-0.02em] sm:text-[30px] md:text-[34px]">Catch churn 30 days before it happens.</h2>
+            <p className="mt-3 text-[14.5px] leading-relaxed text-muted-foreground">
+              Every client gets a 0–100 health score. We blend three signals so you see at-risk accounts before the cancellation email arrives. Scores below 70 trigger an at-risk flag in the agency dashboard.
+            </p>
+            <div className="mt-5 rounded-xl border border-dashed border-border bg-background p-4 text-[12.5px] text-muted-foreground">
+              <span className="font-semibold text-foreground">Formula:</span> health = (lead volume Δ × 0.40) + (CPL stability × 0.35) + (engagement × 0.25). Normalized to 0–100.
+            </div>
+          </div>
+          <div className="rounded-2xl border border-border bg-background p-5 shadow-soft">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-[12px] text-muted-foreground">Brighton HVAC · Health score</div>
+                <div className="mt-1 text-[34px] font-semibold tracking-tight">62<span className="text-[16px] text-muted-foreground">/100</span></div>
+              </div>
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--warning-soft)] px-2.5 py-1 text-[11px] font-semibold text-[var(--warning)]">
+                <AlertTriangle className="h-3 w-3" /> At-risk
+              </span>
+            </div>
+            <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-[var(--surface-2)]">
+              <div className="h-full rounded-full bg-gradient-to-r from-[var(--warning)] to-[var(--danger)]" style={{ width: "62%" }} />
+            </div>
+            <div className="mt-5 space-y-2.5">
+              {signals.map(s => (
+                <div key={s.label} className="flex items-start justify-between gap-3 rounded-lg border border-border bg-[var(--surface-2)]/40 p-3">
+                  <div>
+                    <div className="text-[12.5px] font-semibold">{s.label}</div>
+                    <div className="text-[11.5px] text-muted-foreground">{s.body}</div>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-background px-2 py-0.5 text-[10.5px] font-semibold text-muted-foreground">{s.weight}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Credits explainer ---------------- */
+
+function CreditsExplainer() {
+  const examples = [
+    { label: "AI report summary", cost: "5 credits", live: true },
+    { label: "Ad copy generation (1 set)", cost: "10 credits", live: true },
+    { label: "Brand memory refresh", cost: "20 credits", live: false },
+    { label: "Auto-generated monthly PDF", cost: "15 credits", live: false },
+    { label: "Creative image variation", cost: "25 credits", live: false },
+    { label: "Push to Meta draft", cost: "10 credits", live: false },
+  ];
+  return (
+    <section className="hairline-t bg-[var(--surface-2)]/40 py-20 md:py-24">
+      <div className="mx-auto max-w-[1240px] px-6">
+        <div className="grid items-start gap-10 md:grid-cols-[1fr_1.2fr]">
+          <div>
+            <div className="chip-indigo">Credits, in plain English</div>
+            <h2 className="mt-3 text-[26px] font-semibold leading-[1.1] tracking-[-0.02em] sm:text-[30px] md:text-[34px]">One credit pool, every AI action.</h2>
+            <p className="mt-3 text-[14.5px] leading-relaxed text-muted-foreground">
+              Credits cover AI Content Studio, automatic report summaries, and brand-memory refreshes. Reporting, the lead inbox, approvals, invoicing and white-label settings don't use credits — they're included on every plan.
+            </p>
+            <ul className="mt-5 space-y-2 text-[13px]">
+              <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent)]" /><span>Plans include 200 → 20,000 credits / mo. Unused credits roll over for one cycle.</span></li>
+              <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent)]" /><span>Top up with a credit pack any time — no plan upgrade required.</span></li>
+              <li className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--accent)]" /><span>See per-client credit usage in the agency dashboard.</span></li>
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-border bg-background p-5 shadow-soft">
+            <div className="flex items-center justify-between">
+              <div className="text-[12px] uppercase tracking-wider text-muted-foreground">Sample credit costs</div>
+              <span className="rounded-full bg-[var(--accent-soft)] px-2 py-0.5 text-[10.5px] font-semibold text-[var(--accent)]">Indicative</span>
+            </div>
+            <div className="mt-3 divide-y divide-border">
+              {examples.map(e => (
+                <div key={e.label} className="flex items-center justify-between gap-3 py-2.5">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
+                    <span className="text-[13px]">{e.label}</span>
+                    {!e.live && <span className="rounded-full border border-dashed border-border px-1.5 py-0.5 text-[9.5px] font-semibold uppercase tracking-wider text-muted-foreground">Roadmap</span>}
+                  </div>
+                  <span className="mono text-[12.5px] font-semibold">{e.cost}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 rounded-lg border border-dashed border-border bg-[var(--surface-2)]/60 p-3 text-[11.5px] text-muted-foreground">
+              Example: Pro ($497 /mo) includes 5,000 credits — enough for ~500 ad copy generations or ~1,000 report summaries.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
