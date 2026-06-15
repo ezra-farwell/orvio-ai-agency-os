@@ -19,9 +19,11 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as BookDemoRouteImport } from './routes/book-demo'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PortalReportsRouteImport } from './routes/portal.reports'
 import { Route as PortalPaymentsRouteImport } from './routes/portal.payments'
 import { Route as PortalMessagesRouteImport } from './routes/portal.messages'
@@ -35,9 +37,14 @@ import { Route as AppPipelineRouteImport } from './routes/app.pipeline'
 import { Route as AppPaymentsRouteImport } from './routes/app.payments'
 import { Route as AppMessagesRouteImport } from './routes/app.messages'
 import { Route as AppLeadsRouteImport } from './routes/app.leads'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminIntegrationsRouteImport } from './routes/admin.integrations'
+import { Route as AdminBillingRouteImport } from './routes/admin.billing'
+import { Route as AdminAgenciesRouteImport } from './routes/admin.agencies'
 import { Route as AppClientsIndexRouteImport } from './routes/app.clients.index'
 import { Route as AppSettingsWhiteLabelRouteImport } from './routes/app.settings.white-label'
 import { Route as AppClientsIdRouteImport } from './routes/app.clients.$id'
+import { Route as AdminAgenciesIdRouteImport } from './routes/admin.agencies.$id'
 import { Route as AppStudioBrandIdRouteImport } from './routes/app.studio.brand.$id'
 import { Route as AppStudioAdsNewRouteImport } from './routes/app.studio.ads.new'
 
@@ -91,6 +98,11 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -105,6 +117,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const PortalReportsRoute = PortalReportsRouteImport.update({
   id: '/reports',
@@ -171,6 +188,26 @@ const AppLeadsRoute = AppLeadsRouteImport.update({
   path: '/leads',
   getParentRoute: () => AppRoute,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminIntegrationsRoute = AdminIntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBillingRoute = AdminBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAgenciesRoute = AdminAgenciesRouteImport.update({
+  id: '/agencies',
+  path: '/agencies',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AppClientsIndexRoute = AppClientsIndexRouteImport.update({
   id: '/clients/',
   path: '/clients/',
@@ -186,6 +223,11 @@ const AppClientsIdRoute = AppClientsIdRouteImport.update({
   path: '/clients/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AdminAgenciesIdRoute = AdminAgenciesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminAgenciesRoute,
+} as any)
 const AppStudioBrandIdRoute = AppStudioBrandIdRouteImport.update({
   id: '/brand/$id',
   path: '/brand/$id',
@@ -199,6 +241,7 @@ const AppStudioAdsNewRoute = AppStudioAdsNewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
@@ -209,6 +252,10 @@ export interface FileRoutesByFullPath {
   '/product': typeof ProductRoute
   '/signup': typeof SignupRoute
   '/solutions': typeof SolutionsRoute
+  '/admin/agencies': typeof AdminAgenciesRouteWithChildren
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/app/leads': typeof AppLeadsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/payments': typeof AppPaymentsRoute
@@ -222,8 +269,10 @@ export interface FileRoutesByFullPath {
   '/portal/messages': typeof PortalMessagesRoute
   '/portal/payments': typeof PortalPaymentsRoute
   '/portal/reports': typeof PortalReportsRoute
+  '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/portal/': typeof PortalIndexRoute
+  '/admin/agencies/$id': typeof AdminAgenciesIdRoute
   '/app/clients/$id': typeof AppClientsIdRoute
   '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
   '/app/clients/': typeof AppClientsIndexRoute
@@ -240,6 +289,10 @@ export interface FileRoutesByTo {
   '/product': typeof ProductRoute
   '/signup': typeof SignupRoute
   '/solutions': typeof SolutionsRoute
+  '/admin/agencies': typeof AdminAgenciesRouteWithChildren
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/app/leads': typeof AppLeadsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/payments': typeof AppPaymentsRoute
@@ -253,8 +306,10 @@ export interface FileRoutesByTo {
   '/portal/messages': typeof PortalMessagesRoute
   '/portal/payments': typeof PortalPaymentsRoute
   '/portal/reports': typeof PortalReportsRoute
+  '/admin': typeof AdminIndexRoute
   '/app': typeof AppIndexRoute
   '/portal': typeof PortalIndexRoute
+  '/admin/agencies/$id': typeof AdminAgenciesIdRoute
   '/app/clients/$id': typeof AppClientsIdRoute
   '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
   '/app/clients': typeof AppClientsIndexRoute
@@ -264,6 +319,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
@@ -274,6 +330,10 @@ export interface FileRoutesById {
   '/product': typeof ProductRoute
   '/signup': typeof SignupRoute
   '/solutions': typeof SolutionsRoute
+  '/admin/agencies': typeof AdminAgenciesRouteWithChildren
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/app/leads': typeof AppLeadsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/payments': typeof AppPaymentsRoute
@@ -287,8 +347,10 @@ export interface FileRoutesById {
   '/portal/messages': typeof PortalMessagesRoute
   '/portal/payments': typeof PortalPaymentsRoute
   '/portal/reports': typeof PortalReportsRoute
+  '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/portal/': typeof PortalIndexRoute
+  '/admin/agencies/$id': typeof AdminAgenciesIdRoute
   '/app/clients/$id': typeof AppClientsIdRoute
   '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
   '/app/clients/': typeof AppClientsIndexRoute
@@ -299,6 +361,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/app'
     | '/book-demo'
     | '/demo'
@@ -309,6 +372,10 @@ export interface FileRouteTypes {
     | '/product'
     | '/signup'
     | '/solutions'
+    | '/admin/agencies'
+    | '/admin/billing'
+    | '/admin/integrations'
+    | '/admin/settings'
     | '/app/leads'
     | '/app/messages'
     | '/app/payments'
@@ -322,8 +389,10 @@ export interface FileRouteTypes {
     | '/portal/messages'
     | '/portal/payments'
     | '/portal/reports'
+    | '/admin/'
     | '/app/'
     | '/portal/'
+    | '/admin/agencies/$id'
     | '/app/clients/$id'
     | '/app/settings/white-label'
     | '/app/clients/'
@@ -340,6 +409,10 @@ export interface FileRouteTypes {
     | '/product'
     | '/signup'
     | '/solutions'
+    | '/admin/agencies'
+    | '/admin/billing'
+    | '/admin/integrations'
+    | '/admin/settings'
     | '/app/leads'
     | '/app/messages'
     | '/app/payments'
@@ -353,8 +426,10 @@ export interface FileRouteTypes {
     | '/portal/messages'
     | '/portal/payments'
     | '/portal/reports'
+    | '/admin'
     | '/app'
     | '/portal'
+    | '/admin/agencies/$id'
     | '/app/clients/$id'
     | '/app/settings/white-label'
     | '/app/clients'
@@ -363,6 +438,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/app'
     | '/book-demo'
     | '/demo'
@@ -373,6 +449,10 @@ export interface FileRouteTypes {
     | '/product'
     | '/signup'
     | '/solutions'
+    | '/admin/agencies'
+    | '/admin/billing'
+    | '/admin/integrations'
+    | '/admin/settings'
     | '/app/leads'
     | '/app/messages'
     | '/app/payments'
@@ -386,8 +466,10 @@ export interface FileRouteTypes {
     | '/portal/messages'
     | '/portal/payments'
     | '/portal/reports'
+    | '/admin/'
     | '/app/'
     | '/portal/'
+    | '/admin/agencies/$id'
     | '/app/clients/$id'
     | '/app/settings/white-label'
     | '/app/clients/'
@@ -397,6 +479,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
   BookDemoRoute: typeof BookDemoRoute
   DemoRoute: typeof DemoRoute
@@ -481,6 +564,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -501,6 +591,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/portal/reports': {
       id: '/portal/reports'
@@ -593,6 +690,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLeadsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/integrations': {
+      id: '/admin/integrations'
+      path: '/integrations'
+      fullPath: '/admin/integrations'
+      preLoaderRoute: typeof AdminIntegrationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/billing': {
+      id: '/admin/billing'
+      path: '/billing'
+      fullPath: '/admin/billing'
+      preLoaderRoute: typeof AdminBillingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/agencies': {
+      id: '/admin/agencies'
+      path: '/agencies'
+      fullPath: '/admin/agencies'
+      preLoaderRoute: typeof AdminAgenciesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/app/clients/': {
       id: '/app/clients/'
       path: '/clients'
@@ -614,6 +739,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppClientsIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/admin/agencies/$id': {
+      id: '/admin/agencies/$id'
+      path: '/$id'
+      fullPath: '/admin/agencies/$id'
+      preLoaderRoute: typeof AdminAgenciesIdRouteImport
+      parentRoute: typeof AdminAgenciesRoute
+    }
     '/app/studio/brand/$id': {
       id: '/app/studio/brand/$id'
       path: '/brand/$id'
@@ -630,6 +762,36 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminAgenciesRouteChildren {
+  AdminAgenciesIdRoute: typeof AdminAgenciesIdRoute
+}
+
+const AdminAgenciesRouteChildren: AdminAgenciesRouteChildren = {
+  AdminAgenciesIdRoute: AdminAgenciesIdRoute,
+}
+
+const AdminAgenciesRouteWithChildren = AdminAgenciesRoute._addFileChildren(
+  AdminAgenciesRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminAgenciesRoute: typeof AdminAgenciesRouteWithChildren
+  AdminBillingRoute: typeof AdminBillingRoute
+  AdminIntegrationsRoute: typeof AdminIntegrationsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAgenciesRoute: AdminAgenciesRouteWithChildren,
+  AdminBillingRoute: AdminBillingRoute,
+  AdminIntegrationsRoute: AdminIntegrationsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AppStudioRouteChildren {
   AppStudioAdsNewRoute: typeof AppStudioAdsNewRoute
@@ -700,6 +862,7 @@ const PortalRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AppRoute: AppRouteWithChildren,
   BookDemoRoute: BookDemoRoute,
   DemoRoute: DemoRoute,
@@ -714,13 +877,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
