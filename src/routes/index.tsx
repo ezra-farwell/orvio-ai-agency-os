@@ -30,6 +30,7 @@ function Home() {
       <FeatureGrid />
       <WorkflowDemos />
       <ProductDeepDive />
+      <Testimonials />
       <ProductTruthStrip />
       <Roadmap />
       <PricingPreview />
@@ -38,6 +39,50 @@ function Home() {
     </MarketingShell>
   );
 }
+
+/* ---------------- Brand marks (Meta Ads & Google Ads) ---------------- */
+
+function MetaMark({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 36 36" className={className} aria-label="Meta">
+      <defs>
+        <linearGradient id="metaG1" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stopColor="#0064E1" />
+          <stop offset="50%" stopColor="#0082FB" />
+          <stop offset="100%" stopColor="#19AFFF" />
+        </linearGradient>
+      </defs>
+      <path fill="url(#metaG1)" d="M6.4 22.7c0 2 .9 3.5 2.4 3.5 1.2 0 2-.6 3.7-3.1L14.9 19c2.6-4.1 4-6.3 6.6-6.3 2.5 0 4.5 1.8 5.8 5l-1.7 1c-.9-2.3-2.2-3.5-3.8-3.5-1.6 0-2.7 1.2-4.7 4.4l-2.4 3.8c-2 3.1-3.7 4.4-6 4.4-3 0-4.9-2.4-4.9-6.2 0-5.7 3.8-11 8.6-11 2.3 0 4.3 1.1 6 3l-1.3 1.5c-1.5-1.5-3-2.4-4.7-2.4-3.2 0-6 4-6 8.5l.1 1.5z" />
+    </svg>
+  );
+}
+
+function GoogleMark({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} aria-label="Google">
+      <path fill="#4285F4" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.8 2.7 30.3.5 24 .5 14.8.5 6.9 5.8 3.1 13.4l7.8 6.1C12.7 13.7 17.9 9.5 24 9.5z" />
+      <path fill="#34A853" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.6-4.9 7.3l7.6 5.9c4.4-4.1 7.1-10.1 7.1-17.7z" />
+      <path fill="#FBBC05" d="M10.9 28.4c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.8-6.1C1.4 16.6.5 20.2.5 24s.9 7.4 2.6 10.5l7.8-6.1z" />
+      <path fill="#EA4335" d="M24 47.5c6.3 0 11.6-2.1 15.4-5.7l-7.6-5.9c-2.1 1.4-4.8 2.3-7.8 2.3-6.1 0-11.3-4.2-13.1-9.9l-7.8 6.1C6.9 42.2 14.8 47.5 24 47.5z" />
+    </svg>
+  );
+}
+
+function MetaAdsChip({ className = "" }: { className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-[10.5px] font-medium ${className}`}>
+      <MetaMark className="h-3 w-3" /> Meta Ads
+    </span>
+  );
+}
+function GoogleAdsChip({ className = "" }: { className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-[10.5px] font-medium ${className}`}>
+      <GoogleMark className="h-3 w-3" /> Google Ads
+    </span>
+  );
+}
+
 
 /* ---------------- Demo-data badge ---------------- */
 
