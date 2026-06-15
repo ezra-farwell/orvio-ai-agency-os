@@ -1,0 +1,133 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { PageHeader, Card, StatusBadge } from "@/components/bits";
+import { clients, usd } from "@/mock/data";
+import { Plus, X, Mail, Phone } from "lucide-react";
+
+export const Route = createFileRoute("/app/clients/")({
+  component: Clients,
+  head: () => ({ meta: [{ title: "Clients — Orvio" }] }),
+});
+
+function Clients() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <PageHeader title="Clients" sub={`${clients.length} accounts · ${clients.filter(c=>c.status==="active").length} active`}
+        actions={<button onClick={() => setOpen(true)} className="inline-flex h-9 items-center gap-1 rounded-lg bg-foreground px-3 text-[13px] font-medium text-background hover:bg-foreground/90"><Plus className="h-3.5 w-3.5" /> Add client</button>}
+      />
+      <div className="px-6 pb-10">
+        <Card>
+          <table className="w-full text-[13px]">
+            <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="px-4 py-2.5">Client</th>
+                <th className="px-4 py-2.5">Category</th>
+                <th className="px-4 py-2.5">Service area</th>
+                <th className="px-4 py-2.5">Spend</th>
+                <th className="px-4 py-2.5">Leads</th>
+                <th className="px-4 py-2.5">CPL</th>
+                <th className="px-4 py-2.5">Integrations</th>
+                <th className="px-4 py-2.5">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {clients.map(c => (
+                <tr key={c.id} className="hover:bg-[var(--surface-2)]/60">
+                  <td className="px-4 py-3">
+                    <Link to="/app/clients/$id" params={{ id: c.id }} className="flex items-center gap-2.5">
+                      <span className="grid h-7 w-7 place-items-center rounded text-[11px] font-semibold text-white" style={{ background: c.color }}>{c.initials}</span>
+                      <div>
+                        <div className="font-medium">{c.name}</div>
+                        <div className="text-[11.5px] text-muted-foreground">{c.owner}</div>
+                      </div>
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3">{c.category}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{c.area}</td>
+                  <td className="px-4 py-3 mono">{usd(c.monthlySpend)}</td>
+                  <td className="px-4 py-3">{c.leads}</td>
+                  <td className="px-4 py-3 mono">${c.cpl.toFixed(2)}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-1">
+                      <IntChip label="M" state={c.meta} title="Meta Ads" />
+                      <IntChip label="G" state={c.google} title="Google Ads" />
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    {c.status === "active" && <StatusBadge kind="success">Active</StatusBadge>}
+                    {c.status === "at-risk" && <StatusBadge kind="warning">At risk</StatusBadge>}
+                    {c.status === "onboarding" && <StatusBadge kind="indigo">Onboarding</StatusBadge>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+      </div>
+
+      {open && <AddClientModal onClose={() => setOpen(false)} />}
+    </>
+  );
+}
+
+function IntChip({ label, state, title }: { label: string; state: "connected" | "warning" | "disconnected"; title: string }) {
+  const color = state === "connected" ? "var(--success)" : state === "warning" ? "var(--warning)" : "var(--danger)";
+  return (
+    <span title={`${title} · ${state}`} className="inline-flex h-5 w-5 items-center justify-center rounded text-[10px] font-semibold text-white" style={{ background: color }}>{label}</span>
+  );
+}
+
+function AddClientModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-foreground/30 p-4 backdrop-blur-sm" onClick={onClose}>
+      <div onClick={e => e.stopPropagation()} className="w-full max-w-xl rounded-2xl border border-border bg-background shadow-pop">
+        <div className="flex items-center justify-between border-b border-border px-5 py-3">
+          <div>
+            <div className="text-[15px] font-semibold">Add a new client</div>
+            <div className="text-[12px] text-muted-foreground">They'll receive a portal invite by email.</div>
+          </div>
+          <button onClick={onClose} className="rounded-md p-1 text-muted-foreground hover:bg-[var(--surface-2)]"><X className="h-4 w-4" /></button>
+        </div>
+        <form onSubmit={e => { e.preventDefault(); onClose(); }} className="space-y-3 p-5">
+          <div className="grid gap-3 md:grid-cols-2">
+            <Field label="Business name" placeholder="Hartland Plumbing" />
+            <Field label="Owner name" placeholder="Mike Hartland" />
+            <Field label="Owner email" placeholder="mike@example.com" />
+            <Field label="Phone" placeholder="(248) 555-0142" />
+            <Field label="Service category" placeholder="Plumbing" />
+            <Field label="Service area" placeholder="Detroit Metro, MI" />
+          </div>
+          <div className="grid gap-3 md:grid-cols-2">
+            <Select label="Meta ad account" options={["Connect after invite","Connect now"]} />
+            <Select label="Google ad account" options={["Connect after invite","Connect now"]} />
+          </div>
+          <div className="flex items-center gap-2 rounded-lg border border-border bg-[var(--surface-2)] px-3 py-2.5">
+            <input type="checkbox" defaultChecked id="wl" className="h-4 w-4 accent-[var(--accent)]" />
+            <label htmlFor="wl" className="text-[13px]">Enable white-label branding for this client</label>
+          </div>
+          <div className="flex items-center justify-end gap-2 pt-2">
+            <button type="button" onClick={onClose} className="h-9 rounded-lg border border-border bg-background px-4 text-[13px]">Cancel</button>
+            <button type="submit" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-4 text-[13px] font-medium text-background"><Mail className="h-3.5 w-3.5" />Send invite</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+function Field({ label, placeholder }: { label: string; placeholder?: string }) {
+  return (
+    <label className="block">
+      <div className="text-[12px] font-medium text-muted-foreground">{label}</div>
+      <input placeholder={placeholder} className="mt-1 h-9 w-full rounded-lg border border-border bg-background px-3 text-[13px] outline-none focus:border-[var(--accent)]" />
+    </label>
+  );
+}
+function Select({ label, options }: { label: string; options: string[] }) {
+  return (
+    <label className="block">
+      <div className="text-[12px] font-medium text-muted-foreground">{label}</div>
+      <select className="mt-1 h-9 w-full rounded-lg border border-border bg-background px-3 text-[13px]">{options.map(o => <option key={o}>{o}</option>)}</select>
+    </label>
+  );
+}

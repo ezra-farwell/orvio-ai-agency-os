@@ -1,205 +1,98 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { Slider } from "@/components/ui/slider";
-import { Nav } from "@/components/orvio/Nav";
-import { Footer } from "@/components/orvio/Footer";
-import { Reveal, SectionHeader } from "@/components/orvio/primitives";
-import { GlyphEcho, SkyBand } from "@/components/orvio/lattice";
-import { PricingBlock, tierData } from "./index";
-import { CheckCircle2, AlertCircle } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { MarketingShell } from "@/components/shells/MarketingShell";
+import { Check, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/pricing")({
+  component: Pricing,
   head: () => ({
     meta: [
       { title: "Pricing — Orvio" },
-      { name: "description", content: "Flat monthly subscription. Credits for AI usage. No per-seat fees. Starter $97/mo, Professional $197/mo, Enterprise custom." },
-      { property: "og:title", content: "Orvio pricing — $97 to start" },
-      { property: "og:description", content: "Starter $97/mo · Professional $197/mo · Enterprise custom. Credits never expire. Shared across your team." },
+      { name: "description", content: "Flat agency pricing. Starter $97, Growth $297, Scale $697. No per-client fees." },
     ],
   }),
-  component: PricingPage,
 });
 
-const TIER_COSTS = {
-  Standard: 25,
-  Premium: 60,
-  Maximum: 75,
-} as const;
+const tiers = [
+  { name: "Starter", price: 97, sub: "Solo agencies, 1-3 clients", pop: false, features: ["1 agency seat","Up to 3 client accounts","Meta + Google reporting","Branded client portals","Lead inbox","Stripe payments","Email support"] },
+  { name: "Growth", price: 297, sub: "The plan most agencies start on", pop: true, features: ["5 agency seats","Up to 25 client accounts","Content Studio (AI ads, social, email)","White-label domain","Brand memory per client","Pipeline & approvals","Priority support"] },
+  { name: "Scale", price: 697, sub: "Multi-team, multi-brand agencies", pop: false, features: ["Unlimited agency seats","Unlimited client accounts","Multi-brand white-label","Custom AI tuning","API access","SSO","Dedicated CSM"] },
+];
 
-type TierKey = keyof typeof TIER_COSTS;
+const rows: [string, (string | boolean)[]][] = [
+  ["Client accounts", ["3", "25", "Unlimited"]],
+  ["Agency seats", ["1", "5", "Unlimited"]],
+  ["White-label domain", [false, true, true]],
+  ["Content Studio (AI)", [false, true, true]],
+  ["Brand memory", [false, true, true]],
+  ["Multi-brand white-label", [false, false, true]],
+  ["Stripe Connect payments", [true, true, true]],
+  ["Custom contracts", [false, false, true]],
+  ["API access", [false, false, true]],
+  ["SSO / SAML", [false, false, true]],
+  ["Support", ["Email", "Priority", "Dedicated CSM"]],
+];
 
-function PricingPage() {
+function Pricing() {
   return (
-    <div className="min-h-screen bg-background">
-      <Nav />
-
-      <SkyBand variant="full" className="pt-32 pb-20 sm:pt-40 sm:pb-28">
-        <div className="mx-auto max-w-[1280px] px-6 text-center sm:px-10">
-          <Reveal>
-            <div className="flex justify-center">
-              <GlyphEcho size={96} />
-            </div>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <div className="mono-eyebrow mt-8 flex items-center justify-center gap-3 text-white/85">
-              <span className="text-[#171717]">01</span>
-              <span>—</span>
-              <span>Pricing</span>
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h1
-              className="mt-6 font-display font-extrabold leading-[1.02] tracking-tight text-white"
-              style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
-            >
-              Simple pricing.<br /><span className="italic">No surprises.</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <p className="mx-auto mt-6 max-w-2xl text-base text-white/85 sm:text-lg">
-              Flat monthly subscription. Credits for AI usage. No per-seat fees. Cancel anytime.
-            </p>
-          </Reveal>
+    <MarketingShell>
+      <section className="hero-bg pt-32 pb-12">
+        <div className="mx-auto max-w-[1240px] px-6 text-center">
+          <div className="chip">Pricing</div>
+          <h1 className="mt-3 text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] md:text-[56px]">Simple agency pricing.</h1>
+          <p className="mx-auto mt-3 max-w-xl text-[15px] text-muted-foreground">Flat monthly pricing per agency. No per-client fees. 14-day trial on every plan.</p>
         </div>
-      </SkyBand>
+      </section>
 
-      <main>
-        <section className="mx-auto -mt-12 max-w-[1280px] px-6 sm:px-10">
-          <Reveal>
-            <PricingBlock />
-          </Reveal>
-        </section>
-
-        <section className="mx-auto mt-32 max-w-[1280px] px-6 pb-32 sm:px-10">
-          <Reveal>
-            <SectionHeader
-              center={false}
-              index="02"
-              eyebrow="Credit calculator"
-              title={<>How many credits<br />will you actually use?</>}
-              subtitle="Pick numbers that match how you work. We'll estimate."
-            />
-          </Reveal>
-          <Reveal delay={0.1}>
-            <CreditCalculator />
-          </Reveal>
-        </section>
-      </main>
-      <Footer />
-    </div>
-  );
-}
-
-function CreditCalculator() {
-  const [clients, setClients] = useState(5);
-  const [briefs, setBriefs] = useState(2);
-  const [reports, setReports] = useState(1);
-  const [audits, setAudits] = useState(1);
-  const [tier, setTier] = useState<TierKey>("Premium");
-
-  const REPORT_COST = 30;
-  const AUDIT_COST = 20;
-
-  const monthly = useMemo(() => {
-    const briefCost = briefs * (TIER_COSTS[tier] + 15);
-    const reportCost = reports * REPORT_COST;
-    const auditCost = audits * AUDIT_COST;
-    return clients * (briefCost + reportCost + auditCost);
-  }, [clients, briefs, reports, audits, tier]);
-
-  const recommended =
-    monthly <= 300 ? tierData[0] : monthly <= 1000 ? tierData[1] : tierData[2];
-  const included = recommended.name === "Starter" ? 300 : recommended.name === "Professional" ? 1000 : monthly;
-  const covered = monthly <= included;
-  const shortage = covered ? 0 : monthly - included;
-
-  return (
-    <div className="mt-16 grid gap-12 hairline-t hairline-b py-12 lg:grid-cols-[1fr_400px] lg:gap-20">
-      <div className="space-y-9">
-        <SliderRow label="Number of clients" min={1} max={20} value={clients} onChange={setClients} suffix={` ${clients === 1 ? "client" : "clients"}`} />
-        <SliderRow label="Campaign briefs / client / month" min={1} max={5} value={briefs} onChange={setBriefs} suffix={` ${briefs === 1 ? "brief" : "briefs"}`} />
-        <SliderRow label="Reports / client / month" min={0} max={3} value={reports} onChange={setReports} suffix={` ${reports === 1 ? "report" : "reports"}`} />
-        <SliderRow label="Audits / client / month" min={0} max={2} value={audits} onChange={setAudits} suffix={` ${audits === 1 ? "audit" : "audits"}`} />
-
-        <div>
-          <div className="mono-eyebrow mb-3 text-text-muted">Primary model tier</div>
-          <div className="flex gap-2">
-            {(Object.keys(TIER_COSTS) as TierKey[]).map((k) => (
-              <button
-                key={k}
-                onClick={() => setTier(k)}
-                className={`flex-1 rounded-full border px-4 py-2.5 text-sm font-medium transition-all ${
-                  tier === k
-                    ? "border-[#171717] bg-[#171717]/10 text-[#171717]"
-                    : "border-border bg-transparent text-text-muted hover:text-foreground"
-                }`}
-              >
-                {k}
-                <span className="ml-2 font-mono text-xs opacity-70">{TIER_COSTS[k]}cr</span>
-              </button>
+      <section className="pb-16">
+        <div className="mx-auto max-w-[1240px] px-6">
+          <div className="grid gap-4 md:grid-cols-3">
+            {tiers.map(t => (
+              <div key={t.name} className={`rounded-2xl border bg-background p-6 ${t.pop ? "border-foreground shadow-pop" : "border-border"}`}>
+                {t.pop && <div className="mb-3 inline-flex chip-indigo">Most popular</div>}
+                <div className="text-[13px] font-medium text-muted-foreground">{t.name}</div>
+                <div className="mt-2 flex items-baseline gap-1"><span className="text-[40px] font-semibold tracking-tight">${t.price}</span><span className="text-[13px] text-muted-foreground">/mo</span></div>
+                <div className="mt-1 text-[12.5px] text-muted-foreground">{t.sub}</div>
+                <Link to="/book-demo" className={`mt-5 flex h-10 items-center justify-center rounded-lg text-[13.5px] font-medium ${t.pop ? "bg-foreground text-background hover:bg-foreground/90" : "border border-border bg-background hover:bg-[var(--surface-2)]"}`}>Start 14-day trial</Link>
+                <ul className="mt-5 space-y-2">
+                  {t.features.map(f => <li key={f} className="flex items-start gap-2 text-[13px]"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--success)]" /><span>{f}</span></li>)}
+                </ul>
+              </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="glass-pill rounded-2xl p-8" style={{ background: "rgba(20,22,32,0.6)" }}>
-        <div className="mono-eyebrow text-text-muted">Estimated monthly usage</div>
-        <div className="mt-4 font-mono text-6xl font-semibold text-foreground tracking-tight">{monthly.toLocaleString()}</div>
-        <div className="mono-eyebrow mt-2 text-text-muted">credits / month</div>
-
-        <div className="mt-10 hairline-t pt-6">
-          <div className="flex items-center justify-between">
-            <span className="mono-eyebrow text-text-muted">Recommended plan</span>
-            <span className="mono-eyebrow text-[#171717]">{recommended.name}</span>
+      <section className="hairline-t py-16">
+        <div className="mx-auto max-w-[1100px] px-6">
+          <h2 className="text-[24px] font-semibold tracking-tight">Compare plans</h2>
+          <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-background">
+            <table className="w-full text-[13.5px]">
+              <thead className="bg-[var(--surface-2)] text-left text-[12px] uppercase tracking-wider text-muted-foreground">
+                <tr><th className="p-4 font-semibold">Feature</th>{tiers.map(t => <th key={t.name} className="p-4 text-center font-semibold">{t.name}</th>)}</tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {rows.map(([label, vals]) => (
+                  <tr key={label}>
+                    <td className="p-4 font-medium">{label}</td>
+                    {vals.map((v, i) => (
+                      <td key={i} className="p-4 text-center">
+                        {typeof v === "boolean" ? (v ? <Check className="mx-auto h-4 w-4 text-[var(--success)]" /> : <span className="text-muted-foreground">—</span>) : v}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <div className="mt-3 text-sm text-text-muted">
-            Includes <span className="font-mono text-foreground">{recommended.name === "Enterprise" ? "custom" : `${included.toLocaleString()}`}</span> credits/month
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-dashed border-border bg-background p-5">
+            <div>
+              <div className="text-[14px] font-semibold">Enterprise</div>
+              <div className="text-[12.5px] text-muted-foreground">50+ clients, SSO, custom contracts, dedicated infrastructure.</div>
+            </div>
+            <Link to="/book-demo" className="inline-flex h-10 items-center rounded-lg border border-border bg-background px-4 text-[13px] font-medium hover:bg-[var(--surface-2)]">Talk to sales <ArrowRight className="ml-1.5 h-3.5 w-3.5" /></Link>
           </div>
         </div>
-
-        <div className={`mt-6 flex items-start gap-3 rounded-xl border p-4 text-sm ${
-          covered
-            ? "border-success/30 bg-success/10 text-success"
-            : "border-warning/30 bg-warning/10 text-warning"
-        }`}>
-          {covered ? <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" /> : <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />}
-          <span>
-            {covered
-              ? "You're covered. Your plan includes more credits than you'll use."
-              : <>You'll need <span className="font-mono font-semibold">{shortage.toLocaleString()}</span> more credits — add a top-up pack.</>}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SliderRow({
-  label, min, max, value, onChange, suffix,
-}: {
-  label: string;
-  min: number;
-  max: number;
-  value: number;
-  onChange: (v: number) => void;
-  suffix?: string;
-}) {
-  return (
-    <div>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="mono-eyebrow text-foreground">{label}</div>
-        <div className="font-mono text-base text-amber">
-          {value}
-          <span className="text-text-muted">{suffix}</span>
-        </div>
-      </div>
-      <Slider
-        min={min}
-        max={max}
-        step={1}
-        value={[value]}
-        onValueChange={(v) => onChange(v[0] ?? min)}
-      />
-    </div>
+      </section>
+    </MarketingShell>
   );
 }

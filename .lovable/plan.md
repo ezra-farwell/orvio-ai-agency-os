@@ -1,65 +1,99 @@
-# Orvio — Site-Wide Cohesion Pass
+# Orvio Rebuild Plan (revised)
 
-The home hero now has a strong identity (sky gradient, cyan outlined glyph, glass pill nav, monospace micro-labels). Right now the rest of the site doesn't match — the inner pages are dark-mode SaaS, the home is luminous and editorial. This pass aligns every route to one design language.
+Rebuild Orvio into a premium SaaS experience. Three portals plus a public marketing site, all clickable with mock data. Inspired by SaaSSpace (marketing only) and ClientHub (client portal layout only). Tone: Vercel / Mercury / Linear.
 
-## Design language (locked)
+## Structure
 
-Pulled from the sky hero + Skiff/Framer-906 references:
+1. **Public Marketing Website** — SaaSSpace visual direction
+2. **Master Admin Portal** — Orvio internal team
+3. **Agency Portal** — main paid product; **Content Studio is a module inside it** at `/app/studio/*`
+4. **Client Portal** — contractor-facing, ClientHub layout inspiration only
 
-- **Surfaces**: light, atmospheric. Soft gradient washes (lavender → peach → cream) at section seams. Dark panels only for the product mockups themselves — never for whole sections.
-- **Type scale**: Bricolage Grotesque, tight tracking, very large display sizes (clamp 56–96px on hero blocks). Monospace `[11px]/0.28em uppercase` for all eyebrow labels and section index numbers.
-- **Section rhythm**: `01 — Studio`, `02 — Portal`, `03 — Pricing` index labels. Generous whitespace (160px+ vertical between sections at desktop).
-- **Color**: cyan (#5EEAD4) + amber (#FBBF24) accents only. No purple/indigo gradients in copy. Glyph cyan stays the brand signal.
-- **Motion**: slow draw-on (1.4–2s eased), 7s float on hero element, scroll-reveal `y: 24 → 0` with 0.8s ease. No bouncy springs, no parallax stacking.
-- **Components**: glass pill = the universal CTA. Inline links use the `story-link` underline animation.
+## Build priority (depth-of-polish order)
 
-## Route-by-route changes
+1. Marketing homepage
+2. Agency Portal overview
+3. Agency Ad Reporting (strongest product screen)
+4. Client Portal overview
+5. Content Studio (Ads tab, Ad Builder, Brand Memory, approvals)
+6. Master Admin Portal (functional, lighter polish)
+7. Secondary pages (leads, pipeline, messages, payments, reports, white-label, marketing sub-pages)
 
-### `/` (index)
-Hero already done. Below the fold, restructure into a Skiff-style scroll narrative:
-- `01 — The Problem`: single-line headline + 6 problems as a horizontal scroll-snap rail (not a 3-col grid)
-- `02 — Client OS`: split layout, big type left, PortalMockup right, sticky on scroll
-- `03 — Creative Studio`: full-bleed StudioDemo with a sky-gradient backdrop band
-- `04 — Models`: marketplace as a clean table, not cards
-- `05 — Pricing`: 3 plans, lighter surfaces
-- `06 — FAQ`: minimal accordion, no card chrome
-- Final CTA: mini sky band echoing the hero
+## Design system
 
-### `/demo`
-Replace dark-mode tabs with a cinematic showcase: vertical scrollytelling. Each step (Brief → Generate → Approve → Push) gets a full viewport panel with the mockup pinned center and copy fading in. Same monospace eyebrow numbering.
+- Tailwind v4 tokens in `src/styles.css`
+- Near-white surfaces (`#FAFAFA`), near-black text, restrained indigo/violet accent
+- Rounded-2xl cards, soft shadows, generous whitespace, strong typography (Geist/Inter Display + Inter)
+- Recharts, lucide-react, shadcn primitives, status badges
+- Shared shells: `MarketingShell`, `AdminShell`, `AgencyShell`, `ClientShell` — responsive
+- Mock data in `src/mock/` (agencies, clients, campaigns, leads, invoices, content, brand memory)
 
-### `/pricing`
-Light atmospheric background. Hero pulls a smaller version of the sky gradient. Plan cards become tall vertical panels separated by hairlines instead of boxed cards. Credit calculator gets a glass-pill container matching the hero.
+## Route map
 
-### `/signup`
-Split-screen but the marketing side becomes the sky gradient with the glyph. Form side stays light/neutral. Mono labels on all inputs.
+```text
+/                          Marketing home
+/product /solutions
+/pricing /demo /book-demo /login
 
-### `/portal-preview`
-This is the *product showcase* — keep the dark dashboard chrome since it represents the actual product UI, but wrap it in a sky-band header announcing "What your clients see" with the same mono eyebrow + display headline.
+/admin                     Overview
+/admin/agencies            Agency accounts
+/admin/agencies/$id        Agency detail
+/admin/billing /admin/integrations /admin/settings
 
-### Shared chrome
-- **Nav**: stays transparent-until-scroll. Add the monospace `ORVIO · AGENCY EDITION` lockup so it matches the hero corners on inner routes (hero corners hide it on `/`).
-- **Footer**: drop the dark surface — use a thin sky-gradient band with mono links and a small cyan glyph echo.
+/app                       Agency overview
+/app/clients               List + create modal
+/app/clients/$id           Client detail
+/app/reporting             Ad reporting (priority screen)
+/app/leads /app/pipeline /app/messages /app/payments
+/app/studio                Studio home (tabs)
+/app/studio/ads/new        Ad Builder
+/app/studio/brand/$id      Brand Memory
+/app/reports
+/app/settings/white-label
 
-## Technical details
+/portal                    Client overview (ad-perf focused)
+/portal/campaigns          Meta/Google tabs
+/portal/leads /portal/messages
+/portal/approvals          Content approval flow
+/portal/payments /portal/reports
+```
 
-- New shared primitives in `src/components/orvio/`:
-  - `SectionIndex.tsx` — renders `01 — Label` mono eyebrow
-  - `SkyBand.tsx` — reusable gradient section wrapper with optional cloud drift
-  - `DisplayHeading.tsx` — locked clamp() type ramp
-  - `ScrollPanel.tsx` — viewport-pinned scrollytelling panel for `/demo`
-- Extend `src/styles.css`: add `--gradient-sky-soft` (lighter variant for inner pages), `.sky-band` utility, `.story-link` underline utility, mono eyebrow utility.
-- Refactor `src/routes/index.tsx` sections to use `SectionIndex` + `SkyBand`.
-- Rewrite `src/routes/demo.tsx` as scrollytelling.
-- Rework `src/routes/pricing.tsx`, `signup.tsx`, `portal-preview.tsx` to the new surface system.
-- Update `Nav.tsx` and `Footer.tsx` to the unified chrome.
-- Remove now-unused dark-card styling paths; keep `surface-card` for product mockups only.
-- Typecheck after each file batch.
+## Screen-level details
+
+**Marketing home (SaaSSpace inspired):** sticky navbar (Product, Solutions, Pricing, Demo, Login, Book Demo), hero headline + sub + dual CTA, large dashboard mockup, trust row, problem → solution, six product sections with screenshots (White-label portals, Meta/Google reporting, Lead tracking, Onboarding, Content Studio, Payments/Financing), pricing 3 tiers + enterprise, FAQ, final CTA, footer.
+
+**Agency overview:** active clients, total ad spend, leads generated, avg CPL, avg CPC, avg CTR, conversion rate, open leads, follow-up rate, revenue tracked, churn risk; recent activity feed; per-client snapshot grid.
+
+**Agency Ad Reporting (priority):** filters for client, date range, Meta/Google platform. KPI strip: spend, leads, CPL, CPC, CTR, CPM, impressions, clicks, conversion rate. Trend chart (spend vs leads). Campaign comparison table. Best/worst campaign cards. AI-style insight summary with mock narrative ("Roof Replacement Campaign drove 38% of leads at $52 CPL — scale budget +20%").
+
+**Client Portal overview (contractor-friendly, ad-perf focused):** KPI cards — this month's ad spend, leads generated, cost per lead, booked appointments, calls/messages, CTR, campaign status, pending content approvals, latest agency recommendation. Each marketing term gets a one-line plain-English helper ("CTR — how often people clicked your ad after seeing it"). Recent leads list, agency update card.
+
+**Content Studio:** client selector in header, tabs (Ads, Social Posts, Landing Pages, Emails, Reports, Brand Assets), status filters (Draft, In Review, Approved, Scheduled, Published), asset grid, right-side AI assistant panel with mock prompts/responses.
+
+**Ad Builder:** form (client, platform, objective, service, offer, location, pain point, audience, tone, CTA) → generated primary text / headline / description / CTA variations + creative notes + landing page angle + compliance warning. Live Meta feed-ad preview card and Google search-ad preview card.
+
+**Brand Memory:** per-client editor — description, services, service areas, offers, tone, testimonials, before/after photos, objections, approved claims, words to avoid, competitors, agency notes.
+
+**Client Approvals:** pending/approved/changes-requested columns, asset preview, comment box, approve / request-changes buttons.
+
+**Master Admin:** total agencies, total client accounts, total ad spend tracked, total leads, avg CPL, MRR, churn-risk; agencies table with subscription, white-label domain, Stripe, Meta/Google health.
+
+## Mock data anchors
+
+Clients: Hartland Plumbing, Northside Roofing, Apex Remodeling, Brighton HVAC Pros, Lakeside Electric.
+Campaigns: Emergency Plumbing Leads, Kitchen Remodel Estimate Requests, Roof Replacement Campaign, HVAC Tune-Up Offer, Electrical Panel Upgrade Leads.
+Metrics: Spend $4,280 · Leads 63 · CPL $67.94 · CPC $3.21 · CTR 2.8% · 148.2K impressions · 4,150 clicks · 12.6% conversion.
+
+## Technical notes
+
+- TanStack Start file-based routes, flat dot convention
+- Layout routes (`app.tsx`, `portal.tsx`, `admin.tsx`) render `<Outlet />`
+- Each route exports unique `head()` meta; og:image only at leaves with hero imagery
+- Recharts for charts; shadcn Dialog/Sheet for modals/drawers; shadcn Table for tables
+- No auth, no server functions, no real integrations — login decorative
+- Existing `/signup`, `/portal-preview`, `/demo`, `/pricing` are replaced/repurposed; index hero rebuilt
+- Reasonable SaaS defaults applied throughout — no blocking questions
 
 ## Out of scope
 
-- No new product features or content copy beyond what's already written.
-- No backend, no auth, no data wiring.
-- No new fonts or asset generation — sticking with Bricolage + Inter + JetBrains Mono already loaded.
-
-Approve and I'll execute the whole pass in one batch.
+Real Meta/Google/Stripe integrations, auth, persistence, AI generation, email/SMS.
