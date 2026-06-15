@@ -179,8 +179,9 @@ function DashboardMock() {
                 <div className="truncate text-[13px] font-semibold md:text-[15px]">All clients · Meta + Google</div>
               </div>
               <div className="flex shrink-0 gap-1.5">
-                <span className="chip text-[10px] md:text-[11px]">Meta</span>
-                <span className="chip text-[10px] md:text-[11px]">Google</span>
+                <MetaAdsChip />
+                <GoogleAdsChip />
+
               </div>
             </div>
             <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
