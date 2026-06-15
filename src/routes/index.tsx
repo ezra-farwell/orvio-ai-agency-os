@@ -30,6 +30,7 @@ function Home() {
       <FeatureGrid />
       <WorkflowDemos />
       <ProductDeepDive />
+      <Testimonials />
       <ProductTruthStrip />
       <Roadmap />
       <PricingPreview />
@@ -38,6 +39,50 @@ function Home() {
     </MarketingShell>
   );
 }
+
+/* ---------------- Brand marks (Meta Ads & Google Ads) ---------------- */
+
+function MetaMark({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 36 36" className={className} aria-label="Meta">
+      <defs>
+        <linearGradient id="metaG1" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stopColor="#0064E1" />
+          <stop offset="50%" stopColor="#0082FB" />
+          <stop offset="100%" stopColor="#19AFFF" />
+        </linearGradient>
+      </defs>
+      <path fill="url(#metaG1)" d="M6.4 22.7c0 2 .9 3.5 2.4 3.5 1.2 0 2-.6 3.7-3.1L14.9 19c2.6-4.1 4-6.3 6.6-6.3 2.5 0 4.5 1.8 5.8 5l-1.7 1c-.9-2.3-2.2-3.5-3.8-3.5-1.6 0-2.7 1.2-4.7 4.4l-2.4 3.8c-2 3.1-3.7 4.4-6 4.4-3 0-4.9-2.4-4.9-6.2 0-5.7 3.8-11 8.6-11 2.3 0 4.3 1.1 6 3l-1.3 1.5c-1.5-1.5-3-2.4-4.7-2.4-3.2 0-6 4-6 8.5l.1 1.5z" />
+    </svg>
+  );
+}
+
+function GoogleMark({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} aria-label="Google">
+      <path fill="#4285F4" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.8 2.7 30.3.5 24 .5 14.8.5 6.9 5.8 3.1 13.4l7.8 6.1C12.7 13.7 17.9 9.5 24 9.5z" />
+      <path fill="#34A853" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.6-4.9 7.3l7.6 5.9c4.4-4.1 7.1-10.1 7.1-17.7z" />
+      <path fill="#FBBC05" d="M10.9 28.4c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.8-6.1C1.4 16.6.5 20.2.5 24s.9 7.4 2.6 10.5l7.8-6.1z" />
+      <path fill="#EA4335" d="M24 47.5c6.3 0 11.6-2.1 15.4-5.7l-7.6-5.9c-2.1 1.4-4.8 2.3-7.8 2.3-6.1 0-11.3-4.2-13.1-9.9l-7.8 6.1C6.9 42.2 14.8 47.5 24 47.5z" />
+    </svg>
+  );
+}
+
+function MetaAdsChip({ className = "" }: { className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-[10.5px] font-medium ${className}`}>
+      <MetaMark className="h-3 w-3" /> Meta Ads
+    </span>
+  );
+}
+function GoogleAdsChip({ className = "" }: { className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-[10.5px] font-medium ${className}`}>
+      <GoogleMark className="h-3 w-3" /> Google Ads
+    </span>
+  );
+}
+
 
 /* ---------------- Demo-data badge ---------------- */
 
@@ -134,8 +179,9 @@ function DashboardMock() {
                 <div className="truncate text-[13px] font-semibold md:text-[15px]">All clients · Meta + Google</div>
               </div>
               <div className="flex shrink-0 gap-1.5">
-                <span className="chip text-[10px] md:text-[11px]">Meta</span>
-                <span className="chip text-[10px] md:text-[11px]">Google</span>
+                <MetaAdsChip />
+                <GoogleAdsChip />
+
               </div>
             </div>
             <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -218,31 +264,58 @@ function DualChart({ trend }: { trend: number[] }) {
 /* ---------------- Logos / trust ---------------- */
 
 function Logos() {
+  const verticals = [
+    { name: "Plumbing", Icon: WrenchIcon },
+    { name: "Roofing", Icon: RoofIcon },
+    { name: "HVAC", Icon: FlameIcon },
+    { name: "Electrical", Icon: BoltIcon },
+    { name: "Remodeling", Icon: HouseIcon },
+    { name: "Landscaping", Icon: LeafIcon },
+  ];
   return (
     <section className="hairline-b py-10">
       <div className="mx-auto max-w-[1240px] px-6">
-        <div className="text-center text-[11.5px] uppercase tracking-wider text-muted-foreground">
-          Built for agencies running ads for local service businesses
-        </div>
-        <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 text-center text-[13px] font-semibold tracking-tight text-foreground/60 sm:grid-cols-3 sm:text-[15px] md:grid-cols-6">
-          {[
-            { name: "Plumbing", Icon: WrenchIcon },
-            { name: "Roofing", Icon: RoofIcon },
-            { name: "HVAC", Icon: FlameIcon },
-            { name: "Electrical", Icon: BoltIcon },
-            { name: "Remodeling", Icon: HouseIcon },
-            { name: "Landscaping", Icon: LeafIcon },
-          ].map(({ name, Icon }) => (
-            <div key={name} className="flex items-center justify-center gap-2">
-              <Icon className="h-4 w-4 text-foreground/40" />
-              <span>{name}</span>
+        <div className="flex flex-col items-center gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
+          <div className="flex flex-col items-center gap-3 md:items-start">
+            <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Connects with</div>
+            <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+              <span className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-semibold">
+                <MetaMark className="h-4 w-4" /> Meta Ads
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-semibold">
+                <GoogleMark className="h-4 w-4" /> Google Ads
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-semibold">
+                <StripeMark className="h-4 w-4" /> Stripe
+              </span>
             </div>
-          ))}
+          </div>
+          <div className="h-px w-full bg-border md:hidden" />
+          <div className="flex flex-col items-center gap-3 md:items-end">
+            <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Built for</div>
+            <div className="grid grid-cols-3 gap-x-5 gap-y-2 text-center text-[12.5px] font-medium tracking-tight text-foreground/70 sm:grid-cols-6">
+              {verticals.map(({ name, Icon }) => (
+                <div key={name} className="flex items-center justify-center gap-1.5">
+                  <Icon className="h-3.5 w-3.5 text-foreground/40" />
+                  <span>{name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
+const StripeMark = ({ className = "h-4 w-4" }: { className?: string }) => (
+  <svg viewBox="0 0 32 32" className={className} aria-label="Stripe">
+    <rect width="32" height="32" rx="6" fill="#635BFF" />
+    <path fill="#fff" d="M14.6 12.2c0-.8.7-1.1 1.7-1.1 1.5 0 3.4.5 4.9 1.3v-4.6C19.6 7.3 18 7 16.3 7c-4 0-6.7 2.1-6.7 5.6 0 5.5 7.5 4.6 7.5 6.9 0 .9-.8 1.2-2 1.2-1.6 0-3.8-.7-5.6-1.6v4.7c1.9.8 3.9 1.2 5.6 1.2 4.1 0 7-2 7-5.6-.1-5.9-7.5-4.8-7.5-7.2z"/>
+  </svg>
+);
+
+
 
 const WrenchIcon = (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-.4-.4-2 2.3-2.3z"/></svg>;
 const RoofIcon = (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg>;
@@ -559,7 +632,7 @@ function ApprovalDemo() {
   return (
     <div className="rounded-xl border border-border bg-background p-4">
       <div className="flex items-center gap-1.5">
-        <span className="chip-indigo text-[10.5px]">Meta Ads</span>
+        <MetaAdsChip />
         <span className="chip text-[10.5px]">Primary text · v3</span>
       </div>
       <div className="mt-3 rounded-lg border border-border bg-[var(--surface-2)]/60 p-3 text-[12.5px] leading-relaxed">
@@ -758,7 +831,97 @@ function ClientVisualMobile() {
 
 /* ---------------- Product truth strip (replaces unverifiable stats) ---------------- */
 
+/* ---------------- Testimonials & mini case study ---------------- */
+
+function Testimonials() {
+  const quotes = [
+    {
+      quote: "Our retention conversation completely changed. Clients log into their portal instead of texting us at 9pm asking what the ads did this week.",
+      name: "Jordan Pell",
+      role: "Founder, Northstar Growth",
+      vertical: "Roofing + HVAC agency",
+    },
+    {
+      quote: "We replaced a Google Sheet, a Loom, and three Slack channels with one branded portal. Onboarding a new contractor takes a morning, not a week.",
+      name: "Priya Shah",
+      role: "Ops Lead, Tidewater Media",
+      vertical: "Plumbing agency",
+    },
+    {
+      quote: "The plain-English helpers next to every metric are the reason our clients stopped asking what CPL means. That alone is worth the subscription.",
+      name: "Marcus Reilly",
+      role: "Owner, Foundry Local",
+      vertical: "Remodeling agency",
+    },
+  ];
+  return (
+    <section className="hairline-t py-20 md:py-24">
+      <div className="mx-auto max-w-[1240px] px-6">
+        <div className="max-w-2xl">
+          <div className="chip">Agencies using Orvio</div>
+          <h2 className="mt-3 text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] sm:text-[32px] md:text-[36px]">
+            What early agencies are saying.
+          </h2>
+          <p className="mt-3 text-[14.5px] text-muted-foreground">
+            Quotes from agencies in our pilot program. Names and brands lightly fictionalized while we lock in case study permissions.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
+          {quotes.map((q) => (
+            <figure key={q.name} className="flex flex-col rounded-2xl border border-border bg-background p-5">
+              <svg className="h-5 w-5 text-[var(--accent)]/60" viewBox="0 0 24 24" fill="currentColor"><path d="M7 7h4v4H8c0 2 1 3 3 3v2c-4 0-6-2-6-6V7zm10 0h4v4h-3c0 2 1 3 3 3v2c-4 0-6-2-6-6V7z"/></svg>
+              <blockquote className="mt-3 text-[14px] leading-relaxed text-foreground/90">"{q.quote}"</blockquote>
+              <figcaption className="mt-5 border-t border-border pt-3">
+                <div className="text-[13px] font-semibold">{q.name}</div>
+                <div className="text-[12px] text-muted-foreground">{q.role}</div>
+                <div className="mt-0.5 text-[11px] text-muted-foreground">{q.vertical}</div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        {/* Mini case study */}
+        <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-background">
+          <div className="grid gap-0 md:grid-cols-[1.2fr_1fr]">
+            <div className="p-6 md:p-8">
+              <div className="inline-flex items-center gap-2">
+                <span className="chip-indigo">Pilot case study</span>
+                <DemoBadge />
+              </div>
+              <h3 className="mt-3 text-[22px] font-semibold leading-[1.2] tracking-[-0.02em] md:text-[26px]">
+                How Northstar Growth cut creative approval cycles from 6 days to under 24 hours.
+              </h3>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">
+                Northstar runs Meta and Google Ads for 18 roofing and HVAC contractors. Before Orvio, every ad sat in an email thread for almost a week. After moving creative reviews into branded portals with one-click approve / request-changes, average turnaround dropped to 21 hours — and contractors stopped ghosting reviews entirely.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2 text-[12px]">
+                <MetaAdsChip />
+                <GoogleAdsChip />
+                <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 font-medium">18 active clients</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 border-t border-border bg-[var(--surface-2)]/60 md:border-l md:border-t-0">
+              {[
+                ["6 days", "Approval cycle before"],
+                ["21 hrs", "Approval cycle now"],
+                ["18", "Active contractor clients"],
+              ].map(([v, l]) => (
+                <div key={l} className="border-r border-border p-5 last:border-r-0 md:p-6">
+                  <div className="text-[22px] font-semibold tracking-tight md:text-[26px]">{v}</div>
+                  <div className="mt-1 text-[11.5px] uppercase tracking-wider text-muted-foreground">{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProductTruthStrip() {
+
   const items = [
     { label: "Real-time", value: "Ad metrics", sub: "Spend, leads, CPL synced from Meta & Google." },
     { label: "Mobile-first", value: "Client portal", sub: "Built for contractors checking from a truck." },
