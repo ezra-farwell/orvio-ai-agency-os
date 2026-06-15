@@ -503,10 +503,22 @@ function WorkflowDemos() {
       visual: <ApprovalDemo />,
     },
     {
-      tag: "5 · Monthly report",
+      tag: "5 · Send invoice",
+      title: "Bill clients in two taps — through your Stripe",
+      body: "Pick a client, add a line item, send. The invoice lands in their portal and inbox. You collect through your own Stripe Connect account.",
+      visual: <InvoiceDemo />,
+    },
+    {
+      tag: "6 · Monthly report",
       title: "A report the contractor actually reads",
       body: "Plain-English metrics with a tooltip on every number. No marketing jargon, no PDFs.",
       visual: <ReportDemo />,
+    },
+    {
+      tag: "7 · Push to Meta (roadmap)",
+      title: "Approved ads ship to Meta with one click",
+      body: "Today, your team copy-pastes approved creative into Ads Manager. Coming Q4 2026: push approved ads directly to a draft in the client's Meta account.",
+      visual: <PushToMetaDemo />,
     },
   ];
   return (
