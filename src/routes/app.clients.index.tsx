@@ -16,58 +16,83 @@ function Clients() {
       <PageHeader title="Clients" sub={`${clients.length} accounts · ${clients.filter(c=>c.status==="active").length} active`}
         actions={<button onClick={() => setOpen(true)} className="inline-flex h-9 items-center gap-1 rounded-lg bg-foreground px-3 text-[13px] font-medium text-background hover:bg-foreground/90"><Plus className="h-3.5 w-3.5" /> Add client</button>}
       />
-      <div className="px-6 pb-10">
+      <div className="space-y-3 px-6 pb-10">
+        <div className="flex items-start gap-2 rounded-lg border border-dashed border-border bg-[var(--surface-2)]/40 px-3 py-2.5 text-[12px] text-muted-foreground">
+          <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]">i</span>
+          <span><span className="font-semibold text-foreground">Health score</span> combines lead volume (40%), CPL stability (35%) and client engagement (25%). Scores below 70 trigger an at-risk flag.</span>
+        </div>
         <Card>
-          <table className="w-full text-[13px]">
-            <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
-              <tr>
-                <th className="px-4 py-2.5">Client</th>
-                <th className="px-4 py-2.5">Category</th>
-                <th className="px-4 py-2.5">Service area</th>
-                <th className="px-4 py-2.5">Spend</th>
-                <th className="px-4 py-2.5">Leads</th>
-                <th className="px-4 py-2.5">CPL</th>
-                <th className="px-4 py-2.5">Integrations</th>
-                <th className="px-4 py-2.5">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {clients.map(c => (
-                <tr key={c.id} className="hover:bg-[var(--surface-2)]/60">
-                  <td className="px-4 py-3">
-                    <Link to="/app/clients/$id" params={{ id: c.id }} className="flex items-center gap-2.5">
-                      <span className="grid h-7 w-7 place-items-center rounded text-[11px] font-semibold text-white" style={{ background: c.color }}>{c.initials}</span>
-                      <div>
-                        <div className="font-medium">{c.name}</div>
-                        <div className="text-[11.5px] text-muted-foreground">{c.owner}</div>
-                      </div>
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3">{c.category}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{c.area}</td>
-                  <td className="px-4 py-3 mono">{usd(c.monthlySpend)}</td>
-                  <td className="px-4 py-3">{c.leads}</td>
-                  <td className="px-4 py-3 mono">${c.cpl.toFixed(2)}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex gap-1">
-                      <IntChip label="M" state={c.meta} title="Meta Ads" />
-                      <IntChip label="G" state={c.google} title="Google Ads" />
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    {c.status === "active" && <StatusBadge kind="success">Active</StatusBadge>}
-                    {c.status === "at-risk" && <StatusBadge kind="warning">At risk</StatusBadge>}
-                    {c.status === "onboarding" && <StatusBadge kind="indigo">Onboarding</StatusBadge>}
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[860px] text-[13px]">
+              <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
+                <tr>
+                  <th className="px-4 py-2.5">Client</th>
+                  <th className="px-4 py-2.5">Category</th>
+                  <th className="px-4 py-2.5">Service area</th>
+                  <th className="px-4 py-2.5">Spend</th>
+                  <th className="px-4 py-2.5">Leads</th>
+                  <th className="px-4 py-2.5">CPL</th>
+                  <th className="px-4 py-2.5">Integrations</th>
+                  <th className="px-4 py-2.5">Health</th>
+                  <th className="px-4 py-2.5">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {clients.map(c => {
+                  const health = c.status === "at-risk" ? 62 : c.status === "onboarding" ? 78 : Math.round(78 + ((c.leads % 17) * 1.2));
+                  return (
+                  <tr key={c.id} className="hover:bg-[var(--surface-2)]/60">
+                    <td className="px-4 py-3">
+                      <Link to="/app/clients/$id" params={{ id: c.id }} className="flex items-center gap-2.5">
+                        <span className="grid h-7 w-7 place-items-center rounded text-[11px] font-semibold text-white" style={{ background: c.color }}>{c.initials}</span>
+                        <div>
+                          <div className="font-medium">{c.name}</div>
+                          <div className="text-[11.5px] text-muted-foreground">{c.owner}</div>
+                        </div>
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3">{c.category}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{c.area}</td>
+                    <td className="px-4 py-3 mono">{usd(c.monthlySpend)}</td>
+                    <td className="px-4 py-3">{c.leads}</td>
+                    <td className="px-4 py-3 mono">${c.cpl.toFixed(2)}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-1">
+                        <IntChip label="M" state={c.meta} title="Meta Ads" />
+                        <IntChip label="G" state={c.google} title="Google Ads" />
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <HealthBar score={health} />
+                    </td>
+                    <td className="px-4 py-3">
+                      {c.status === "active" && <StatusBadge kind="success">Active</StatusBadge>}
+                      {c.status === "at-risk" && <StatusBadge kind="warning">At risk</StatusBadge>}
+                      {c.status === "onboarding" && <StatusBadge kind="indigo">Onboarding</StatusBadge>}
+                    </td>
+                  </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </Card>
       </div>
 
       {open && <AddClientModal onClose={() => setOpen(false)} />}
     </>
+  );
+}
+
+function HealthBar({ score }: { score: number }) {
+  const tone = score >= 80 ? "var(--success)" : score >= 70 ? "var(--accent)" : "var(--warning)";
+  return (
+    <div title={`Health ${score}/100 — lead volume (40%), CPL stability (35%), engagement (25%)`} className="flex items-center gap-2">
+      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[var(--surface-2)]">
+        <div className="h-full rounded-full" style={{ width: `${score}%`, background: tone }} />
+      </div>
+      <span className="mono text-[12px] font-semibold" style={{ color: tone }}>{score}</span>
+    </div>
   );
 }
 

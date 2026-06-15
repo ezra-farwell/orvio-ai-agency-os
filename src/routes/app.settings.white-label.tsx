@@ -45,7 +45,7 @@ function WhiteLabel() {
         </div>
 
         <Card className="h-fit p-5">
-          <div className="text-[12px] uppercase tracking-wider text-muted-foreground">Preview</div>
+          <div className="text-[12px] uppercase tracking-wider text-muted-foreground">Live preview</div>
           <div className="mt-3 overflow-hidden rounded-xl border border-border bg-background">
             <div className="flex items-center gap-2 border-b border-border px-3 py-2">
               <span className="grid h-6 w-6 place-items-center rounded text-[10px] font-semibold text-white" style={{background:"#4F46E5"}}>N</span>
@@ -60,6 +60,24 @@ function WhiteLabel() {
                 ))}
               </div>
             </div>
+          </div>
+          <div className="mt-5 text-[12px] uppercase tracking-wider text-muted-foreground">Other agency themes</div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {[
+              { name: "Tidewater Media", letter: "T", primary: "#0EA5E9", domain: "clients.tidewater.io" },
+              { name: "Foundry Local", letter: "F", primary: "#F97316", domain: "app.foundry.co" },
+              { name: "Helix Agency", letter: "H", primary: "#10B981", domain: "go.helix.co" },
+              { name: "Bright Anchor", letter: "B", primary: "#EF4444", domain: "portal.brightanchor.com" },
+            ].map(t => (
+              <div key={t.name} className="overflow-hidden rounded-lg border border-border">
+                <div className="flex items-center gap-1.5 px-2 py-1.5" style={{ background: `${t.primary}14` }}>
+                  <span className="grid h-4 w-4 place-items-center rounded text-[8.5px] font-bold text-white" style={{ background: t.primary }}>{t.letter}</span>
+                  <span className="truncate text-[10.5px] font-semibold">{t.name}</span>
+                </div>
+                <div className="px-2 py-1.5 text-[9.5px] mono text-muted-foreground truncate">{t.domain}</div>
+                <div className="mx-2 mb-2 rounded py-1 text-center text-[9.5px] font-medium text-white" style={{ background: t.primary }}>View portal</div>
+              </div>
+            ))}
           </div>
         </Card>
       </div>

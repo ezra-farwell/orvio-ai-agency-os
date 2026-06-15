@@ -13,10 +13,10 @@ export const Route = createFileRoute("/pricing")({
 });
 
 const tiers = [
-  { name: "Starter", price: 97, sub: "Up to 3 clients", pop: false, features: ["1 agency seat","Reporting + client portal","Meta + Google metrics","Email support"] },
-  { name: "Growth", price: 297, sub: "Up to 10 clients", pop: false, features: ["3 agency seats","Lead inbox","Content approvals","Branded portal"] },
-  { name: "Pro", price: 497, sub: "Up to 25 clients", pop: true, features: ["8 agency seats","AI Content Studio (beta)","Simple Stripe payments","Brand memory per client"] },
-  { name: "Scale", price: 997, sub: "Unlimited clients", pop: false, features: ["20 agency seats","Advanced white-label","Custom domain + email","API access"] },
+  { name: "Starter", price: 97, sub: "Up to 3 clients", pop: false, credits: "200 credits / mo", features: ["1 agency seat","Branded client portal","Meta + Google reporting (CSV + API beta)","Lead inbox + Stripe invoicing","Email support"] },
+  { name: "Growth", price: 297, sub: "Up to 10 clients", pop: false, credits: "1,000 credits / mo", features: ["3 agency seats","Custom subdomain + email sender","Content approvals","AI report summaries (beta)"] },
+  { name: "Pro", price: 497, sub: "Up to 25 clients", pop: true, credits: "5,000 credits / mo", features: ["8 agency seats","AI Content Studio (beta)","Per-client brand memory (beta)","Stripe Connect payments"] },
+  { name: "Scale", price: 997, sub: "Unlimited clients", pop: false, credits: "20,000 credits / mo", features: ["20 agency seats","Multi-brand white-label (roadmap)","Custom domain + email","Public API (beta)"] },
 ];
 
 const rows: [string, (string | boolean)[]][] = [
@@ -55,6 +55,7 @@ function Pricing() {
                 <div className="text-[13px] font-medium text-muted-foreground">{t.name}</div>
                 <div className="mt-2 flex items-baseline gap-1"><span className="text-[34px] font-semibold tracking-tight md:text-[38px]">${t.price}</span><span className="text-[13px] text-muted-foreground">/mo</span></div>
                 <div className="mt-1 text-[12.5px] text-muted-foreground">{t.sub}</div>
+                <div className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-[var(--accent-soft)] px-2 py-0.5 text-[10.5px] font-semibold text-[var(--accent)]">{t.credits}</div>
                 <Link to="/book-demo" className={`mt-5 flex h-10 items-center justify-center rounded-lg text-[13px] font-medium ${t.pop ? "bg-foreground text-background hover:bg-foreground/90" : "border border-border bg-background hover:bg-[var(--surface-2)]"}`}>Start 14-day trial</Link>
                 <ul className="mt-5 space-y-2">
                   {t.features.map(f => <li key={f} className="flex items-start gap-2 text-[12.5px]"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--success)]" /><span>{f}</span></li>)}
@@ -69,8 +70,33 @@ function Pricing() {
             </div>
             <Link to="/book-demo" className="inline-flex h-10 items-center rounded-lg border border-border bg-background px-4 text-[13px] font-medium hover:bg-[var(--surface-2)]">Talk to sales <ArrowRight className="ml-1.5 h-3.5 w-3.5" /></Link>
           </div>
+
+          <div className="mt-6 rounded-2xl border border-border bg-background p-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="chip-indigo">Credits explained</span>
+              <span className="text-[12px] text-muted-foreground">What your monthly credits buy</span>
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+              {[
+                ["AI report summary", "5 credits", "Live"],
+                ["Ad copy generation", "10 credits", "Beta"],
+                ["Brand memory refresh", "20 credits", "Roadmap"],
+                ["Creative image variation", "25 credits", "Roadmap"],
+              ].map(([label, cost, tag]) => (
+                <div key={label} className="rounded-xl border border-border p-3">
+                  <div className="text-[12.5px] font-semibold">{label}</div>
+                  <div className="mono mt-0.5 text-[12px] text-muted-foreground">{cost}</div>
+                  <div className="mt-2 inline-block rounded-full bg-[var(--surface-2)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{tag}</div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-[12.5px] text-muted-foreground">
+              Reporting, the lead inbox, approvals, invoicing and white-label don't use credits — they're included on every plan. Unused credits roll over for one billing cycle. Top up any time without upgrading.
+            </p>
+          </div>
         </div>
       </section>
+
 
       <section className="hairline-t py-16">
         <div className="mx-auto max-w-[1100px] px-6">
