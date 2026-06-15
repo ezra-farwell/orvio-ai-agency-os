@@ -453,7 +453,7 @@ function FeatureGrid() {
         <div className="max-w-2xl">
           <div className="chip-indigo">One workspace</div>
           <h2 className="mt-3 text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] sm:text-[34px] md:text-[40px]">Everything your agency runs, in one branded portal.</h2>
-          <p className="mt-3 text-[15px] text-muted-foreground">Replace the patchwork of Sheets, Loom, Slack threads, and Stripe pages with a single product built for agencies running paid ads. Every card below is shipped today; planned features live in <Link to="/" hash="roadmap" className="underline">Roadmap</Link>.</p>
+          <p className="mt-3 text-[15px] text-muted-foreground">Replace the patchwork of Sheets, Loom, Slack threads, and Stripe pages with a single product built for agencies running paid ads. Every card below is shipped today; planned features live in the Roadmap section.</p>
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 md:mt-12 md:grid-cols-3">
           {features.map((f) => (
