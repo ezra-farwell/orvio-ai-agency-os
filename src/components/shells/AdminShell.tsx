@@ -26,7 +26,7 @@ export function AdminShell({ children }: { children?: ReactNode }) {
         </div>
         <nav className="flex-1 space-y-0.5 px-2 pt-3">
           {nav.map(n => {
-            const active = n.exact ? pathname === n.to : pathname === n.to || pathname.startsWith(n.to + "/");
+            const active = ("exact" in n && n.exact) ? pathname === n.to : pathname === n.to || pathname.startsWith(n.to + "/");
             const Icon = n.icon;
             return (
               <Link key={n.to} to={n.to}
