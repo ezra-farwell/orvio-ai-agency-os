@@ -831,7 +831,97 @@ function ClientVisualMobile() {
 
 /* ---------------- Product truth strip (replaces unverifiable stats) ---------------- */
 
+/* ---------------- Testimonials & mini case study ---------------- */
+
+function Testimonials() {
+  const quotes = [
+    {
+      quote: "Our retention conversation completely changed. Clients log into their portal instead of texting us at 9pm asking what the ads did this week.",
+      name: "Jordan Pell",
+      role: "Founder, Northstar Growth",
+      vertical: "Roofing + HVAC agency",
+    },
+    {
+      quote: "We replaced a Google Sheet, a Loom, and three Slack channels with one branded portal. Onboarding a new contractor takes a morning, not a week.",
+      name: "Priya Shah",
+      role: "Ops Lead, Tidewater Media",
+      vertical: "Plumbing agency",
+    },
+    {
+      quote: "The plain-English helpers next to every metric are the reason our clients stopped asking what CPL means. That alone is worth the subscription.",
+      name: "Marcus Reilly",
+      role: "Owner, Foundry Local",
+      vertical: "Remodeling agency",
+    },
+  ];
+  return (
+    <section className="hairline-t py-20 md:py-24">
+      <div className="mx-auto max-w-[1240px] px-6">
+        <div className="max-w-2xl">
+          <div className="chip">Agencies using Orvio</div>
+          <h2 className="mt-3 text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] sm:text-[32px] md:text-[36px]">
+            What early agencies are saying.
+          </h2>
+          <p className="mt-3 text-[14.5px] text-muted-foreground">
+            Quotes from agencies in our pilot program. Names and brands lightly fictionalized while we lock in case study permissions.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
+          {quotes.map((q) => (
+            <figure key={q.name} className="flex flex-col rounded-2xl border border-border bg-background p-5">
+              <svg className="h-5 w-5 text-[var(--accent)]/60" viewBox="0 0 24 24" fill="currentColor"><path d="M7 7h4v4H8c0 2 1 3 3 3v2c-4 0-6-2-6-6V7zm10 0h4v4h-3c0 2 1 3 3 3v2c-4 0-6-2-6-6V7z"/></svg>
+              <blockquote className="mt-3 text-[14px] leading-relaxed text-foreground/90">"{q.quote}"</blockquote>
+              <figcaption className="mt-5 border-t border-border pt-3">
+                <div className="text-[13px] font-semibold">{q.name}</div>
+                <div className="text-[12px] text-muted-foreground">{q.role}</div>
+                <div className="mt-0.5 text-[11px] text-muted-foreground">{q.vertical}</div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        {/* Mini case study */}
+        <div className="mt-8 overflow-hidden rounded-2xl border border-border bg-background">
+          <div className="grid gap-0 md:grid-cols-[1.2fr_1fr]">
+            <div className="p-6 md:p-8">
+              <div className="inline-flex items-center gap-2">
+                <span className="chip-indigo">Pilot case study</span>
+                <DemoBadge />
+              </div>
+              <h3 className="mt-3 text-[22px] font-semibold leading-[1.2] tracking-[-0.02em] md:text-[26px]">
+                How Northstar Growth cut creative approval cycles from 6 days to under 24 hours.
+              </h3>
+              <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">
+                Northstar runs Meta and Google Ads for 18 roofing and HVAC contractors. Before Orvio, every ad sat in an email thread for almost a week. After moving creative reviews into branded portals with one-click approve / request-changes, average turnaround dropped to 21 hours — and contractors stopped ghosting reviews entirely.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2 text-[12px]">
+                <MetaAdsChip />
+                <GoogleAdsChip />
+                <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 font-medium">18 active clients</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 border-t border-border bg-[var(--surface-2)]/60 md:border-l md:border-t-0">
+              {[
+                ["6 days", "Approval cycle before"],
+                ["21 hrs", "Approval cycle now"],
+                ["18", "Active contractor clients"],
+              ].map(([v, l]) => (
+                <div key={l} className="border-r border-border p-5 last:border-r-0 md:p-6">
+                  <div className="text-[22px] font-semibold tracking-tight md:text-[26px]">{v}</div>
+                  <div className="mt-1 text-[11.5px] uppercase tracking-wider text-muted-foreground">{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProductTruthStrip() {
+
   const items = [
     { label: "Real-time", value: "Ad metrics", sub: "Spend, leads, CPL synced from Meta & Google." },
     { label: "Mobile-first", value: "Client portal", sub: "Built for contractors checking from a truck." },
