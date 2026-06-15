@@ -48,19 +48,26 @@ function Pricing() {
 
       <section className="pb-16">
         <div className="mx-auto max-w-[1240px] px-6">
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {tiers.map(t => (
-              <div key={t.name} className={`rounded-2xl border bg-background p-6 ${t.pop ? "border-foreground shadow-pop" : "border-border"}`}>
-                {t.pop && <div className="mb-3 inline-flex chip-indigo">Most popular</div>}
+              <div key={t.name} className={`flex flex-col rounded-2xl border bg-background p-6 ${t.pop ? "border-foreground shadow-pop" : "border-border"}`}>
+                {t.pop ? <div className="mb-3 inline-flex w-fit chip-indigo">Most popular</div> : <div className="mb-3 h-[22px]" />}
                 <div className="text-[13px] font-medium text-muted-foreground">{t.name}</div>
-                <div className="mt-2 flex items-baseline gap-1"><span className="text-[40px] font-semibold tracking-tight">${t.price}</span><span className="text-[13px] text-muted-foreground">/mo</span></div>
+                <div className="mt-2 flex items-baseline gap-1"><span className="text-[34px] font-semibold tracking-tight md:text-[38px]">${t.price}</span><span className="text-[13px] text-muted-foreground">/mo</span></div>
                 <div className="mt-1 text-[12.5px] text-muted-foreground">{t.sub}</div>
-                <Link to="/book-demo" className={`mt-5 flex h-10 items-center justify-center rounded-lg text-[13.5px] font-medium ${t.pop ? "bg-foreground text-background hover:bg-foreground/90" : "border border-border bg-background hover:bg-[var(--surface-2)]"}`}>Start 14-day trial</Link>
+                <Link to="/book-demo" className={`mt-5 flex h-10 items-center justify-center rounded-lg text-[13px] font-medium ${t.pop ? "bg-foreground text-background hover:bg-foreground/90" : "border border-border bg-background hover:bg-[var(--surface-2)]"}`}>Start 14-day trial</Link>
                 <ul className="mt-5 space-y-2">
-                  {t.features.map(f => <li key={f} className="flex items-start gap-2 text-[13px]"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--success)]" /><span>{f}</span></li>)}
+                  {t.features.map(f => <li key={f} className="flex items-start gap-2 text-[12.5px]"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--success)]" /><span>{f}</span></li>)}
                 </ul>
               </div>
             ))}
+          </div>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-dashed border-border bg-background p-5">
+            <div>
+              <div className="text-[14px] font-semibold">Enterprise · custom</div>
+              <div className="text-[12.5px] text-muted-foreground">50+ clients, SSO, custom contracts, multi-brand white-label, dedicated infrastructure.</div>
+            </div>
+            <Link to="/book-demo" className="inline-flex h-10 items-center rounded-lg border border-border bg-background px-4 text-[13px] font-medium hover:bg-[var(--surface-2)]">Talk to sales <ArrowRight className="ml-1.5 h-3.5 w-3.5" /></Link>
           </div>
         </div>
       </section>
