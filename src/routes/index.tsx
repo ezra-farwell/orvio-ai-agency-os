@@ -632,7 +632,7 @@ function ApprovalDemo() {
   return (
     <div className="rounded-xl border border-border bg-background p-4">
       <div className="flex items-center gap-1.5">
-        <span className="chip-indigo text-[10.5px]">Meta Ads</span>
+        <MetaAdsChip />
         <span className="chip text-[10.5px]">Primary text · v3</span>
       </div>
       <div className="mt-3 rounded-lg border border-border bg-[var(--surface-2)]/60 p-3 text-[12.5px] leading-relaxed">
