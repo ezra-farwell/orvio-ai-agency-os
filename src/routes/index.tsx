@@ -438,12 +438,12 @@ function Bubble({ side, children }: { side: "left" | "right"; children: React.Re
 /* ---------------- Feature grid (shipped only) ---------------- */
 
 const features = [
-  { icon: Palette, title: "White-label portals", body: "Your logo, your domain, your colors. Clients sign into a portal that looks like your software, not someone else's tool." },
-  { icon: BarChart3, title: "Meta & Google reporting", body: "Spend, leads, CPL, CTR — pulled from your accounts, explained in plain English next to every number." },
-  { icon: Inbox, title: "Lead inbox", body: "Every form fill, call, and inbound message in one place. Assign, status, convert. No more lost leads." },
-  { icon: MessageSquare, title: "Content approvals", body: "Ship creative, get approve / request-changes feedback inside the portal. No more email threads." },
-  { icon: FileText, title: "Monthly reports", body: "One-page reports your clients actually read — plain-English metrics with explanatory tooltips." },
-  { icon: CreditCard, title: "Stripe payments", body: "Invoices and recurring subscriptions through your own Stripe Connect account. We never touch the money." },
+  { icon: Palette, title: "White-label portals", body: "Your logo, your domain, your colors. Clients sign into a portal that looks like your software, not someone else's tool.", tag: "Live" },
+  { icon: BarChart3, title: "Meta & Google reporting", body: "Spend, leads, CPL, CTR — pulled from your accounts (or CSV import to start), explained in plain English next to every number.", tag: "Live · API beta" },
+  { icon: Inbox, title: "Lead inbox", body: "Every form fill, call, and inbound message in one place. Assign, status, convert. No more lost leads.", tag: "Live" },
+  { icon: MessageSquare, title: "Content approvals", body: "Ship creative, get approve / request-changes feedback inside the portal. No more email threads.", tag: "Live" },
+  { icon: FileText, title: "Monthly reports", body: "One-page reports your clients actually read — plain-English metrics with explanatory tooltips. Auto-summaries on the roadmap.", tag: "Live" },
+  { icon: CreditCard, title: "Stripe payments", body: "Invoices and recurring subscriptions through your own Stripe Connect account. We never touch the money.", tag: "Live" },
 ];
 
 function FeatureGrid() {
@@ -453,13 +453,16 @@ function FeatureGrid() {
         <div className="max-w-2xl">
           <div className="chip-indigo">One workspace</div>
           <h2 className="mt-3 text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] sm:text-[34px] md:text-[40px]">Everything your agency runs, in one branded portal.</h2>
-          <p className="mt-3 text-[15px] text-muted-foreground">Replace the patchwork of Sheets, Loom, Slack threads, and Stripe pages with a single product built for agencies running paid ads.</p>
+          <p className="mt-3 text-[15px] text-muted-foreground">Replace the patchwork of Sheets, Loom, Slack threads, and Stripe pages with a single product built for agencies running paid ads. Every card below is shipped today; planned features live in <Link to="/" hash="roadmap" className="underline">Roadmap</Link>.</p>
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 md:mt-12 md:grid-cols-3">
           {features.map((f) => (
             <div key={f.title} className="group rounded-2xl border border-border bg-background p-5 transition-shadow hover:shadow-soft">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
-                <f.icon className="h-4 w-4" />
+              <div className="flex items-center justify-between">
+                <div className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
+                  <f.icon className="h-4 w-4" />
+                </div>
+                <span className="rounded-full bg-[var(--success-soft)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--success)]">{f.tag}</span>
               </div>
               <h3 className="mt-4 text-[15.5px] font-semibold tracking-tight">{f.title}</h3>
               <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{f.body}</p>
