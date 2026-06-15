@@ -701,6 +701,72 @@ function ReportDemo() {
   );
 }
 
+function InvoiceDemo() {
+  const [sent, setSent] = useState(false);
+  return (
+    <div className="rounded-xl border border-border bg-background p-4">
+      <div className="flex items-center justify-between">
+        <div className="text-[12px] font-semibold">Invoice · INV-04812</div>
+        <span className="chip text-[10.5px]"><StripeMark className="h-3 w-3" /> Stripe Connect</span>
+      </div>
+      <div className="mt-3 rounded-lg border border-border bg-[var(--surface-2)]/50 p-3 text-[12.5px]">
+        <div className="flex items-center justify-between">
+          <span className="text-muted-foreground">To</span>
+          <span className="font-medium">Hartland Plumbing</span>
+        </div>
+        <div className="mt-2 flex items-center justify-between">
+          <span className="text-muted-foreground">April retainer + ad management</span>
+          <span className="mono font-semibold">$2,400.00</span>
+        </div>
+        <div className="mt-1 flex items-center justify-between">
+          <span className="text-muted-foreground">Performance bonus (12 booked)</span>
+          <span className="mono font-semibold">$600.00</span>
+        </div>
+        <div className="mt-3 flex items-center justify-between border-t border-border pt-2 text-[13px]">
+          <span className="font-semibold">Total</span>
+          <span className="mono font-semibold">$3,000.00</span>
+        </div>
+      </div>
+      {!sent ? (
+        <button onClick={() => setSent(true)} className="mt-3 inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-md bg-foreground text-[12.5px] font-medium text-background">
+          <Mail className="h-3.5 w-3.5" /> Send invoice
+        </button>
+      ) : (
+        <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="mt-3 rounded-lg border border-[var(--success)]/40 bg-[var(--success-soft)]/60 px-3 py-2.5 text-[12px] font-medium text-[var(--success)]">
+          ✓ Sent · Mike will pay through your portal
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+function PushToMetaDemo() {
+  return (
+    <div className="rounded-xl border border-dashed border-border bg-background p-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <MetaAdsChip />
+          <span className="rounded-full bg-[var(--surface-2)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Roadmap · Q4 2026</span>
+        </div>
+      </div>
+      <div className="mt-3 rounded-lg border border-border bg-[var(--surface-2)]/60 p-3">
+        <div className="text-[11px] text-muted-foreground">Approved creative</div>
+        <div className="mt-1 text-[12.5px] font-medium">Emergency Plumbing — primary v3</div>
+        <div className="mt-1 text-[11.5px] text-muted-foreground">Approved by Mike Hartland · 2h ago</div>
+      </div>
+      <div className="mt-3 flex items-center gap-2 text-[11.5px] text-muted-foreground">
+        <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+        Pushes as a draft to the client's Meta ad account · never auto-publishes.
+      </div>
+      <button disabled className="mt-3 inline-flex h-9 w-full cursor-not-allowed items-center justify-center gap-1.5 rounded-md bg-foreground/40 text-[12.5px] font-medium text-background">
+        Push to Meta as draft
+      </button>
+    </div>
+  );
+}
+
+
+
 /* ---------------- Product deep dive ---------------- */
 
 function ProductDeepDive() {
