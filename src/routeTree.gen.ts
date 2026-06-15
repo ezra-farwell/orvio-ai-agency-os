@@ -10,10 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SolutionsRouteImport } from './routes/solutions'
-import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProductRouteImport } from './routes/product'
 import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as PortalPreviewRouteImport } from './routes/portal-preview'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DemoRouteImport } from './routes/demo'
@@ -53,11 +51,6 @@ const SolutionsRoute = SolutionsRouteImport.update({
   path: '/solutions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ProductRoute = ProductRouteImport.update({
   id: '/product',
   path: '/product',
@@ -66,11 +59,6 @@ const ProductRoute = ProductRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PortalPreviewRoute = PortalPreviewRouteImport.update({
-  id: '/portal-preview',
-  path: '/portal-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalRoute = PortalRouteImport.update({
@@ -247,10 +235,8 @@ export interface FileRoutesByFullPath {
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
   '/portal': typeof PortalRouteWithChildren
-  '/portal-preview': typeof PortalPreviewRoute
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
-  '/signup': typeof SignupRoute
   '/solutions': typeof SolutionsRoute
   '/admin/agencies': typeof AdminAgenciesRouteWithChildren
   '/admin/billing': typeof AdminBillingRoute
@@ -284,10 +270,8 @@ export interface FileRoutesByTo {
   '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
-  '/portal-preview': typeof PortalPreviewRoute
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
-  '/signup': typeof SignupRoute
   '/solutions': typeof SolutionsRoute
   '/admin/agencies': typeof AdminAgenciesRouteWithChildren
   '/admin/billing': typeof AdminBillingRoute
@@ -325,10 +309,8 @@ export interface FileRoutesById {
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
   '/portal': typeof PortalRouteWithChildren
-  '/portal-preview': typeof PortalPreviewRoute
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
-  '/signup': typeof SignupRoute
   '/solutions': typeof SolutionsRoute
   '/admin/agencies': typeof AdminAgenciesRouteWithChildren
   '/admin/billing': typeof AdminBillingRoute
@@ -367,10 +349,8 @@ export interface FileRouteTypes {
     | '/demo'
     | '/login'
     | '/portal'
-    | '/portal-preview'
     | '/pricing'
     | '/product'
-    | '/signup'
     | '/solutions'
     | '/admin/agencies'
     | '/admin/billing'
@@ -404,10 +384,8 @@ export interface FileRouteTypes {
     | '/book-demo'
     | '/demo'
     | '/login'
-    | '/portal-preview'
     | '/pricing'
     | '/product'
-    | '/signup'
     | '/solutions'
     | '/admin/agencies'
     | '/admin/billing'
@@ -444,10 +422,8 @@ export interface FileRouteTypes {
     | '/demo'
     | '/login'
     | '/portal'
-    | '/portal-preview'
     | '/pricing'
     | '/product'
-    | '/signup'
     | '/solutions'
     | '/admin/agencies'
     | '/admin/billing'
@@ -485,10 +461,8 @@ export interface RootRouteChildren {
   DemoRoute: typeof DemoRoute
   LoginRoute: typeof LoginRoute
   PortalRoute: typeof PortalRouteWithChildren
-  PortalPreviewRoute: typeof PortalPreviewRoute
   PricingRoute: typeof PricingRoute
   ProductRoute: typeof ProductRoute
-  SignupRoute: typeof SignupRoute
   SolutionsRoute: typeof SolutionsRoute
 }
 
@@ -499,13 +473,6 @@ declare module '@tanstack/react-router' {
       path: '/solutions'
       fullPath: '/solutions'
       preLoaderRoute: typeof SolutionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/product': {
@@ -520,13 +487,6 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/portal-preview': {
-      id: '/portal-preview'
-      path: '/portal-preview'
-      fullPath: '/portal-preview'
-      preLoaderRoute: typeof PortalPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/portal': {
@@ -868,10 +828,8 @@ const rootRouteChildren: RootRouteChildren = {
   DemoRoute: DemoRoute,
   LoginRoute: LoginRoute,
   PortalRoute: PortalRouteWithChildren,
-  PortalPreviewRoute: PortalPreviewRoute,
   PricingRoute: PricingRoute,
   ProductRoute: ProductRoute,
-  SignupRoute: SignupRoute,
   SolutionsRoute: SolutionsRoute,
 }
 export const routeTree = rootRouteImport
