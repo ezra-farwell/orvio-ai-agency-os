@@ -55,6 +55,7 @@ function Pricing() {
                 <div className="text-[13px] font-medium text-muted-foreground">{t.name}</div>
                 <div className="mt-2 flex items-baseline gap-1"><span className="text-[34px] font-semibold tracking-tight md:text-[38px]">${t.price}</span><span className="text-[13px] text-muted-foreground">/mo</span></div>
                 <div className="mt-1 text-[12.5px] text-muted-foreground">{t.sub}</div>
+                <div className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-[var(--accent-soft)] px-2 py-0.5 text-[10.5px] font-semibold text-[var(--accent)]">{t.credits}</div>
                 <Link to="/book-demo" className={`mt-5 flex h-10 items-center justify-center rounded-lg text-[13px] font-medium ${t.pop ? "bg-foreground text-background hover:bg-foreground/90" : "border border-border bg-background hover:bg-[var(--surface-2)]"}`}>Start 14-day trial</Link>
                 <ul className="mt-5 space-y-2">
                   {t.features.map(f => <li key={f} className="flex items-start gap-2 text-[12.5px]"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--success)]" /><span>{f}</span></li>)}
