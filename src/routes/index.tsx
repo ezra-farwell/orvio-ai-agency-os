@@ -106,14 +106,14 @@ function Hero() {
           className="mx-auto max-w-3xl text-center"
         >
           <Link to="/product" className="chip-indigo">
-            <Sparkles className="h-3 w-3" /> Built for agencies running paid ads
+            <Sparkles className="h-3 w-3" /> Built for agencies serving the trades
             <ChevronRight className="h-3 w-3" />
           </Link>
           <h1 className="mt-6 text-[36px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-[44px] md:text-[60px]">
-            White-label client portals for agencies that <span className="text-gradient-indigo">run ads.</span>
+            The client portal OS for agencies running Meta &amp; Google ads for <span className="text-gradient-indigo">local service businesses.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-muted-foreground md:text-[17px]">
-            Orvio gives your agency one branded workspace for Meta &amp; Google ad reporting, leads, content approvals, and monthly reports — so clients can finally see what they're paying for.
+            Orvio is built for agencies serving plumbers, roofers, HVAC, electricians, remodelers and landscapers. One branded workspace for ad reporting, leads, content approvals, invoicing and monthly reports — so contractors can finally see what they're paying for.
           </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-foreground px-5 text-[14px] font-medium text-background hover:bg-foreground/90">
