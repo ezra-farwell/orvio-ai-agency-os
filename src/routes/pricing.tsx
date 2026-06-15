@@ -13,23 +13,26 @@ export const Route = createFileRoute("/pricing")({
 });
 
 const tiers = [
-  { name: "Starter", price: 97, sub: "Solo agencies, 1-3 clients", pop: false, features: ["1 agency seat","Up to 3 client accounts","Meta + Google reporting","Branded client portals","Lead inbox","Stripe payments","Email support"] },
-  { name: "Growth", price: 297, sub: "The plan most agencies start on", pop: true, features: ["5 agency seats","Up to 25 client accounts","Content Studio (AI ads, social, email)","White-label domain","Brand memory per client","Pipeline & approvals","Priority support"] },
-  { name: "Scale", price: 697, sub: "Multi-team, multi-brand agencies", pop: false, features: ["Unlimited agency seats","Unlimited client accounts","Multi-brand white-label","Custom AI tuning","API access","SSO","Dedicated CSM"] },
+  { name: "Starter", price: 97, sub: "Up to 3 clients", pop: false, features: ["1 agency seat","Reporting + client portal","Meta + Google metrics","Email support"] },
+  { name: "Growth", price: 297, sub: "Up to 10 clients", pop: false, features: ["3 agency seats","Lead inbox","Content approvals","Branded portal"] },
+  { name: "Pro", price: 497, sub: "Up to 25 clients", pop: true, features: ["8 agency seats","AI Content Studio (beta)","Simple Stripe payments","Brand memory per client"] },
+  { name: "Scale", price: 997, sub: "Unlimited clients", pop: false, features: ["20 agency seats","Advanced white-label","Custom domain + email","API access"] },
 ];
 
 const rows: [string, (string | boolean)[]][] = [
-  ["Client accounts", ["3", "25", "Unlimited"]],
-  ["Agency seats", ["1", "5", "Unlimited"]],
-  ["White-label domain", [false, true, true]],
-  ["Content Studio (AI)", [false, true, true]],
-  ["Brand memory", [false, true, true]],
-  ["Multi-brand white-label", [false, false, true]],
-  ["Stripe Connect payments", [true, true, true]],
-  ["Custom contracts", [false, false, true]],
-  ["API access", [false, false, true]],
-  ["SSO / SAML", [false, false, true]],
-  ["Support", ["Email", "Priority", "Dedicated CSM"]],
+  ["Client accounts", ["3", "10", "25", "Unlimited"]],
+  ["Agency seats", ["1", "3", "8", "20"]],
+  ["White-label portal", [true, true, true, true]],
+  ["Custom domain", [false, true, true, true]],
+  ["Lead inbox", [false, true, true, true]],
+  ["Content approvals", [false, true, true, true]],
+  ["AI Content Studio", [false, false, "Beta", true]],
+  ["Brand memory", [false, false, true, true]],
+  ["Advanced white-label", [false, false, false, true]],
+  ["Stripe payments", [false, false, true, true]],
+  ["API access", [false, false, false, true]],
+  ["SSO / SAML", [false, false, false, false]],
+  ["Support", ["Email", "Email", "Priority", "Priority"]],
 ];
 
 function Pricing() {
@@ -45,19 +48,26 @@ function Pricing() {
 
       <section className="pb-16">
         <div className="mx-auto max-w-[1240px] px-6">
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {tiers.map(t => (
-              <div key={t.name} className={`rounded-2xl border bg-background p-6 ${t.pop ? "border-foreground shadow-pop" : "border-border"}`}>
-                {t.pop && <div className="mb-3 inline-flex chip-indigo">Most popular</div>}
+              <div key={t.name} className={`flex flex-col rounded-2xl border bg-background p-6 ${t.pop ? "border-foreground shadow-pop" : "border-border"}`}>
+                {t.pop ? <div className="mb-3 inline-flex w-fit chip-indigo">Most popular</div> : <div className="mb-3 h-[22px]" />}
                 <div className="text-[13px] font-medium text-muted-foreground">{t.name}</div>
-                <div className="mt-2 flex items-baseline gap-1"><span className="text-[40px] font-semibold tracking-tight">${t.price}</span><span className="text-[13px] text-muted-foreground">/mo</span></div>
+                <div className="mt-2 flex items-baseline gap-1"><span className="text-[34px] font-semibold tracking-tight md:text-[38px]">${t.price}</span><span className="text-[13px] text-muted-foreground">/mo</span></div>
                 <div className="mt-1 text-[12.5px] text-muted-foreground">{t.sub}</div>
-                <Link to="/book-demo" className={`mt-5 flex h-10 items-center justify-center rounded-lg text-[13.5px] font-medium ${t.pop ? "bg-foreground text-background hover:bg-foreground/90" : "border border-border bg-background hover:bg-[var(--surface-2)]"}`}>Start 14-day trial</Link>
+                <Link to="/book-demo" className={`mt-5 flex h-10 items-center justify-center rounded-lg text-[13px] font-medium ${t.pop ? "bg-foreground text-background hover:bg-foreground/90" : "border border-border bg-background hover:bg-[var(--surface-2)]"}`}>Start 14-day trial</Link>
                 <ul className="mt-5 space-y-2">
-                  {t.features.map(f => <li key={f} className="flex items-start gap-2 text-[13px]"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--success)]" /><span>{f}</span></li>)}
+                  {t.features.map(f => <li key={f} className="flex items-start gap-2 text-[12.5px]"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--success)]" /><span>{f}</span></li>)}
                 </ul>
               </div>
             ))}
+          </div>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-dashed border-border bg-background p-5">
+            <div>
+              <div className="text-[14px] font-semibold">Enterprise · custom</div>
+              <div className="text-[12.5px] text-muted-foreground">50+ clients, SSO, custom contracts, multi-brand white-label, dedicated infrastructure.</div>
+            </div>
+            <Link to="/book-demo" className="inline-flex h-10 items-center rounded-lg border border-border bg-background px-4 text-[13px] font-medium hover:bg-[var(--surface-2)]">Talk to sales <ArrowRight className="ml-1.5 h-3.5 w-3.5" /></Link>
           </div>
         </div>
       </section>
@@ -65,7 +75,7 @@ function Pricing() {
       <section className="hairline-t py-16">
         <div className="mx-auto max-w-[1100px] px-6">
           <h2 className="text-[24px] font-semibold tracking-tight">Compare plans</h2>
-          <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-background">
+          <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-background">
             <table className="w-full text-[13.5px]">
               <thead className="bg-[var(--surface-2)] text-left text-[12px] uppercase tracking-wider text-muted-foreground">
                 <tr><th className="p-4 font-semibold">Feature</th>{tiers.map(t => <th key={t.name} className="p-4 text-center font-semibold">{t.name}</th>)}</tr>
