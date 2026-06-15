@@ -30,6 +30,9 @@ function Home() {
       <FeatureGrid />
       <WorkflowDemos />
       <ProductDeepDive />
+      <WhiteLabelShowcase />
+      <HealthScoreExplainer />
+      <CreditsExplainer />
       <Testimonials />
       <ProductTruthStrip />
       <Roadmap />
