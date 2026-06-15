@@ -263,31 +263,58 @@ function DualChart({ trend }: { trend: number[] }) {
 /* ---------------- Logos / trust ---------------- */
 
 function Logos() {
+  const verticals = [
+    { name: "Plumbing", Icon: WrenchIcon },
+    { name: "Roofing", Icon: RoofIcon },
+    { name: "HVAC", Icon: FlameIcon },
+    { name: "Electrical", Icon: BoltIcon },
+    { name: "Remodeling", Icon: HouseIcon },
+    { name: "Landscaping", Icon: LeafIcon },
+  ];
   return (
     <section className="hairline-b py-10">
       <div className="mx-auto max-w-[1240px] px-6">
-        <div className="text-center text-[11.5px] uppercase tracking-wider text-muted-foreground">
-          Built for agencies running ads for local service businesses
-        </div>
-        <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 text-center text-[13px] font-semibold tracking-tight text-foreground/60 sm:grid-cols-3 sm:text-[15px] md:grid-cols-6">
-          {[
-            { name: "Plumbing", Icon: WrenchIcon },
-            { name: "Roofing", Icon: RoofIcon },
-            { name: "HVAC", Icon: FlameIcon },
-            { name: "Electrical", Icon: BoltIcon },
-            { name: "Remodeling", Icon: HouseIcon },
-            { name: "Landscaping", Icon: LeafIcon },
-          ].map(({ name, Icon }) => (
-            <div key={name} className="flex items-center justify-center gap-2">
-              <Icon className="h-4 w-4 text-foreground/40" />
-              <span>{name}</span>
+        <div className="flex flex-col items-center gap-6 md:flex-row md:items-center md:justify-between md:gap-10">
+          <div className="flex flex-col items-center gap-3 md:items-start">
+            <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Connects with</div>
+            <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+              <span className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-semibold">
+                <MetaMark className="h-4 w-4" /> Meta Ads
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-semibold">
+                <GoogleMark className="h-4 w-4" /> Google Ads
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-[13px] font-semibold">
+                <StripeMark className="h-4 w-4" /> Stripe
+              </span>
             </div>
-          ))}
+          </div>
+          <div className="h-px w-full bg-border md:hidden" />
+          <div className="flex flex-col items-center gap-3 md:items-end">
+            <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Built for</div>
+            <div className="grid grid-cols-3 gap-x-5 gap-y-2 text-center text-[12.5px] font-medium tracking-tight text-foreground/70 sm:grid-cols-6">
+              {verticals.map(({ name, Icon }) => (
+                <div key={name} className="flex items-center justify-center gap-1.5">
+                  <Icon className="h-3.5 w-3.5 text-foreground/40" />
+                  <span>{name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
+const StripeMark = ({ className = "h-4 w-4" }: { className?: string }) => (
+  <svg viewBox="0 0 32 32" className={className} aria-label="Stripe">
+    <rect width="32" height="32" rx="6" fill="#635BFF" />
+    <path fill="#fff" d="M14.6 12.2c0-.8.7-1.1 1.7-1.1 1.5 0 3.4.5 4.9 1.3v-4.6C19.6 7.3 18 7 16.3 7c-4 0-6.7 2.1-6.7 5.6 0 5.5 7.5 4.6 7.5 6.9 0 .9-.8 1.2-2 1.2-1.6 0-3.8-.7-5.6-1.6v4.7c1.9.8 3.9 1.2 5.6 1.2 4.1 0 7-2 7-5.6-.1-5.9-7.5-4.8-7.5-7.2z"/>
+  </svg>
+);
+
+
 
 const WrenchIcon = (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-.4-.4-2 2.3-2.3z"/></svg>;
 const RoofIcon = (p: any) => <svg {...p} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg>;
