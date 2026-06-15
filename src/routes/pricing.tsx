@@ -13,10 +13,10 @@ export const Route = createFileRoute("/pricing")({
 });
 
 const tiers = [
-  { name: "Starter", price: 97, sub: "Up to 3 clients", pop: false, features: ["1 agency seat","Reporting + client portal","Meta + Google metrics","Email support"] },
-  { name: "Growth", price: 297, sub: "Up to 10 clients", pop: false, features: ["3 agency seats","Lead inbox","Content approvals","Branded portal"] },
-  { name: "Pro", price: 497, sub: "Up to 25 clients", pop: true, features: ["8 agency seats","AI Content Studio (beta)","Simple Stripe payments","Brand memory per client"] },
-  { name: "Scale", price: 997, sub: "Unlimited clients", pop: false, features: ["20 agency seats","Advanced white-label","Custom domain + email","API access"] },
+  { name: "Starter", price: 97, sub: "Up to 3 clients", pop: false, credits: "200 credits / mo", features: ["1 agency seat","Branded client portal","Meta + Google reporting (CSV + API beta)","Lead inbox + Stripe invoicing","Email support"] },
+  { name: "Growth", price: 297, sub: "Up to 10 clients", pop: false, credits: "1,000 credits / mo", features: ["3 agency seats","Custom subdomain + email sender","Content approvals","AI report summaries (beta)"] },
+  { name: "Pro", price: 497, sub: "Up to 25 clients", pop: true, credits: "5,000 credits / mo", features: ["8 agency seats","AI Content Studio (beta)","Per-client brand memory (beta)","Stripe Connect payments"] },
+  { name: "Scale", price: 997, sub: "Unlimited clients", pop: false, credits: "20,000 credits / mo", features: ["20 agency seats","Multi-brand white-label (roadmap)","Custom domain + email","Public API (beta)"] },
 ];
 
 const rows: [string, (string | boolean)[]][] = [
