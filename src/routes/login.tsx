@@ -35,7 +35,7 @@ function Login() {
               <div className="h-px flex-1 bg-border" /> or <div className="h-px flex-1 bg-border" />
             </div>
             <Link to="/portal" className="mt-3 flex h-10 w-full items-center justify-center rounded-lg border border-border bg-background text-[13.5px] hover:bg-[var(--surface-2)]">I'm a client</Link>
-            <p className="mt-6 text-center text-[12.5px] text-muted-foreground">Don't have an account? <Link to="/book-demo" className="font-medium text-foreground hover:underline">Book a demo</Link></p>
+            <p className="mt-6 text-center text-[12.5px] text-muted-foreground">New here? <Link to="/onboarding" className="font-medium text-foreground hover:underline">Set up your agency</Link> · <Link to="/book-demo" className="font-medium text-foreground hover:underline">Book a demo</Link></p>
           </div>
         </div>
       </div>
