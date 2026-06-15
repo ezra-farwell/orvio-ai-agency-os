@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   ArrowRight, Check, BarChart3, Inbox, MessageSquare, Palette, CreditCard,
   Sparkles, ChevronRight, Phone, MessageCircle, FileText, UserPlus, Globe,
-  Info, AlertTriangle, Smartphone, Lock, Upload, Map as MapIcon, X,
+  Info, AlertTriangle, Smartphone, Lock, Upload, Map as MapIcon, X, Mail,
 } from "lucide-react";
 import { MarketingShell } from "@/components/shells/MarketingShell";
 import { currentAgency } from "@/mock/data";
