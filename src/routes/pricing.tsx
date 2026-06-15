@@ -70,8 +70,33 @@ function Pricing() {
             </div>
             <Link to="/book-demo" className="inline-flex h-10 items-center rounded-lg border border-border bg-background px-4 text-[13px] font-medium hover:bg-[var(--surface-2)]">Talk to sales <ArrowRight className="ml-1.5 h-3.5 w-3.5" /></Link>
           </div>
+
+          <div className="mt-6 rounded-2xl border border-border bg-background p-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="chip-indigo">Credits explained</span>
+              <span className="text-[12px] text-muted-foreground">What your monthly credits buy</span>
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+              {[
+                ["AI report summary", "5 credits", "Live"],
+                ["Ad copy generation", "10 credits", "Beta"],
+                ["Brand memory refresh", "20 credits", "Roadmap"],
+                ["Creative image variation", "25 credits", "Roadmap"],
+              ].map(([label, cost, tag]) => (
+                <div key={label} className="rounded-xl border border-border p-3">
+                  <div className="text-[12.5px] font-semibold">{label}</div>
+                  <div className="mono mt-0.5 text-[12px] text-muted-foreground">{cost}</div>
+                  <div className="mt-2 inline-block rounded-full bg-[var(--surface-2)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{tag}</div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-[12.5px] text-muted-foreground">
+              Reporting, the lead inbox, approvals, invoicing and white-label don't use credits — they're included on every plan. Unused credits roll over for one billing cycle. Top up any time without upgrading.
+            </p>
+          </div>
         </div>
       </section>
+
 
       <section className="hairline-t py-16">
         <div className="mx-auto max-w-[1100px] px-6">
