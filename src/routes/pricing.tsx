@@ -13,23 +13,26 @@ export const Route = createFileRoute("/pricing")({
 });
 
 const tiers = [
-  { name: "Starter", price: 97, sub: "Solo agencies, 1-3 clients", pop: false, features: ["1 agency seat","Up to 3 client accounts","Meta + Google reporting","Branded client portals","Lead inbox","Stripe payments","Email support"] },
-  { name: "Growth", price: 297, sub: "The plan most agencies start on", pop: true, features: ["5 agency seats","Up to 25 client accounts","Content Studio (AI ads, social, email)","White-label domain","Brand memory per client","Pipeline & approvals","Priority support"] },
-  { name: "Scale", price: 697, sub: "Multi-team, multi-brand agencies", pop: false, features: ["Unlimited agency seats","Unlimited client accounts","Multi-brand white-label","Custom AI tuning","API access","SSO","Dedicated CSM"] },
+  { name: "Starter", price: 97, sub: "Up to 3 clients", pop: false, features: ["1 agency seat","Reporting + client portal","Meta + Google metrics","Email support"] },
+  { name: "Growth", price: 297, sub: "Up to 10 clients", pop: false, features: ["3 agency seats","Lead inbox","Content approvals","Branded portal"] },
+  { name: "Pro", price: 497, sub: "Up to 25 clients", pop: true, features: ["8 agency seats","AI Content Studio (beta)","Simple Stripe payments","Brand memory per client"] },
+  { name: "Scale", price: 997, sub: "Unlimited clients", pop: false, features: ["20 agency seats","Advanced white-label","Custom domain + email","API access"] },
 ];
 
 const rows: [string, (string | boolean)[]][] = [
-  ["Client accounts", ["3", "25", "Unlimited"]],
-  ["Agency seats", ["1", "5", "Unlimited"]],
-  ["White-label domain", [false, true, true]],
-  ["Content Studio (AI)", [false, true, true]],
-  ["Brand memory", [false, true, true]],
-  ["Multi-brand white-label", [false, false, true]],
-  ["Stripe Connect payments", [true, true, true]],
-  ["Custom contracts", [false, false, true]],
-  ["API access", [false, false, true]],
-  ["SSO / SAML", [false, false, true]],
-  ["Support", ["Email", "Priority", "Dedicated CSM"]],
+  ["Client accounts", ["3", "10", "25", "Unlimited"]],
+  ["Agency seats", ["1", "3", "8", "20"]],
+  ["White-label portal", [true, true, true, true]],
+  ["Custom domain", [false, true, true, true]],
+  ["Lead inbox", [false, true, true, true]],
+  ["Content approvals", [false, true, true, true]],
+  ["AI Content Studio", [false, false, "Beta", true]],
+  ["Brand memory", [false, false, true, true]],
+  ["Advanced white-label", [false, false, false, true]],
+  ["Stripe payments", [false, false, true, true]],
+  ["API access", [false, false, false, true]],
+  ["SSO / SAML", [false, false, false, false]],
+  ["Support", ["Email", "Email", "Priority", "Priority"]],
 ];
 
 function Pricing() {
