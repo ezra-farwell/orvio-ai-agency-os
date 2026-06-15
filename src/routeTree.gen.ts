@@ -9,15 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SolutionsRouteImport } from './routes/solutions'
+import { Route as ProductRouteImport } from './routes/product'
 import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as PortalPreviewRouteImport } from './routes/portal-preview'
+import { Route as PortalRouteImport } from './routes/portal'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as DemoRouteImport } from './routes/demo'
+import { Route as BookDemoRouteImport } from './routes/book-demo'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as PortalReportsRouteImport } from './routes/portal.reports'
+import { Route as PortalPaymentsRouteImport } from './routes/portal.payments'
+import { Route as PortalMessagesRouteImport } from './routes/portal.messages'
+import { Route as PortalLeadsRouteImport } from './routes/portal.leads'
+import { Route as PortalCampaignsRouteImport } from './routes/portal.campaigns'
+import { Route as PortalApprovalsRouteImport } from './routes/portal.approvals'
+import { Route as AppStudioRouteImport } from './routes/app.studio'
+import { Route as AppReportsRouteImport } from './routes/app.reports'
+import { Route as AppReportingRouteImport } from './routes/app.reporting'
+import { Route as AppPipelineRouteImport } from './routes/app.pipeline'
+import { Route as AppPaymentsRouteImport } from './routes/app.payments'
+import { Route as AppMessagesRouteImport } from './routes/app.messages'
+import { Route as AppLeadsRouteImport } from './routes/app.leads'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminIntegrationsRouteImport } from './routes/admin.integrations'
+import { Route as AdminBillingRouteImport } from './routes/admin.billing'
+import { Route as AdminAgenciesRouteImport } from './routes/admin.agencies'
+import { Route as AppClientsIndexRouteImport } from './routes/app.clients.index'
+import { Route as AppSettingsWhiteLabelRouteImport } from './routes/app.settings.white-label'
+import { Route as AppClientsIdRouteImport } from './routes/app.clients.$id'
+import { Route as AdminAgenciesIdRouteImport } from './routes/admin.agencies.$id'
+import { Route as AppStudioBrandIdRouteImport } from './routes/app.studio.brand.$id'
+import { Route as AppStudioAdsNewRouteImport } from './routes/app.studio.ads.new'
 
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
+const SolutionsRoute = SolutionsRouteImport.update({
+  id: '/solutions',
+  path: '/solutions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductRoute = ProductRouteImport.update({
+  id: '/product',
+  path: '/product',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -25,9 +61,14 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortalPreviewRoute = PortalPreviewRouteImport.update({
-  id: '/portal-preview',
-  path: '/portal-preview',
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoRoute = DemoRouteImport.update({
@@ -35,57 +76,410 @@ const DemoRoute = DemoRouteImport.update({
   path: '/demo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookDemoRoute = BookDemoRouteImport.update({
+  id: '/book-demo',
+  path: '/book-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PortalRoute,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const PortalReportsRoute = PortalReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalPaymentsRoute = PortalPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalMessagesRoute = PortalMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalLeadsRoute = PortalLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalCampaignsRoute = PortalCampaignsRouteImport.update({
+  id: '/campaigns',
+  path: '/campaigns',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalApprovalsRoute = PortalApprovalsRouteImport.update({
+  id: '/approvals',
+  path: '/approvals',
+  getParentRoute: () => PortalRoute,
+} as any)
+const AppStudioRoute = AppStudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReportsRoute = AppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReportingRoute = AppReportingRouteImport.update({
+  id: '/reporting',
+  path: '/reporting',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPipelineRoute = AppPipelineRouteImport.update({
+  id: '/pipeline',
+  path: '/pipeline',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPaymentsRoute = AppPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessagesRoute = AppMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeadsRoute = AppLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AppRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminIntegrationsRoute = AdminIntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminBillingRoute = AdminBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAgenciesRoute = AdminAgenciesRouteImport.update({
+  id: '/agencies',
+  path: '/agencies',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AppClientsIndexRoute = AppClientsIndexRouteImport.update({
+  id: '/clients/',
+  path: '/clients/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsWhiteLabelRoute = AppSettingsWhiteLabelRouteImport.update({
+  id: '/settings/white-label',
+  path: '/settings/white-label',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppClientsIdRoute = AppClientsIdRouteImport.update({
+  id: '/clients/$id',
+  path: '/clients/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AdminAgenciesIdRoute = AdminAgenciesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminAgenciesRoute,
+} as any)
+const AppStudioBrandIdRoute = AppStudioBrandIdRouteImport.update({
+  id: '/brand/$id',
+  path: '/brand/$id',
+  getParentRoute: () => AppStudioRoute,
+} as any)
+const AppStudioAdsNewRoute = AppStudioAdsNewRouteImport.update({
+  id: '/ads/new',
+  path: '/ads/new',
+  getParentRoute: () => AppStudioRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/app': typeof AppRouteWithChildren
+  '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
-  '/portal-preview': typeof PortalPreviewRoute
+  '/login': typeof LoginRoute
+  '/portal': typeof PortalRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/signup': typeof SignupRoute
+  '/product': typeof ProductRoute
+  '/solutions': typeof SolutionsRoute
+  '/admin/agencies': typeof AdminAgenciesRouteWithChildren
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/app/leads': typeof AppLeadsRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/app/payments': typeof AppPaymentsRoute
+  '/app/pipeline': typeof AppPipelineRoute
+  '/app/reporting': typeof AppReportingRoute
+  '/app/reports': typeof AppReportsRoute
+  '/app/studio': typeof AppStudioRouteWithChildren
+  '/portal/approvals': typeof PortalApprovalsRoute
+  '/portal/campaigns': typeof PortalCampaignsRoute
+  '/portal/leads': typeof PortalLeadsRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/payments': typeof PortalPaymentsRoute
+  '/portal/reports': typeof PortalReportsRoute
+  '/admin/': typeof AdminIndexRoute
+  '/app/': typeof AppIndexRoute
+  '/portal/': typeof PortalIndexRoute
+  '/admin/agencies/$id': typeof AdminAgenciesIdRoute
+  '/app/clients/$id': typeof AppClientsIdRoute
+  '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
+  '/app/clients/': typeof AppClientsIndexRoute
+  '/app/studio/ads/new': typeof AppStudioAdsNewRoute
+  '/app/studio/brand/$id': typeof AppStudioBrandIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
-  '/portal-preview': typeof PortalPreviewRoute
+  '/login': typeof LoginRoute
   '/pricing': typeof PricingRoute
-  '/signup': typeof SignupRoute
+  '/product': typeof ProductRoute
+  '/solutions': typeof SolutionsRoute
+  '/admin/agencies': typeof AdminAgenciesRouteWithChildren
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/app/leads': typeof AppLeadsRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/app/payments': typeof AppPaymentsRoute
+  '/app/pipeline': typeof AppPipelineRoute
+  '/app/reporting': typeof AppReportingRoute
+  '/app/reports': typeof AppReportsRoute
+  '/app/studio': typeof AppStudioRouteWithChildren
+  '/portal/approvals': typeof PortalApprovalsRoute
+  '/portal/campaigns': typeof PortalCampaignsRoute
+  '/portal/leads': typeof PortalLeadsRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/payments': typeof PortalPaymentsRoute
+  '/portal/reports': typeof PortalReportsRoute
+  '/admin': typeof AdminIndexRoute
+  '/app': typeof AppIndexRoute
+  '/portal': typeof PortalIndexRoute
+  '/admin/agencies/$id': typeof AdminAgenciesIdRoute
+  '/app/clients/$id': typeof AppClientsIdRoute
+  '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
+  '/app/clients': typeof AppClientsIndexRoute
+  '/app/studio/ads/new': typeof AppStudioAdsNewRoute
+  '/app/studio/brand/$id': typeof AppStudioBrandIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/app': typeof AppRouteWithChildren
+  '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
-  '/portal-preview': typeof PortalPreviewRoute
+  '/login': typeof LoginRoute
+  '/portal': typeof PortalRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/signup': typeof SignupRoute
+  '/product': typeof ProductRoute
+  '/solutions': typeof SolutionsRoute
+  '/admin/agencies': typeof AdminAgenciesRouteWithChildren
+  '/admin/billing': typeof AdminBillingRoute
+  '/admin/integrations': typeof AdminIntegrationsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/app/leads': typeof AppLeadsRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/app/payments': typeof AppPaymentsRoute
+  '/app/pipeline': typeof AppPipelineRoute
+  '/app/reporting': typeof AppReportingRoute
+  '/app/reports': typeof AppReportsRoute
+  '/app/studio': typeof AppStudioRouteWithChildren
+  '/portal/approvals': typeof PortalApprovalsRoute
+  '/portal/campaigns': typeof PortalCampaignsRoute
+  '/portal/leads': typeof PortalLeadsRoute
+  '/portal/messages': typeof PortalMessagesRoute
+  '/portal/payments': typeof PortalPaymentsRoute
+  '/portal/reports': typeof PortalReportsRoute
+  '/admin/': typeof AdminIndexRoute
+  '/app/': typeof AppIndexRoute
+  '/portal/': typeof PortalIndexRoute
+  '/admin/agencies/$id': typeof AdminAgenciesIdRoute
+  '/app/clients/$id': typeof AppClientsIdRoute
+  '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
+  '/app/clients/': typeof AppClientsIndexRoute
+  '/app/studio/ads/new': typeof AppStudioAdsNewRoute
+  '/app/studio/brand/$id': typeof AppStudioBrandIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo' | '/portal-preview' | '/pricing' | '/signup'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/app'
+    | '/book-demo'
+    | '/demo'
+    | '/login'
+    | '/portal'
+    | '/pricing'
+    | '/product'
+    | '/solutions'
+    | '/admin/agencies'
+    | '/admin/billing'
+    | '/admin/integrations'
+    | '/admin/settings'
+    | '/app/leads'
+    | '/app/messages'
+    | '/app/payments'
+    | '/app/pipeline'
+    | '/app/reporting'
+    | '/app/reports'
+    | '/app/studio'
+    | '/portal/approvals'
+    | '/portal/campaigns'
+    | '/portal/leads'
+    | '/portal/messages'
+    | '/portal/payments'
+    | '/portal/reports'
+    | '/admin/'
+    | '/app/'
+    | '/portal/'
+    | '/admin/agencies/$id'
+    | '/app/clients/$id'
+    | '/app/settings/white-label'
+    | '/app/clients/'
+    | '/app/studio/ads/new'
+    | '/app/studio/brand/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo' | '/portal-preview' | '/pricing' | '/signup'
-  id: '__root__' | '/' | '/demo' | '/portal-preview' | '/pricing' | '/signup'
+  to:
+    | '/'
+    | '/book-demo'
+    | '/demo'
+    | '/login'
+    | '/pricing'
+    | '/product'
+    | '/solutions'
+    | '/admin/agencies'
+    | '/admin/billing'
+    | '/admin/integrations'
+    | '/admin/settings'
+    | '/app/leads'
+    | '/app/messages'
+    | '/app/payments'
+    | '/app/pipeline'
+    | '/app/reporting'
+    | '/app/reports'
+    | '/app/studio'
+    | '/portal/approvals'
+    | '/portal/campaigns'
+    | '/portal/leads'
+    | '/portal/messages'
+    | '/portal/payments'
+    | '/portal/reports'
+    | '/admin'
+    | '/app'
+    | '/portal'
+    | '/admin/agencies/$id'
+    | '/app/clients/$id'
+    | '/app/settings/white-label'
+    | '/app/clients'
+    | '/app/studio/ads/new'
+    | '/app/studio/brand/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/app'
+    | '/book-demo'
+    | '/demo'
+    | '/login'
+    | '/portal'
+    | '/pricing'
+    | '/product'
+    | '/solutions'
+    | '/admin/agencies'
+    | '/admin/billing'
+    | '/admin/integrations'
+    | '/admin/settings'
+    | '/app/leads'
+    | '/app/messages'
+    | '/app/payments'
+    | '/app/pipeline'
+    | '/app/reporting'
+    | '/app/reports'
+    | '/app/studio'
+    | '/portal/approvals'
+    | '/portal/campaigns'
+    | '/portal/leads'
+    | '/portal/messages'
+    | '/portal/payments'
+    | '/portal/reports'
+    | '/admin/'
+    | '/app/'
+    | '/portal/'
+    | '/admin/agencies/$id'
+    | '/app/clients/$id'
+    | '/app/settings/white-label'
+    | '/app/clients/'
+    | '/app/studio/ads/new'
+    | '/app/studio/brand/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AppRoute: typeof AppRouteWithChildren
+  BookDemoRoute: typeof BookDemoRoute
   DemoRoute: typeof DemoRoute
-  PortalPreviewRoute: typeof PortalPreviewRoute
+  LoginRoute: typeof LoginRoute
+  PortalRoute: typeof PortalRouteWithChildren
   PricingRoute: typeof PricingRoute
-  SignupRoute: typeof SignupRoute
+  ProductRoute: typeof ProductRoute
+  SolutionsRoute: typeof SolutionsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
+    '/solutions': {
+      id: '/solutions'
+      path: '/solutions'
+      fullPath: '/solutions'
+      preLoaderRoute: typeof SolutionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product': {
+      id: '/product'
+      path: '/product'
+      fullPath: '/product'
+      preLoaderRoute: typeof ProductRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -95,11 +489,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portal-preview': {
-      id: '/portal-preview'
-      path: '/portal-preview'
-      fullPath: '/portal-preview'
-      preLoaderRoute: typeof PortalPreviewRouteImport
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo': {
@@ -109,6 +510,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/book-demo': {
+      id: '/book-demo'
+      path: '/book-demo'
+      fullPath: '/book-demo'
+      preLoaderRoute: typeof BookDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -116,26 +538,300 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/portal/': {
+      id: '/portal/'
+      path: '/'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/portal/reports': {
+      id: '/portal/reports'
+      path: '/reports'
+      fullPath: '/portal/reports'
+      preLoaderRoute: typeof PortalReportsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/payments': {
+      id: '/portal/payments'
+      path: '/payments'
+      fullPath: '/portal/payments'
+      preLoaderRoute: typeof PortalPaymentsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/messages': {
+      id: '/portal/messages'
+      path: '/messages'
+      fullPath: '/portal/messages'
+      preLoaderRoute: typeof PortalMessagesRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/leads': {
+      id: '/portal/leads'
+      path: '/leads'
+      fullPath: '/portal/leads'
+      preLoaderRoute: typeof PortalLeadsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/campaigns': {
+      id: '/portal/campaigns'
+      path: '/campaigns'
+      fullPath: '/portal/campaigns'
+      preLoaderRoute: typeof PortalCampaignsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/portal/approvals': {
+      id: '/portal/approvals'
+      path: '/approvals'
+      fullPath: '/portal/approvals'
+      preLoaderRoute: typeof PortalApprovalsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/app/studio': {
+      id: '/app/studio'
+      path: '/studio'
+      fullPath: '/app/studio'
+      preLoaderRoute: typeof AppStudioRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/reports': {
+      id: '/app/reports'
+      path: '/reports'
+      fullPath: '/app/reports'
+      preLoaderRoute: typeof AppReportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/reporting': {
+      id: '/app/reporting'
+      path: '/reporting'
+      fullPath: '/app/reporting'
+      preLoaderRoute: typeof AppReportingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/pipeline': {
+      id: '/app/pipeline'
+      path: '/pipeline'
+      fullPath: '/app/pipeline'
+      preLoaderRoute: typeof AppPipelineRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/payments': {
+      id: '/app/payments'
+      path: '/payments'
+      fullPath: '/app/payments'
+      preLoaderRoute: typeof AppPaymentsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/messages': {
+      id: '/app/messages'
+      path: '/messages'
+      fullPath: '/app/messages'
+      preLoaderRoute: typeof AppMessagesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/leads': {
+      id: '/app/leads'
+      path: '/leads'
+      fullPath: '/app/leads'
+      preLoaderRoute: typeof AppLeadsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/integrations': {
+      id: '/admin/integrations'
+      path: '/integrations'
+      fullPath: '/admin/integrations'
+      preLoaderRoute: typeof AdminIntegrationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/billing': {
+      id: '/admin/billing'
+      path: '/billing'
+      fullPath: '/admin/billing'
+      preLoaderRoute: typeof AdminBillingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/agencies': {
+      id: '/admin/agencies'
+      path: '/agencies'
+      fullPath: '/admin/agencies'
+      preLoaderRoute: typeof AdminAgenciesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/app/clients/': {
+      id: '/app/clients/'
+      path: '/clients'
+      fullPath: '/app/clients/'
+      preLoaderRoute: typeof AppClientsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings/white-label': {
+      id: '/app/settings/white-label'
+      path: '/settings/white-label'
+      fullPath: '/app/settings/white-label'
+      preLoaderRoute: typeof AppSettingsWhiteLabelRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/clients/$id': {
+      id: '/app/clients/$id'
+      path: '/clients/$id'
+      fullPath: '/app/clients/$id'
+      preLoaderRoute: typeof AppClientsIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/admin/agencies/$id': {
+      id: '/admin/agencies/$id'
+      path: '/$id'
+      fullPath: '/admin/agencies/$id'
+      preLoaderRoute: typeof AdminAgenciesIdRouteImport
+      parentRoute: typeof AdminAgenciesRoute
+    }
+    '/app/studio/brand/$id': {
+      id: '/app/studio/brand/$id'
+      path: '/brand/$id'
+      fullPath: '/app/studio/brand/$id'
+      preLoaderRoute: typeof AppStudioBrandIdRouteImport
+      parentRoute: typeof AppStudioRoute
+    }
+    '/app/studio/ads/new': {
+      id: '/app/studio/ads/new'
+      path: '/ads/new'
+      fullPath: '/app/studio/ads/new'
+      preLoaderRoute: typeof AppStudioAdsNewRouteImport
+      parentRoute: typeof AppStudioRoute
+    }
   }
 }
 
+interface AdminAgenciesRouteChildren {
+  AdminAgenciesIdRoute: typeof AdminAgenciesIdRoute
+}
+
+const AdminAgenciesRouteChildren: AdminAgenciesRouteChildren = {
+  AdminAgenciesIdRoute: AdminAgenciesIdRoute,
+}
+
+const AdminAgenciesRouteWithChildren = AdminAgenciesRoute._addFileChildren(
+  AdminAgenciesRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminAgenciesRoute: typeof AdminAgenciesRouteWithChildren
+  AdminBillingRoute: typeof AdminBillingRoute
+  AdminIntegrationsRoute: typeof AdminIntegrationsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAgenciesRoute: AdminAgenciesRouteWithChildren,
+  AdminBillingRoute: AdminBillingRoute,
+  AdminIntegrationsRoute: AdminIntegrationsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface AppStudioRouteChildren {
+  AppStudioAdsNewRoute: typeof AppStudioAdsNewRoute
+  AppStudioBrandIdRoute: typeof AppStudioBrandIdRoute
+}
+
+const AppStudioRouteChildren: AppStudioRouteChildren = {
+  AppStudioAdsNewRoute: AppStudioAdsNewRoute,
+  AppStudioBrandIdRoute: AppStudioBrandIdRoute,
+}
+
+const AppStudioRouteWithChildren = AppStudioRoute._addFileChildren(
+  AppStudioRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppLeadsRoute: typeof AppLeadsRoute
+  AppMessagesRoute: typeof AppMessagesRoute
+  AppPaymentsRoute: typeof AppPaymentsRoute
+  AppPipelineRoute: typeof AppPipelineRoute
+  AppReportingRoute: typeof AppReportingRoute
+  AppReportsRoute: typeof AppReportsRoute
+  AppStudioRoute: typeof AppStudioRouteWithChildren
+  AppIndexRoute: typeof AppIndexRoute
+  AppClientsIdRoute: typeof AppClientsIdRoute
+  AppSettingsWhiteLabelRoute: typeof AppSettingsWhiteLabelRoute
+  AppClientsIndexRoute: typeof AppClientsIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppLeadsRoute: AppLeadsRoute,
+  AppMessagesRoute: AppMessagesRoute,
+  AppPaymentsRoute: AppPaymentsRoute,
+  AppPipelineRoute: AppPipelineRoute,
+  AppReportingRoute: AppReportingRoute,
+  AppReportsRoute: AppReportsRoute,
+  AppStudioRoute: AppStudioRouteWithChildren,
+  AppIndexRoute: AppIndexRoute,
+  AppClientsIdRoute: AppClientsIdRoute,
+  AppSettingsWhiteLabelRoute: AppSettingsWhiteLabelRoute,
+  AppClientsIndexRoute: AppClientsIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
+interface PortalRouteChildren {
+  PortalApprovalsRoute: typeof PortalApprovalsRoute
+  PortalCampaignsRoute: typeof PortalCampaignsRoute
+  PortalLeadsRoute: typeof PortalLeadsRoute
+  PortalMessagesRoute: typeof PortalMessagesRoute
+  PortalPaymentsRoute: typeof PortalPaymentsRoute
+  PortalReportsRoute: typeof PortalReportsRoute
+  PortalIndexRoute: typeof PortalIndexRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalApprovalsRoute: PortalApprovalsRoute,
+  PortalCampaignsRoute: PortalCampaignsRoute,
+  PortalLeadsRoute: PortalLeadsRoute,
+  PortalMessagesRoute: PortalMessagesRoute,
+  PortalPaymentsRoute: PortalPaymentsRoute,
+  PortalReportsRoute: PortalReportsRoute,
+  PortalIndexRoute: PortalIndexRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AppRoute: AppRouteWithChildren,
+  BookDemoRoute: BookDemoRoute,
   DemoRoute: DemoRoute,
-  PortalPreviewRoute: PortalPreviewRoute,
+  LoginRoute: LoginRoute,
+  PortalRoute: PortalRouteWithChildren,
   PricingRoute: PricingRoute,
-  SignupRoute: SignupRoute,
+  ProductRoute: ProductRoute,
+  SolutionsRoute: SolutionsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
