@@ -13,6 +13,7 @@ import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as ProductRouteImport } from './routes/product'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PortalRouteImport } from './routes/portal'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as BookDemoRouteImport } from './routes/book-demo'
@@ -64,6 +65,11 @@ const PricingRoute = PricingRouteImport.update({
 const PortalRoute = PortalRouteImport.update({
   id: '/portal',
   path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -234,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/portal': typeof PortalRouteWithChildren
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
@@ -270,6 +277,7 @@ export interface FileRoutesByTo {
   '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
   '/solutions': typeof SolutionsRoute
@@ -308,6 +316,7 @@ export interface FileRoutesById {
   '/book-demo': typeof BookDemoRoute
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/portal': typeof PortalRouteWithChildren
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/book-demo'
     | '/demo'
     | '/login'
+    | '/onboarding'
     | '/portal'
     | '/pricing'
     | '/product'
@@ -384,6 +394,7 @@ export interface FileRouteTypes {
     | '/book-demo'
     | '/demo'
     | '/login'
+    | '/onboarding'
     | '/pricing'
     | '/product'
     | '/solutions'
@@ -421,6 +432,7 @@ export interface FileRouteTypes {
     | '/book-demo'
     | '/demo'
     | '/login'
+    | '/onboarding'
     | '/portal'
     | '/pricing'
     | '/product'
@@ -460,6 +472,7 @@ export interface RootRouteChildren {
   BookDemoRoute: typeof BookDemoRoute
   DemoRoute: typeof DemoRoute
   LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
   PortalRoute: typeof PortalRouteWithChildren
   PricingRoute: typeof PricingRoute
   ProductRoute: typeof ProductRoute
@@ -494,6 +507,13 @@ declare module '@tanstack/react-router' {
       path: '/portal'
       fullPath: '/portal'
       preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -827,6 +847,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookDemoRoute: BookDemoRoute,
   DemoRoute: DemoRoute,
   LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
   PortalRoute: PortalRouteWithChildren,
   PricingRoute: PricingRoute,
   ProductRoute: ProductRoute,
