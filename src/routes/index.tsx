@@ -448,9 +448,9 @@ function BrandPortalPreview({ brand, color, letter, domain, big }: { brand: stri
           <span className="grid h-7 w-7 place-items-center rounded-md text-[12px] font-bold text-white" style={{ background: color }}>{letter}</span>
           <span className="text-[13px] font-semibold tracking-tight">{brand}</span>
         </div>
-        <div className={`mt-${big ? "6" : "4"} text-[11px] uppercase tracking-wider text-muted-foreground`}>April performance</div>
+        <div className={`${big ? "mt-6" : "mt-4"} text-[11px] uppercase tracking-wider text-muted-foreground`}>April performance</div>
         <div className="mt-1 text-[15px] font-semibold tracking-tight">Hartland Plumbing</div>
-        <div className={`mt-${big ? "5" : "3"} grid grid-cols-3 gap-2`}>
+        <div className={`${big ? "mt-5" : "mt-3"} grid grid-cols-3 gap-2`}>
           {[["Spend", "$4.2k"], ["Leads", "63"], ["CPL", "$67"]].map(([l, v]) => (
             <div key={l} className="rounded-md border border-border bg-background p-2.5">
               <div className="text-[9.5px] uppercase tracking-wider text-muted-foreground">{l}</div>
