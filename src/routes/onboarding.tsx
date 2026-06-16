@@ -1,10 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, ArrowLeft, Check, Building2, Palette, Globe, Users,
-  Sparkles, Upload, Plus, X, BarChart3, ShieldCheck,
+  Sparkles, Upload, Plus, X, BarChart3, ShieldCheck, Loader2,
 } from "lucide-react";
+import { signUp } from "@/lib/auth";
+import { createAgency } from "@/lib/data/onboarding";
+import { supabase } from "@/lib/supabase/client";
+
+function initialsOf(name: string) {
+  return name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("");
+}
 
 export const Route = createFileRoute("/onboarding")({
   component: Onboarding,
@@ -25,25 +32,68 @@ type StepId = (typeof steps)[number]["id"];
 const swatches = ["#4F46E5", "#0EA5E9", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#111111"];
 
 function Onboarding() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState({
-    agency: "Northstar Growth",
+    email: "",
+    password: "",
+    agency: "",
     teamSize: "2–5",
     color: "#4F46E5",
     logoUploaded: false,
-    domain: "portal.northstargrowth.com",
+    domain: "",
     meta: false,
     google: false,
     stripe: false,
-    clientName: "Hartland Plumbing",
-    clientCity: "Detroit, MI",
+    clientName: "",
+    clientCity: "",
     clientService: "Plumbing",
   });
   const current = steps[step].id as StepId;
   const pct = Math.round(((step) / (steps.length - 1)) * 100);
 
-  const next = () => setStep(s => Math.min(s + 1, steps.length - 1));
-  const back = () => setStep(s => Math.max(s - 1, 0));
+  const back = () => setStep((s) => Math.max(s - 1, 0));
+
+  // Creates the real account + agency (+ first client), then lands on "done".
+  async function finish() {
+    setError(null);
+    setSubmitting(true);
+    try {
+      await signUp(data.email, data.password, data.agency);
+      const agencyId = await createAgency({ name: data.agency, domain: data.domain || undefined, brandColor: data.color });
+      if (data.clientName && supabase) {
+        await supabase.from("clients").insert({
+          agency_id: agencyId,
+          name: data.clientName,
+          owner_name: data.clientName,
+          email: "",
+          area: data.clientCity || null,
+          category: data.clientService || null,
+          initials: initialsOf(data.clientName) || null,
+          brand_color: data.color,
+          status: "onboarding",
+        });
+      }
+      setStep(steps.findIndex((s) => s.id === "done"));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Setup failed. Check your details and try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  // Validate the current step before advancing; the "client" step finalizes.
+  const next = () => {
+    setError(null);
+    if (current === "workspace") {
+      if (!data.email || !data.password) return setError("Enter an email and password to create your account.");
+      if (!data.agency) return setError("Name your agency to continue.");
+    }
+    if (current === "client") { void finish(); return; }
+    setStep((s) => Math.min(s + 1, steps.length - 1));
+  };
 
   return (
     <div className="min-h-screen bg-[var(--surface-2)]/40">
@@ -124,21 +174,31 @@ function Onboarding() {
             </AnimatePresence>
 
             {current !== "done" && (
-              <div className="flex items-center justify-between gap-3 border-t border-border px-6 py-4 md:px-8">
-                <button
-                  onClick={back}
-                  disabled={step === 0}
-                  className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-[13px] font-medium text-foreground disabled:opacity-40"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5" /> Back
-                </button>
-                <div className="text-[12px] text-muted-foreground">Step {step + 1} of {steps.length}</div>
-                <button
-                  onClick={next}
-                  className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-3.5 text-[13px] font-medium text-background hover:bg-foreground/90"
-                >
-                  Continue <ArrowRight className="h-3.5 w-3.5" />
-                </button>
+              <div className="border-t border-border px-6 py-4 md:px-8">
+                {error && (
+                  <div className="mb-3 rounded-lg border border-[var(--danger)]/30 bg-[var(--danger-soft)] px-3 py-2 text-[12.5px] text-[var(--danger)]">
+                    {error}
+                  </div>
+                )}
+                <div className="flex items-center justify-between gap-3">
+                  <button
+                    onClick={back}
+                    disabled={step === 0 || submitting}
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-[13px] font-medium text-foreground disabled:opacity-40"
+                  >
+                    <ArrowLeft className="h-3.5 w-3.5" /> Back
+                  </button>
+                  <div className="text-[12px] text-muted-foreground">Step {step + 1} of {steps.length}</div>
+                  <button
+                    onClick={next}
+                    disabled={submitting}
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-3.5 text-[13px] font-medium text-background hover:bg-foreground/90 disabled:opacity-60"
+                  >
+                    {submitting ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Creating…</>
+                      : current === "client" ? <>Finish setup <Check className="h-3.5 w-3.5" /></>
+                      : <>Continue <ArrowRight className="h-3.5 w-3.5" /></>}
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -155,6 +215,7 @@ function Onboarding() {
 /* ---------- Step components ---------- */
 
 type DataT = {
+  email: string; password: string;
   agency: string; teamSize: string; color: string; logoUploaded: boolean;
   domain: string; meta: boolean; google: boolean; stripe: boolean;
   clientName: string; clientCity: string; clientService: string;
@@ -185,14 +246,31 @@ function WorkspaceStep({ data, setData }: { data: DataT; setData: (d: DataT) => 
     <div className="space-y-6">
       <StepHead
         eyebrow="Step 1"
-        title="Name your agency workspace"
+        title="Create your agency workspace"
         sub="This is the workspace your team logs into. Your clients won't see this name — they'll see your brand on their portal."
       />
       <div className="grid gap-4 md:grid-cols-2">
+        <Field label="Work email">
+          <input
+            type="email" value={data.email}
+            onChange={e => setData({ ...data, email: e.target.value })}
+            placeholder="you@youragency.com"
+            className="h-10 w-full rounded-lg border border-border bg-background px-3 text-[13.5px] outline-none focus:border-[var(--accent)]"
+          />
+        </Field>
+        <Field label="Password" hint="At least 6 characters.">
+          <input
+            type="password" value={data.password}
+            onChange={e => setData({ ...data, password: e.target.value })}
+            placeholder="••••••••"
+            className="h-10 w-full rounded-lg border border-border bg-background px-3 text-[13.5px] outline-none focus:border-[var(--accent)]"
+          />
+        </Field>
         <Field label="Agency name">
           <input
             value={data.agency}
             onChange={e => setData({ ...data, agency: e.target.value })}
+            placeholder="Northstar Growth"
             className="h-10 w-full rounded-lg border border-border bg-background px-3 text-[13.5px] outline-none focus:border-[var(--accent)]"
           />
         </Field>
