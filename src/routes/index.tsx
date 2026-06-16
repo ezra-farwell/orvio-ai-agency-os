@@ -406,15 +406,15 @@ function ReportingMockup() {
   );
 }
 
-/* ---------------- Feature B: Lead Inbox / Pipeline ---------------- */
+/* ---------------- Feature B: Lead CRM ---------------- */
 
 function FeatureLeads() {
   return (
     <FeatureSection
       align="right"
-      tag="Lead inbox"
-      title="Every form fill and call in one place."
-      body="Phone calls, web forms, and click-to-text all land in a single inbox. Move them through New, Contacted, Booked, and Won. The client sees the same board you do."
+      tag="Lead CRM"
+      title="A simple CRM built for local service leads."
+      body="Phone calls, web forms, and click-to-text all land in one inbox. Track contact history, job value, and next steps as you move leads from new to booked."
     >
       <LeadsMockup />
     </FeatureSection>
@@ -422,39 +422,36 @@ function FeatureLeads() {
 }
 
 function LeadsMockup() {
-  const cols: { title: string; tone: string; cards: { name: string; city: string; src: "call" | "form"; t: string }[] }[] = [
+  const cols: { title: string; tone: string; cards: { name: string; city: string; src: "call" | "form"; value: string; note: string; t: string }[] }[] = [
     { title: "New", tone: "var(--accent)", cards: [
-      { name: "Lauren M.", city: "Austin, TX", src: "call", t: "2m" },
-      { name: "Devon R.", city: "Tampa, FL", src: "form", t: "14m" },
-      { name: "Marco S.", city: "Phoenix, AZ", src: "call", t: "38m" },
+      { name: "Lauren M.", city: "Austin, TX", src: "call", value: "$1,200", note: "Needs water heater repair", t: "2m" },
+      { name: "Marco S.", city: "Phoenix, AZ", src: "form", value: "$890", note: "Requested estimate", t: "38m" },
     ]},
     { title: "Contacted", tone: "var(--warning)", cards: [
-      { name: "Priya K.", city: "Denver, CO", src: "form", t: "1h" },
-      { name: "Tom B.", city: "Charlotte, NC", src: "call", t: "3h" },
+      { name: "Priya K.", city: "Denver, CO", src: "form", value: "$2,400", note: "Sent quote, waiting", t: "1h" },
     ]},
-    { title: "Booked", tone: "var(--accent)", cards: [
-      { name: "Jess A.", city: "Nashville, TN", src: "form", t: "Tue" },
-      { name: "Ravi P.", city: "Columbus, OH", src: "call", t: "Wed" },
-    ]},
-    { title: "Won", tone: "var(--success)", cards: [
-      { name: "Karen L.", city: "Sacramento, CA", src: "form", t: "$1,840" },
+    { title: "Booked", tone: "var(--success)", cards: [
+      { name: "Jess A.", city: "Nashville, TN", src: "call", value: "$1,650", note: "Scheduled Thursday", t: "Tue" },
     ]},
   ];
   return (
     <div className="relative rounded-[14px] border border-border bg-[var(--surface)] shadow-pop">
-      <WindowChrome label="Apex Plumbing · Leads" />
-      <div className="p-6 md:p-7">
-        <div className="flex items-center justify-between">
-          <div className="text-[22px] font-semibold tracking-tight">Pipeline</div>
+      <WindowChrome label="Apex Plumbing · CRM" />
+      <div className="p-6 md:p-8">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="text-[22px] font-semibold tracking-tight">Leads</div>
+            <div className="text-[13px] text-foreground/70">New, contacted, booked, and won in one board.</div>
+          </div>
           <div className="flex items-center gap-2 text-[12px] text-foreground/80">
             <span className="chip-success">12 new today</span>
             <span className="chip">214 this month</span>
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {cols.map(col => (
-            <div key={col.title} className="rounded-xl border border-border bg-[var(--surface)]/60 p-3">
+            <div key={col.title} className="rounded-xl border border-border bg-[var(--surface)]/60 p-3.5">
               <div className="flex items-center justify-between px-1 pb-3">
                 <div className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full" style={{ background: col.tone }} />
@@ -462,17 +459,21 @@ function LeadsMockup() {
                 </div>
                 <span className="text-[12px] text-[var(--text-faint)]">{col.cards.length}</span>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {col.cards.map(c => (
-                  <div key={c.name} className="rounded-lg border border-border bg-[var(--surface-2)] p-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-[13px] font-medium text-foreground/95">{c.name}</div>
+                  <div key={c.name} className="rounded-lg border border-border bg-[var(--surface-2)] p-3.5">
+                    <div className="flex items-start justify-between">
+                      <div className="text-[13.5px] font-medium text-foreground/95">{c.name}</div>
                       <div className="text-[12px] text-[var(--text-faint)]">{c.t}</div>
                     </div>
                     <div className="mt-1 text-[12px] text-foreground/75">{c.city}</div>
                     <div className="mt-2.5 inline-flex items-center gap-1.5 text-[12px] text-foreground/80">
                       {c.src === "call" ? <Phone className="h-3 w-3" /> : <Mail className="h-3 w-3" />}
                       {c.src === "call" ? "Phone call" : "Web form"}
+                    </div>
+                    <div className="mt-3 flex items-center justify-between border-t border-border pt-2.5">
+                      <div className="text-[12px] text-foreground/80">{c.note}</div>
+                      <div className="text-[12px] font-medium text-[var(--success)]">{c.value}</div>
                     </div>
                   </div>
                 ))}
