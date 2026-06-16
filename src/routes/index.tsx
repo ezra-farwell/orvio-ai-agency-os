@@ -351,7 +351,7 @@ function ProductTour() {
     {
       n: "03",
       title: "Send the monthly report",
-      body: "A clean PDF or shared link with what changed and what&apos;s next.",
+      body: "A clean PDF or shared link with what changed and what is next.",
       mock: (
         <div className="space-y-2">
           <div className="rounded-md border border-border bg-background px-3 py-2.5">
