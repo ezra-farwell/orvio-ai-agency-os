@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, Check, Palette, BarChart3, Inbox, FileCheck,
-  Phone, MessageCircle,
+  ArrowRight, Check, Phone, MessageCircle,
 } from "lucide-react";
 import { MarketingShell } from "@/components/shells/MarketingShell";
 
@@ -66,117 +65,131 @@ function GoogleMark({ className = "h-3.5 w-3.5" }: { className?: string }) {
 function Hero() {
   return (
     <section className="relative overflow-hidden beam-bg">
-      <div className="relative mx-auto max-w-[1180px] px-6 pb-24 pt-36 md:pt-44">
+      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-12 px-6 pb-20 pt-36 md:grid-cols-[minmax(0,460px)_minmax(0,1fr)] md:gap-10 md:pb-28 md:pt-40 lg:gap-16">
+        {/* Left: copy */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          className="max-w-[820px]"
+          className="relative z-10"
         >
-          <Link to="/product" className="chip-gradient">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--success)]" />
-            New · Branded client portals for agencies
-            <ArrowRight className="h-3 w-3 opacity-70" />
-          </Link>
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-[var(--surface)] px-3 py-1 text-[11.5px] text-foreground/80">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--success)] live-dot" />
+            Now in private beta with 12 agencies
+          </div>
 
-          <h1 className="mt-8 font-serif text-[56px] leading-[1.02] sm:text-[76px] md:text-[92px]">
-            Client portals
-            <br />
-            <span className="italic text-foreground/80">for ad agencies.</span>
+          <h1 className="mt-7 text-[44px] font-semibold leading-[1.04] tracking-[-0.03em] text-foreground sm:text-[54px] md:text-[60px]">
+            Client portals for ad agencies.
           </h1>
 
-          <p className="mt-7 max-w-[560px] text-[16.5px] leading-relaxed text-muted-foreground md:text-[17.5px]">
-            Orvio gives your agency one branded place for ad reporting, leads, approvals, invoices, and monthly updates, so clients can see what they are paying for.
+          <p className="mt-6 max-w-[460px] text-[16px] leading-[1.6] text-foreground/75 md:text-[16.5px]">
+            One branded place for ad reporting, leads, approvals, invoices, and monthly updates — so clients can see what they are paying for.
           </p>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
-            <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-full bg-[var(--surface)] px-5 text-[14px] font-medium text-foreground ring-1 ring-border hover:bg-[var(--surface-2)] hover:ring-border-strong transition-colors">
-              Book a demo <ArrowRight className="h-4 w-4 opacity-70" />
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-foreground px-5 text-[13.5px] font-medium text-background hover:bg-foreground/90 transition-colors">
+              Book a demo <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link to="/product" className="inline-flex h-11 items-center gap-1.5 px-2 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/product" className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-border bg-[var(--surface)] px-5 text-[13.5px] font-medium text-foreground hover:bg-[var(--surface-2)] transition-colors">
               View product
             </Link>
           </div>
+
+          <p className="mt-7 text-[11.5px] text-[var(--text-faint)]">Sample data shown throughout. Real Meta and Google Ads connections.</p>
         </motion.div>
 
+        {/* Right: dashboard bleeding off the edge */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative mx-auto mt-20 max-w-[1080px]"
+          initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.15 }}
+          className="relative md:-mr-[140px] lg:-mr-[180px] xl:-mr-[220px]"
         >
-          <HeroMockup />
-          <p className="mt-4 text-center text-[11.5px] text-[var(--text-faint)]">
-            Product screens shown with sample data.
-          </p>
+          <HeroDashboard />
         </motion.div>
       </div>
     </section>
   );
 }
 
-function HeroMockup() {
+function HeroDashboard() {
   return (
-    <div className="relative rounded-[20px] border border-border bg-background p-2 shadow-pop">
-      <div className="overflow-hidden rounded-[14px] border border-border bg-[var(--surface-2)]/60">
-        <div className="flex">
-          <div className="hidden w-[210px] shrink-0 border-r border-border bg-background p-4 md:block">
-            <div className="flex items-center gap-2">
-              <span className="grid h-6 w-6 place-items-center rounded-md bg-foreground"><span className="h-1.5 w-1.5 rounded-full bg-background" /></span>
-              <span className="text-[13px] font-semibold tracking-tight">Northstar</span>
-            </div>
-            <div className="mt-6 space-y-0.5 text-[12px]">
-              {["Overview", "Clients", "Reporting", "Leads", "Approvals", "Invoices"].map((l, i) => (
-                <div key={l} className={`flex items-center gap-2 rounded-md px-2 py-1.5 ${i === 2 ? "bg-[var(--surface-2)] font-medium text-foreground" : "text-muted-foreground"}`}>
-                  <span className="h-1 w-1 rounded-full bg-current opacity-50" /> {l}
-                </div>
-              ))}
-            </div>
+    <div className="relative rounded-[14px] border border-border bg-[var(--surface)] shadow-pop">
+      {/* top bar */}
+      <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+        <div className="flex gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-2)]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-2)]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-2)]" />
+        </div>
+        <div className="ml-3 text-[11px] text-foreground/55">Northstar · Agency portal</div>
+        <div className="ml-auto flex items-center gap-2 text-[10.5px] text-foreground/60">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--success)]" /> Live
+        </div>
+      </div>
+
+      <div className="p-5 md:p-6">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <div className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Overview · April</div>
+            <div className="mt-1 text-[20px] font-semibold tracking-tight">Portfolio health</div>
           </div>
-
-          <div className="min-w-0 flex-1 p-5 md:p-6">
-            <div className="flex flex-wrap items-end justify-between gap-3">
-              <div className="min-w-0">
-                <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Reporting, April</div>
-                <div className="mt-0.5 truncate text-[17px] font-semibold tracking-tight">Hartland Plumbing</div>
-              </div>
-              <div className="flex shrink-0 items-center gap-1.5 text-[11.5px] text-muted-foreground">
-                <MetaMark /> <span className="font-medium text-foreground">Meta</span>
-                <span className="mx-1 text-border">·</span>
-                <GoogleMark /> <span className="font-medium text-foreground">Google</span>
-              </div>
-            </div>
-
-            <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-              {[
-                ["Spend", "$4,280"],
-                ["Leads", "63"],
-                ["CPL", "$67.94"],
-                ["Booked", "18"],
-              ].map(([l, v]) => (
-                <div key={l} className="rounded-lg border border-border bg-background p-3">
-                  <div className="text-[10.5px] text-muted-foreground">{l}</div>
-                  <div className="mt-1 text-[18px] font-semibold tracking-tight">{v}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-[1.6fr_1fr]">
-              <div className="rounded-lg border border-border bg-background p-4">
-                <div className="flex items-center justify-between">
-                  <div className="text-[12px] font-medium">Leads by week</div>
-                  <div className="text-[11px] text-muted-foreground">Last 4 weeks</div>
-                </div>
-                <HeroChart />
-              </div>
-              <div className="rounded-lg border border-border bg-background p-4">
-                <div className="text-[12px] font-medium">From your agency</div>
-                <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">
-                  Roof Replacement scaled this month. Booked calls up 38% week over week.
-                </p>
-                <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-[var(--success-soft)] px-2 py-0.5 text-[10.5px] font-semibold text-[var(--success)]">
-                  <span className="h-1 w-1 rounded-full bg-current" /> On track
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center gap-1.5 text-[11px] text-foreground/65">
+            <MetaMark /> Meta <span className="text-foreground/30">·</span> <GoogleMark /> Google
           </div>
         </div>
+
+        {/* status group cards row */}
+        <div className="mt-5 grid grid-cols-3 gap-3">
+          <StatusTile eyebrow="Lead flow" word="Good" tone="var(--success)" rows={[["Hartland", "+38%"], ["Coastal", "+12%"]]} />
+          <StatusTile eyebrow="Spend pacing" word="Steady" tone="var(--accent)" rows={[["On budget", "9/11"], ["Pacing", "97%"]]} />
+          <StatusTile eyebrow="Approvals" word="2 open" tone="var(--warning)" rows={[["Creative", "v3 primary"], ["Waiting", "Apex"]]} />
+        </div>
+
+        {/* hero number + chart */}
+        <div className="mt-3 rounded-xl border border-border bg-background p-4">
+          <div className="flex items-end justify-between">
+            <div>
+              <div className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Leads generated</div>
+              <div className="mt-1 flex items-baseline gap-2">
+                <span className="text-[34px] font-semibold leading-none tracking-tight">847</span>
+                <span className="text-[12px] text-[var(--success)]">+14.2%</span>
+              </div>
+            </div>
+            <div className="text-[10.5px] text-foreground/55">Last 12 weeks</div>
+          </div>
+          <HeroChart />
+        </div>
+
+        {/* mini client row */}
+        <div className="mt-3 overflow-hidden rounded-xl border border-border bg-background">
+          {[
+            ["Hartland Plumbing", "63", "$67.94", "good"],
+            ["Coastal HVAC", "112", "$41.20", "good"],
+            ["Apex Remodeling", "47", "$128.10", "watch"],
+          ].map(([name, leads, cpl, tone], i, arr) => (
+            <div key={name as string} className={`flex items-center px-4 py-2.5 text-[12px] ${i < arr.length - 1 ? "border-b border-border" : ""}`}>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: tone === "good" ? "var(--success)" : "var(--warning)" }} />
+              <span className="ml-3 flex-1 truncate font-medium text-foreground/90">{name}</span>
+              <span className="mono w-12 text-right text-foreground/70">{leads}</span>
+              <span className="mono w-20 text-right text-foreground/55">{cpl}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatusTile({ eyebrow, word, tone, rows }: { eyebrow: string; word: string; tone: string; rows: [string, string][] }) {
+  return (
+    <div className="rounded-xl border border-border bg-background p-3.5">
+      <div className="text-[9.5px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">{eyebrow}</div>
+      <div className="mt-1.5 text-[22px] font-semibold leading-none tracking-tight">{word}</div>
+      <div className="mt-3 space-y-1.5">
+        {rows.map(([l, v]) => (
+          <div key={l} className="flex items-center gap-2 text-[11px]">
+            <span className="h-1 w-1 rounded-full" style={{ background: tone }} />
+            <span className="flex-1 truncate text-foreground/75">{l}</span>
+            <span className="mono text-foreground/55">{v}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -184,49 +197,54 @@ function HeroMockup() {
 
 function HeroChart() {
   const data = [22, 28, 24, 31, 38, 34, 44, 48, 42, 52, 56, 61];
-  const w = 100, h = 36;
+  const w = 100, h = 32;
   const max = Math.max(...data);
   const step = w / (data.length - 1);
   const line = data.map((p, i) => `${i === 0 ? "M" : "L"}${(i * step).toFixed(2)},${(h - (p / max) * h).toFixed(2)}`).join(" ");
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="mt-3 h-20 w-full">
+    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="mt-3 h-16 w-full">
       <defs>
         <linearGradient id="hG" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#4F46E5" stopOpacity="0.18" />
-          <stop offset="100%" stopColor="#4F46E5" stopOpacity="0" />
+          <stop offset="0%" stopColor="#6366F1" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#6366F1" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d={`${line} L${w},${h} L0,${h} Z`} fill="url(#hG)" />
-      <motion.path d={line} fill="none" stroke="#4F46E5" strokeWidth="1.4" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2 }} />
+      <motion.path d={line} fill="none" stroke="#818CF8" strokeWidth="1.2" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2 }} />
     </svg>
   );
 }
 
-/* ---------------- Problem ---------------- */
+/* ---------------- Problem (left-aligned, asymmetric) ---------------- */
 
 function Problem() {
   return (
-    <section className="py-24 md:py-32">
-      <div className="mx-auto max-w-[1040px] px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">The problem</div>
-          <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px] md:text-[42px]">
-            Clients churn when they can&apos;t see the work.
-          </h2>
-        </div>
-
-        <div className="mt-14 grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-background p-7">
-            <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Before</div>
-            <p className="mt-3 text-[16px] leading-relaxed text-foreground/85">
-              Reports in Sheets. Updates in Loom. Approvals in email. Invoices somewhere else.
+    <section className="hairline-t py-24 md:py-32">
+      <div className="mx-auto max-w-[1180px] px-6">
+        <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-16">
+          <div className="md:sticky md:top-28 md:self-start">
+            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">The problem</div>
+            <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] text-foreground md:text-[40px]">
+              Clients churn when they can&apos;t see the work.
+            </h2>
+            <p className="mt-5 max-w-md text-[15px] leading-[1.65] text-foreground/70">
+              Most agencies deliver across five tools. Clients only remember one — invoice day. Orvio puts everything in front of them, branded as you.
             </p>
           </div>
-          <div className="rounded-2xl border border-foreground/15 bg-[var(--surface-2)]/50 p-7">
-            <div className="text-[11px] font-medium uppercase tracking-wider text-foreground">After</div>
-            <p className="mt-3 text-[16px] leading-relaxed text-foreground/85">
-              One branded portal where clients see leads, reports, approvals, invoices, and campaign updates.
-            </p>
+
+          <div className="space-y-px overflow-hidden rounded-xl border border-border">
+            {[
+              ["Reports", "Buried in Sheets, sent monthly."],
+              ["Updates", "Looms that never get watched."],
+              ["Approvals", "Email threads with screenshots."],
+              ["Invoices", "Stripe link in a separate inbox."],
+              ["Leads", "Forms, calls, texts — spread everywhere."],
+            ].map(([k, v]) => (
+              <div key={k} className="grid grid-cols-[120px_1fr] items-center bg-[var(--surface)] px-5 py-4">
+                <span className="text-[12px] font-medium uppercase tracking-[0.1em] text-foreground/55">{k}</span>
+                <span className="text-[14px] text-foreground/85">{v}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -234,87 +252,105 @@ function Problem() {
   );
 }
 
-/* ---------------- Core product ---------------- */
+/* ---------------- Core product (bento, real UI) ---------------- */
 
 function CoreProduct() {
-  const items = [
-    {
-      icon: Palette,
-      title: "Client portal",
-      body: "Your logo, your domain, your colors.",
-      preview: (
-        <div className="flex items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5">
-          <span className="grid h-5 w-5 place-items-center rounded bg-[var(--accent)] text-[10px] font-bold text-white">N</span>
-          <span className="text-[11.5px] font-medium">portal.northstar.io</span>
-        </div>
-      ),
-    },
-    {
-      icon: BarChart3,
-      title: "Ad reporting",
-      body: "Spend, leads, CPL, CTR explained in plain English.",
-      preview: (
-        <div className="grid grid-cols-3 gap-1.5">
-          {[["Spend", "$4.2k"], ["Leads", "63"], ["CPL", "$67"]].map(([l, v]) => (
-            <div key={l} className="rounded border border-border bg-background px-2 py-1.5">
-              <div className="text-[9px] text-muted-foreground">{l}</div>
-              <div className="text-[12px] font-semibold">{v}</div>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      icon: Inbox,
-      title: "Lead inbox",
-      body: "Form fills and calls in one place. Status, assign, follow up.",
-      preview: (
-        <div className="rounded-md border border-border bg-background px-2.5 py-2">
-          <div className="flex items-center justify-between">
-            <span className="text-[11.5px] font-medium">Brian Connors</span>
-            <span className="rounded-full bg-[var(--warning-soft)] px-1.5 py-0.5 text-[9px] font-semibold text-[var(--warning)]">New</span>
-          </div>
-          <div className="text-[10.5px] text-muted-foreground">Burst pipe, Detroit</div>
-        </div>
-      ),
-    },
-    {
-      icon: FileCheck,
-      title: "Approvals and invoices",
-      body: "Clients approve creative and pay invoices in the same place.",
-      preview: (
-        <div className="flex items-center justify-between rounded-md border border-border bg-background px-2.5 py-1.5">
-          <span className="text-[11.5px] font-medium">Primary v3</span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-[var(--success-soft)] px-1.5 py-0.5 text-[9px] font-semibold text-[var(--success)]">
-            <Check className="h-2.5 w-2.5" /> Approved
-          </span>
-        </div>
-      ),
-    },
-  ];
   return (
     <section className="hairline-t py-24 md:py-32">
       <div className="mx-auto max-w-[1180px] px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">Core product</div>
-          <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px] md:text-[42px]">
-            Four things your clients actually use.
+        <div className="max-w-2xl">
+          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Core product</div>
+          <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">
+            Four surfaces your clients actually open.
           </h2>
+          <p className="mt-4 max-w-lg text-[15px] leading-[1.65] text-foreground/70">
+            Every tile below is the real component from the portal, just smaller. Nothing is a stock illustration.
+          </p>
         </div>
 
-        <div className="mt-14 grid gap-4 md:grid-cols-2">
-          {items.map(it => (
-            <div key={it.title} className="rounded-2xl border border-border bg-background p-7">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--surface-2)] text-foreground">
-                <it.icon className="h-4 w-4" />
+        <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-6 md:grid-rows-2">
+          {/* Reporting — large */}
+          <div className="md:col-span-4 md:row-span-1 rounded-2xl border border-border bg-[var(--surface)] p-6">
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Ad reporting</div>
+                <h3 className="mt-2 text-[19px] font-semibold tracking-tight">Spend, leads, CPL — explained.</h3>
+                <p className="mt-2 max-w-sm text-[13.5px] leading-relaxed text-foreground/70">
+                  Meta + Google rolled into one view, with plain-English notes from your team.
+                </p>
               </div>
-              <h3 className="mt-5 text-[17px] font-semibold tracking-tight">{it.title}</h3>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{it.body}</p>
-              <div className="mt-5 rounded-lg border border-border bg-[var(--surface-2)]/40 p-3">
-                {it.preview}
+              <div className="hidden items-center gap-1.5 text-[11px] text-foreground/55 md:flex">
+                <MetaMark /> Meta <span className="text-foreground/30">·</span> <GoogleMark /> Google
               </div>
             </div>
-          ))}
+            <div className="mt-5 grid grid-cols-4 gap-2">
+              {[["Spend", "$4,280"], ["Leads", "63"], ["CPL", "$67.94"], ["Booked", "18"]].map(([l, v]) => (
+                <div key={l} className="rounded-lg border border-border bg-background p-3">
+                  <div className="text-[10px] uppercase tracking-wider text-foreground/55">{l}</div>
+                  <div className="mt-1 text-[17px] font-semibold tracking-tight">{v}</div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 rounded-lg border border-border bg-background p-3">
+              <HeroChart />
+            </div>
+          </div>
+
+          {/* Lead inbox — tall */}
+          <div className="md:col-span-2 md:row-span-2 rounded-2xl border border-border bg-[var(--surface)] p-6">
+            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Lead inbox</div>
+            <h3 className="mt-2 text-[19px] font-semibold tracking-tight">Form fills and calls, one place.</h3>
+            <p className="mt-2 text-[13.5px] leading-relaxed text-foreground/70">
+              Status, assign, follow up. Clients see the same list you do.
+            </p>
+            <div className="mt-5 space-y-2">
+              {[
+                ["Brian Connors", "Burst pipe, Detroit", "New", "warning"],
+                ["Sarah Liu", "Roof inspection, Royal Oak", "Booked", "success"],
+                ["Marcus T.", "AC install quote", "Contacted", "neutral"],
+                ["Ana Reyes", "Drain backup, Ferndale", "New", "warning"],
+              ].map(([name, ctx, status, tone]) => (
+                <div key={name as string} className="rounded-lg border border-border bg-background p-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="truncate text-[12.5px] font-medium">{name}</span>
+                    <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9.5px] font-semibold ${tone === "warning" ? "bg-[var(--warning-soft)] text-[var(--warning)]" : tone === "success" ? "bg-[var(--success-soft)] text-[var(--success)]" : "bg-[var(--surface-2)] text-foreground/70"}`}>
+                      {status}
+                    </span>
+                  </div>
+                  <div className="mt-1 text-[10.5px] text-foreground/55">{ctx}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* White-label — wide short */}
+          <div className="md:col-span-2 rounded-2xl border border-border bg-[var(--surface)] p-6">
+            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">White-label</div>
+            <h3 className="mt-2 text-[17px] font-semibold tracking-tight">Your domain, your logo.</h3>
+            <div className="mt-5 flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2">
+              <span className="grid h-6 w-6 place-items-center rounded bg-[var(--accent)] text-[11px] font-bold text-white">N</span>
+              <span className="mono text-[12px] text-foreground/85">portal.northstar.io</span>
+              <span className="ml-auto chip-success !py-0.5">Live</span>
+            </div>
+          </div>
+
+          {/* Approvals & invoices */}
+          <div className="md:col-span-2 rounded-2xl border border-border bg-[var(--surface)] p-6">
+            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Approvals & invoices</div>
+            <h3 className="mt-2 text-[17px] font-semibold tracking-tight">Sign-off and payment, in the portal.</h3>
+            <div className="mt-5 space-y-2">
+              <div className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2">
+                <span className="text-[12px] font-medium">Creative — Primary v3</span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-[var(--success-soft)] px-1.5 py-0.5 text-[9.5px] font-semibold text-[var(--success)]">
+                  <Check className="h-2.5 w-2.5" /> Approved
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2">
+                <span className="text-[12px] font-medium">Invoice · April</span>
+                <span className="mono text-[12px] text-foreground/80">$2,400</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
