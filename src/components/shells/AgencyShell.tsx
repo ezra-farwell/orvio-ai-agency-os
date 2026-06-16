@@ -2,7 +2,7 @@ import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import {
   LayoutDashboard, Users, BarChart3, Inbox, Kanban, MessageSquare,
-  CreditCard, Sparkles, FileText, Settings, Search, Bell, ChevronDown,
+  CreditCard, Sparkles, FileText, Settings, Search, Bell, ChevronDown, Plug,
 } from "lucide-react";
 import { currentAgency } from "@/mock/data";
 
@@ -16,6 +16,7 @@ const nav = [
   { to: "/app/payments", label: "Payments", icon: CreditCard },
   { to: "/app/studio", label: "Content Studio", icon: Sparkles },
   { to: "/app/reports", label: "Reports", icon: FileText },
+  { to: "/app/settings/integrations", label: "Integrations", icon: Plug },
   { to: "/app/settings/white-label", label: "Settings", icon: Settings },
 ] as const;
 

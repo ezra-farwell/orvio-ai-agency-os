@@ -130,6 +130,7 @@ export type Agency = {
   google: "OK" | "Warning" | "Down";
   stripe: "OK" | "Warning" | "Off";
   domain: string;
+  brandColor?: string;
 };
 
 export const agencies: Agency[] = [

@@ -112,6 +112,7 @@ const toAgency = (r: AgencyRow): Agency => ({
   google: r.google as Agency["google"],
   stripe: r.stripe as Agency["stripe"],
   domain: r.domain ?? "",
+  brandColor: r.brand_color,
 });
 
 /* ---------- queries (mock fallback until Supabase is configured) ---------- */

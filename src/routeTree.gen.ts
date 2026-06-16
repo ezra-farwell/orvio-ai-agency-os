@@ -42,6 +42,7 @@ import { Route as AdminBillingRouteImport } from './routes/admin.billing'
 import { Route as AdminAgenciesRouteImport } from './routes/admin.agencies'
 import { Route as AppClientsIndexRouteImport } from './routes/app.clients.index'
 import { Route as AppSettingsWhiteLabelRouteImport } from './routes/app.settings.white-label'
+import { Route as AppSettingsIntegrationsRouteImport } from './routes/app.settings.integrations'
 import { Route as AppClientsIdRouteImport } from './routes/app.clients.$id'
 import { Route as AdminAgenciesIdRouteImport } from './routes/admin.agencies.$id'
 import { Route as AppStudioBrandIdRouteImport } from './routes/app.studio.brand.$id'
@@ -212,6 +213,11 @@ const AppSettingsWhiteLabelRoute = AppSettingsWhiteLabelRouteImport.update({
   path: '/settings/white-label',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSettingsIntegrationsRoute = AppSettingsIntegrationsRouteImport.update({
+  id: '/settings/integrations',
+  path: '/settings/integrations',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppClientsIdRoute = AppClientsIdRouteImport.update({
   id: '/clients/$id',
   path: '/clients/$id',
@@ -267,6 +273,7 @@ export interface FileRoutesByFullPath {
   '/portal/': typeof PortalIndexRoute
   '/admin/agencies/$id': typeof AdminAgenciesIdRoute
   '/app/clients/$id': typeof AppClientsIdRoute
+  '/app/settings/integrations': typeof AppSettingsIntegrationsRoute
   '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
   '/app/clients/': typeof AppClientsIndexRoute
   '/app/studio/ads/new': typeof AppStudioAdsNewRoute
@@ -303,6 +310,7 @@ export interface FileRoutesByTo {
   '/portal': typeof PortalIndexRoute
   '/admin/agencies/$id': typeof AdminAgenciesIdRoute
   '/app/clients/$id': typeof AppClientsIdRoute
+  '/app/settings/integrations': typeof AppSettingsIntegrationsRoute
   '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
   '/app/clients': typeof AppClientsIndexRoute
   '/app/studio/ads/new': typeof AppStudioAdsNewRoute
@@ -343,6 +351,7 @@ export interface FileRoutesById {
   '/portal/': typeof PortalIndexRoute
   '/admin/agencies/$id': typeof AdminAgenciesIdRoute
   '/app/clients/$id': typeof AppClientsIdRoute
+  '/app/settings/integrations': typeof AppSettingsIntegrationsRoute
   '/app/settings/white-label': typeof AppSettingsWhiteLabelRoute
   '/app/clients/': typeof AppClientsIndexRoute
   '/app/studio/ads/new': typeof AppStudioAdsNewRoute
@@ -384,6 +393,7 @@ export interface FileRouteTypes {
     | '/portal/'
     | '/admin/agencies/$id'
     | '/app/clients/$id'
+    | '/app/settings/integrations'
     | '/app/settings/white-label'
     | '/app/clients/'
     | '/app/studio/ads/new'
@@ -420,6 +430,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/admin/agencies/$id'
     | '/app/clients/$id'
+    | '/app/settings/integrations'
     | '/app/settings/white-label'
     | '/app/clients'
     | '/app/studio/ads/new'
@@ -459,6 +470,7 @@ export interface FileRouteTypes {
     | '/portal/'
     | '/admin/agencies/$id'
     | '/app/clients/$id'
+    | '/app/settings/integrations'
     | '/app/settings/white-label'
     | '/app/clients/'
     | '/app/studio/ads/new'
@@ -712,6 +724,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsWhiteLabelRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/settings/integrations': {
+      id: '/app/settings/integrations'
+      path: '/settings/integrations'
+      fullPath: '/app/settings/integrations'
+      preLoaderRoute: typeof AppSettingsIntegrationsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/clients/$id': {
       id: '/app/clients/$id'
       path: '/clients/$id'
@@ -797,6 +816,7 @@ interface AppRouteChildren {
   AppStudioRoute: typeof AppStudioRouteWithChildren
   AppIndexRoute: typeof AppIndexRoute
   AppClientsIdRoute: typeof AppClientsIdRoute
+  AppSettingsIntegrationsRoute: typeof AppSettingsIntegrationsRoute
   AppSettingsWhiteLabelRoute: typeof AppSettingsWhiteLabelRoute
   AppClientsIndexRoute: typeof AppClientsIndexRoute
 }
@@ -811,6 +831,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppStudioRoute: AppStudioRouteWithChildren,
   AppIndexRoute: AppIndexRoute,
   AppClientsIdRoute: AppClientsIdRoute,
+  AppSettingsIntegrationsRoute: AppSettingsIntegrationsRoute,
   AppSettingsWhiteLabelRoute: AppSettingsWhiteLabelRoute,
   AppClientsIndexRoute: AppClientsIndexRoute,
 }
