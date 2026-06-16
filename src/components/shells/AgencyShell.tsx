@@ -1,10 +1,12 @@
-import { Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { Link, Outlet, useRouterState, useNavigate } from "@tanstack/react-router";
 import { type ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   LayoutDashboard, Users, BarChart3, Inbox, Kanban, MessageSquare,
-  CreditCard, Sparkles, FileText, Settings, Search, Bell, ChevronDown, Plug,
+  CreditCard, Sparkles, FileText, Settings, Search, Bell, ChevronDown, Plug, LogOut,
 } from "lucide-react";
-import { currentAgency } from "@/mock/data";
+import { getAgencies } from "@/lib/data";
+import { getProfile, signOut } from "@/lib/auth";
 
 const nav = [
   { to: "/app", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -22,6 +24,19 @@ const nav = [
 
 export function AgencyShell({ children }: { children?: ReactNode }) {
   const pathname = useRouterState({ select: s => s.location.pathname });
+  const navigate = useNavigate();
+  const { data: agencies = [] } = useQuery({ queryKey: ["agencies"], queryFn: getAgencies });
+  const { data: profile } = useQuery({ queryKey: ["profile"], queryFn: getProfile });
+  const agency = agencies[0];
+  const agencyName = agency?.name ?? "Your agency";
+  const ownerName = profile?.full_name ?? agency?.owner ?? "Account";
+  const initials = (s: string) => s.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("");
+
+  async function handleSignOut() {
+    await signOut();
+    navigate({ to: "/login" });
+  }
+
   return (
     <div data-theme="dark" className="flex min-h-screen bg-[var(--background)] text-foreground">
       <aside className="hidden w-[244px] shrink-0 flex-col border-r border-border bg-background md:flex">
@@ -34,13 +49,13 @@ export function AgencyShell({ children }: { children?: ReactNode }) {
         </div>
 
         <div className="px-3 py-3">
-          <button className="flex w-full items-center justify-between rounded-lg border border-border bg-background px-3 py-2 text-left text-[13px] hover:bg-[var(--surface-2)]">
-            <span className="flex items-center gap-2">
-              <span className="grid h-5 w-5 place-items-center rounded bg-[var(--accent)] text-[10px] font-semibold text-white">N</span>
-              <span className="font-medium">{currentAgency.name}</span>
+          <div className="flex w-full items-center justify-between rounded-lg border border-border bg-background px-3 py-2 text-left text-[13px]">
+            <span className="flex min-w-0 items-center gap-2">
+              <span className="grid h-5 w-5 shrink-0 place-items-center rounded text-[10px] font-semibold text-white" style={{ background: agency?.brandColor ?? "var(--accent)" }}>{agencyName.charAt(0).toUpperCase()}</span>
+              <span className="truncate font-medium">{agencyName}</span>
             </span>
-            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
-          </button>
+            <ChevronDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+          </div>
         </div>
 
         <nav className="flex-1 space-y-0.5 overflow-y-auto px-2 pb-4">
@@ -62,11 +77,14 @@ export function AgencyShell({ children }: { children?: ReactNode }) {
 
         <div className="border-t border-border p-3">
           <div className="flex items-center gap-2.5">
-            <div className="grid h-8 w-8 place-items-center rounded-full bg-[var(--surface-2)] text-[11px] font-semibold">AS</div>
-            <div className="min-w-0 text-[12px]">
-              <div className="truncate font-medium">{currentAgency.owner}</div>
-              <div className="truncate text-muted-foreground">Owner</div>
+            <div className="grid h-8 w-8 place-items-center rounded-full bg-[var(--surface-2)] text-[11px] font-semibold">{initials(ownerName)}</div>
+            <div className="min-w-0 flex-1 text-[12px]">
+              <div className="truncate font-medium">{ownerName}</div>
+              <div className="truncate text-muted-foreground">{profile?.role === "agency_owner" ? "Owner" : "Member"}</div>
             </div>
+            <button onClick={handleSignOut} title="Sign out" className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-[var(--surface-2)] hover:text-foreground">
+              <LogOut className="h-3.5 w-3.5" />
+            </button>
           </div>
         </div>
       </aside>
