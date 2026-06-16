@@ -655,8 +655,8 @@ const tiers = [
     name: "Pro",
     price: 497,
     sub: "Up to 25 clients",
-    best: "For agencies that want more automation.",
-    features: ["Everything in Growth", "AI report summaries", "Client health", "Stripe Connect"],
+    best: "For agencies that need advanced delivery tools.",
+    features: ["Everything in Growth", "Client health signals", "Stripe Connect", "More team seats"],
     pop: false,
   },
 ];
