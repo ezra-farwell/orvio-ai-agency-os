@@ -375,14 +375,14 @@ function ProductTour() {
           <div className="grid grid-cols-3 gap-2">
             {[["Spend", "$4,280"], ["Leads", "63"], ["CPL", "$67"]].map(([l, v]) => (
               <div key={l} className="rounded-md border border-border bg-background p-2">
-                <div className="text-[10px] text-muted-foreground">{l}</div>
+                <div className="text-[12px] text-muted-foreground">{l}</div>
                 <div className="text-[14px] font-semibold tracking-tight">{v}</div>
               </div>
             ))}
           </div>
           <div className="rounded-md border border-border bg-background p-2.5">
-            <div className="text-[11px] font-medium">Brian Connors</div>
-            <div className="text-[10px] text-muted-foreground">Burst pipe, Detroit</div>
+            <div className="text-[12px] font-medium">Brian Connors</div>
+            <div className="text-[12px] text-muted-foreground">Burst pipe, Detroit</div>
           </div>
         </div>
       ),
@@ -394,10 +394,10 @@ function ProductTour() {
       mock: (
         <div className="space-y-2">
           <div className="rounded-md border border-border bg-background px-3 py-2.5">
-            <div className="text-[11px] font-semibold">April performance</div>
-            <div className="text-[10px] text-muted-foreground">Sent to client, April 30</div>
+            <div className="text-[12px] font-semibold">April performance</div>
+            <div className="text-[12px] text-muted-foreground">Sent to client, April 30</div>
           </div>
-          <div className="rounded-md border border-border bg-[var(--surface-2)]/50 px-3 py-2 text-[10.5px] text-muted-foreground">
+          <div className="rounded-md border border-border bg-[var(--surface-2)]/50 px-3 py-2 text-[12px] text-muted-foreground">
             Booked calls up 38% WoW. CPL settled at $67.94.
           </div>
         </div>
@@ -417,7 +417,7 @@ function ProductTour() {
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {steps.map(s => (
             <div key={s.n} className="rounded-2xl border border-border bg-background p-6">
-              <div className="text-[11px] font-mono text-muted-foreground">{s.n}</div>
+              <div className="text-[12px] font-mono text-muted-foreground">{s.n}</div>
               <h3 className="mt-2 text-[16px] font-semibold tracking-tight">{s.title}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{s.body}</p>
               <div className="mt-5 rounded-lg border border-border bg-[var(--surface-2)]/40 p-3">
@@ -434,8 +434,8 @@ function ProductTour() {
 function Field({ label, value, swatch }: { label: string; value: string; swatch?: boolean }) {
   return (
     <div className="flex items-center justify-between rounded-md border border-border bg-background px-2.5 py-2">
-      <span className="text-[10.5px] uppercase tracking-wider text-muted-foreground">{label}</span>
-      <span className="inline-flex items-center gap-1.5 text-[11.5px] font-medium">
+      <span className="text-[12px] uppercase tracking-wider text-muted-foreground">{label}</span>
+      <span className="inline-flex items-center gap-1.5 text-[12px] font-medium">
         {swatch && <span className="h-3 w-3 rounded" style={{ background: value }} />}
         {value}
       </span>
@@ -514,7 +514,7 @@ function BrandPortalPreview({
           <span className="h-2 w-2 rounded-full bg-border" />
           <span className="h-2 w-2 rounded-full bg-border" />
         </div>
-        <div className="ml-2 truncate rounded-md bg-[var(--surface-2)] px-2 py-1 text-[10.5px] text-muted-foreground">{domain}</div>
+        <div className="ml-2 truncate rounded-md bg-[var(--surface-2)] px-2 py-1 text-[12px] text-muted-foreground">{domain}</div>
       </div>
       <div className="relative p-6">
         <div className="absolute inset-x-0 top-0 h-[2px]" style={{ background: color }} />
@@ -522,23 +522,23 @@ function BrandPortalPreview({
           <span className="grid h-8 w-8 place-items-center rounded-md text-[13px] font-bold text-white" style={{ background: color }}>{letter}</span>
           <div className="leading-tight">
             <div className="text-[13px] font-semibold tracking-tight">{brand}</div>
-            <div className="text-[10.5px] text-muted-foreground">Client portal</div>
+            <div className="text-[12px] text-muted-foreground">Client portal</div>
           </div>
         </div>
 
-        <div className="mt-6 text-[10.5px] uppercase tracking-wider text-muted-foreground">{tagline}</div>
+        <div className="mt-6 text-[12px] uppercase tracking-wider text-muted-foreground">{tagline}</div>
         <div className="mt-0.5 text-[15px] font-semibold tracking-tight">{client}</div>
 
         <div className="mt-4 space-y-1.5">
           {metrics.map(([l, v]) => (
             <div key={l} className="flex items-center justify-between rounded-md border border-border bg-background px-3 py-2">
-              <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{l}</span>
+              <span className="text-[12px] uppercase tracking-wider text-muted-foreground">{l}</span>
               <span className="text-[14px] font-semibold tracking-tight">{v}</span>
             </div>
           ))}
         </div>
 
-        <div className="mt-4 flex items-start gap-2 rounded-md bg-[var(--surface-2)]/50 p-3 text-[11.5px] leading-relaxed text-muted-foreground">
+        <div className="mt-4 flex items-start gap-2 rounded-md bg-[var(--surface-2)]/50 p-3 text-[12px] leading-relaxed text-muted-foreground">
           <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: color }} />
           {note}
         </div>
@@ -595,7 +595,7 @@ function PhoneMockup() {
       <div className="pointer-events-none absolute -inset-8 -z-10 rounded-[48px] bg-[var(--accent)]/8 blur-3xl" />
       <div className="w-[88vw] max-w-[380px] rounded-[40px] border-[10px] border-foreground/90 bg-foreground/90 p-1.5 shadow-pop md:w-[380px]">
         <div className="overflow-hidden rounded-[30px] bg-background">
-          <div className="flex items-center justify-between px-5 pt-3 pb-1 text-[11px] font-medium">
+          <div className="flex items-center justify-between px-5 pt-3 pb-1 text-[12px] font-medium">
             <span>9:41</span>
             <span className="flex items-center gap-1 text-foreground/70">
               <span className="h-2 w-2 rounded-full bg-foreground/60" />
@@ -608,14 +608,14 @@ function PhoneMockup() {
               <span className="grid h-7 w-7 place-items-center rounded-md bg-[var(--accent)] text-[12px] font-bold text-white">N</span>
               <div className="leading-tight">
                 <div className="text-[13px] font-semibold">Northstar</div>
-                <div className="text-[10.5px] text-muted-foreground">portal</div>
+                <div className="text-[12px] text-muted-foreground">portal</div>
               </div>
             </div>
-            <div className="grid h-7 w-7 place-items-center rounded-full bg-[var(--surface-2)] text-[10.5px] font-semibold">HP</div>
+            <div className="grid h-7 w-7 place-items-center rounded-full bg-[var(--surface-2)] text-[12px] font-semibold">HP</div>
           </div>
 
           <div className="p-5">
-            <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Hartland Plumbing</div>
+            <div className="text-[12px] uppercase tracking-wider text-muted-foreground">Hartland Plumbing</div>
             <div className="mt-0.5 text-[18px] font-semibold tracking-tight">April performance</div>
 
             <div className="mt-4 grid grid-cols-2 gap-2">
@@ -626,7 +626,7 @@ function PhoneMockup() {
                 ["Booked", "18"],
               ].map(([l, v]) => (
                 <div key={l} className="rounded-xl border border-border bg-[var(--surface-2)]/40 p-2.5">
-                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{l}</div>
+                  <div className="text-[12px] uppercase tracking-wider text-muted-foreground">{l}</div>
                   <div className="mt-0.5 text-[17px] font-semibold tracking-tight">{v}</div>
                 </div>
               ))}
@@ -636,15 +636,15 @@ function PhoneMockup() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-[12.5px] font-semibold">Brian Connors</div>
-                  <div className="text-[10.5px] text-muted-foreground">Burst pipe, Detroit</div>
+                  <div className="text-[12px] text-muted-foreground">Burst pipe, Detroit</div>
                 </div>
-                <span className="rounded-full bg-[var(--warning-soft)] px-1.5 py-0.5 text-[9.5px] font-semibold text-[var(--warning)]">New</span>
+                <span className="rounded-full bg-[var(--warning-soft)] px-1.5 py-0.5 text-[12px] font-semibold text-[var(--warning)]">New</span>
               </div>
               <div className="mt-2.5 grid grid-cols-2 gap-1.5">
-                <button className="inline-flex h-8 items-center justify-center gap-1 rounded-lg bg-foreground text-[11px] font-medium text-background">
+                <button className="inline-flex h-8 items-center justify-center gap-1 rounded-lg bg-foreground text-[12px] font-medium text-background">
                   <Phone className="h-3 w-3" /> Call
                 </button>
-                <button className="inline-flex h-8 items-center justify-center gap-1 rounded-lg border border-border text-[11px] font-medium">
+                <button className="inline-flex h-8 items-center justify-center gap-1 rounded-lg border border-border text-[12px] font-medium">
                   <MessageCircle className="h-3 w-3" /> Text
                 </button>
               </div>
@@ -653,14 +653,14 @@ function PhoneMockup() {
             <div className="mt-2.5 flex items-center justify-between rounded-xl border border-border bg-background px-3 py-2.5">
               <div>
                 <div className="text-[12px] font-semibold">Awaiting approval</div>
-                <div className="text-[10.5px] text-muted-foreground">Primary v3</div>
+                <div className="text-[12px] text-muted-foreground">Primary v3</div>
               </div>
-              <span className="rounded-full bg-[var(--accent-soft)] px-1.5 py-0.5 text-[9.5px] font-semibold text-[var(--accent)]">2 pending</span>
+              <span className="rounded-full bg-[var(--accent-soft)] px-1.5 py-0.5 text-[12px] font-semibold text-[var(--accent)]">2 pending</span>
             </div>
 
             <div className="mt-2.5 rounded-xl border border-border bg-[var(--surface-2)]/40 p-3">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">From Northstar</div>
-              <p className="mt-1 text-[11.5px] leading-relaxed text-foreground/80">
+              <div className="text-[12px] uppercase tracking-wider text-muted-foreground">From Northstar</div>
+              <p className="mt-1 text-[12px] leading-relaxed text-foreground/80">
                 Roof Replacement scaled this month. Booked calls up 38% week over week.
               </p>
             </div>
@@ -719,7 +719,7 @@ function Pricing() {
             <div key={t.name} className={`flex flex-col rounded-2xl border bg-background p-7 ${t.pop ? "border-foreground" : "border-border"}`}>
               <div className="flex items-center justify-between">
                 <div className="text-[13px] font-medium text-muted-foreground">{t.name}</div>
-                {t.pop && <span className="rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-background">Popular</span>}
+                {t.pop && <span className="rounded-full bg-foreground px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-background">Popular</span>}
               </div>
               <div className="mt-3 flex items-baseline gap-1">
                 <span className="text-[40px] font-semibold tracking-[-0.02em]">${t.price}</span>
