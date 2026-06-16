@@ -219,26 +219,65 @@ function HeroChart() {
 
 function IntegrationsStrip() {
   return (
-    <section className="hairline-t py-24 md:py-28">
+    <section className="hairline-t py-10 md:py-12">
       <div className="mx-auto max-w-[1180px] px-6">
-        <p className="text-center text-[13px] uppercase tracking-[0.18em] text-[var(--text-faint)]">
-          Connects the tools you already run
-        </p>
-        <div className="mt-10 grid grid-cols-2 items-center gap-y-10 sm:grid-cols-4">
-          <div className="flex items-center justify-center gap-2 text-foreground/85">
-            <MetaMark className="h-5 w-5" />
-            <span className="text-[15px] font-semibold tracking-tight">Meta Ads</span>
+        <div className="flex flex-col items-center justify-between gap-6 md:flex-row md:gap-10">
+          <p className="text-[12.5px] uppercase tracking-[0.18em] text-[var(--text-faint)] md:max-w-[200px] md:text-left">
+            Connects the tools you already run
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-16">
+            <div className="flex items-center gap-2.5 text-foreground/90">
+              <MetaMark className="h-6 w-6" />
+              <span className="text-[17px] font-semibold tracking-tight">Meta Ads</span>
+            </div>
+            <div className="flex items-center gap-2.5 text-foreground/90">
+              <GoogleMark className="h-6 w-6" />
+              <span className="text-[17px] font-semibold tracking-tight">Google Ads</span>
+            </div>
+            <StripeMark className="h-7" />
+            <CallRailMark className="h-5" />
           </div>
-          <div className="flex items-center justify-center gap-2 text-foreground/85">
-            <GoogleMark className="h-5 w-5" />
-            <span className="text-[15px] font-semibold tracking-tight">Google Ads</span>
-          </div>
-          <div className="flex items-center justify-center">
-            <StripeMark className="h-6" />
-          </div>
-          <div className="flex items-center justify-center">
-            <CallRailMark />
-          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Problem ---------------- */
+
+function Problem() {
+  const scattered = [
+    { icon: FileSpreadsheet, label: "Google Sheets", note: "Monthly reports" },
+    { icon: Video, label: "Loom", note: "Update videos" },
+    { icon: CreditCard, label: "Stripe links", note: "Invoicing" },
+    { icon: PhoneCall, label: "CallRail tabs", note: "Call tracking" },
+    { icon: MessageSquare, label: "Email and texts", note: "Approvals" },
+  ];
+  return (
+    <section className="hairline-t bg-[var(--surface)]/40 py-32 md:py-40">
+      <div className="mx-auto max-w-[1180px] px-6">
+        <div className="max-w-2xl">
+          <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">The problem</div>
+          <h2 className="mt-4 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[44px]">
+            Clients churn when they can't see the work.
+          </h2>
+          <p className="mt-6 max-w-[60ch] text-[15.5px] leading-[1.7] text-foreground/90">
+            Reports live in Sheets. Updates live in Loom. Approvals live in email. Invoices live in Stripe. Call data lives in CallRail. The client lives in the dark, and at month three they start asking what they're paying for.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-3 sm:grid-cols-2 md:grid-cols-5">
+          {scattered.map(s => (
+            <div key={s.label} className="flex items-center gap-3 rounded-xl border border-border bg-[var(--surface)] px-4 py-4">
+              <span className="grid h-9 w-9 place-items-center rounded-md border border-border bg-[var(--surface-2)] text-foreground/80">
+                <s.icon className="h-4 w-4" />
+              </span>
+              <div>
+                <div className="text-[13px] font-medium text-foreground/95">{s.label}</div>
+                <div className="text-[11.5px] text-[var(--text-faint)]">{s.note}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -249,12 +288,16 @@ function IntegrationsStrip() {
 
 function Positioning() {
   return (
-    <section className="hairline-t py-40 md:py-56">
-      <div className="mx-auto max-w-[1100px] px-6">
-        <h2 className="text-[40px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-[56px] md:text-[68px]">
-          <span className="text-foreground">The operating layer</span>{" "}
-          <span className="text-foreground/40">for agencies that deliver paid ads to local service businesses. Reporting, leads, approvals, and invoices — under one brand, at one URL.</span>
+    <section className="hairline-t py-28 md:py-36">
+      <div className="mx-auto max-w-[1000px] px-6">
+        <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">The shift</div>
+        <h2 className="mt-4 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] md:text-[40px]">
+          <span className="text-foreground">The operating layer for paid-ad agencies.</span>{" "}
+          <span className="text-foreground/55">One branded portal for reporting, leads, approvals, and invoices.</span>
         </h2>
+        <p className="mt-6 max-w-[62ch] text-[15px] leading-[1.7] text-foreground/85">
+          Dashboards, sign-offs, and billing run inside the same product, on your domain. The client sees one place. You stop stitching tools together every month.
+        </p>
       </div>
     </section>
   );
