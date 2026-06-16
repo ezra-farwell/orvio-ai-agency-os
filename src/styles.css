@@ -152,30 +152,59 @@
 }
 
 @utility text-gradient {
-  background: linear-gradient(180deg, #0A0A0A 0%, #52525B 100%);
+  background: linear-gradient(180deg, #FAFAFA 0%, #8B8B92 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 @utility text-gradient-indigo {
-  background: linear-gradient(135deg, #4F46E5 0%, #8B5CF6 100%);
+  background: linear-gradient(135deg, #A5B4FC 0%, #C4B5FD 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+@utility font-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+@utility beam-bg {
+  position: relative;
+  background:
+    radial-gradient(ellipse 70% 40% at 50% -10%, rgba(99,102,241,0.20) 0%, transparent 60%),
+    linear-gradient(118deg, transparent 38%, rgba(255,255,255,0.07) 50%, transparent 62%),
+    #08080A;
+}
+
+@utility chip-gradient {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  line-height: 1;
+  color: rgba(250,250,250,0.92);
+  background:
+    linear-gradient(#0F0F11, #0F0F11) padding-box,
+    linear-gradient(120deg, rgba(99,102,241,0.6), rgba(52,211,153,0.45), rgba(99,102,241,0.5)) border-box;
+  border: 1px solid transparent;
+}
+
 @utility grid-bg {
   background-image:
-    linear-gradient(to right, rgba(10,10,10,0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(10,10,10,0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 30%, transparent 90%);
   -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 30%, transparent 90%);
 }
 
 @utility grid-dots {
-  background-image: radial-gradient(circle, rgba(10,10,10,0.08) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
