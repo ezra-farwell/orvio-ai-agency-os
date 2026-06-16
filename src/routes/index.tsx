@@ -65,13 +65,13 @@ function GoogleMark({ className = "h-3.5 w-3.5" }: { className?: string }) {
 function Hero() {
   return (
     <section className="relative overflow-hidden beam-bg">
-      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-12 px-6 pb-20 pt-36 md:grid-cols-[minmax(0,460px)_minmax(0,1fr)] md:gap-10 md:pb-28 md:pt-40 lg:gap-16">
+      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-14 px-6 pb-28 pt-36 md:grid-cols-[minmax(0,460px)_minmax(0,1fr)] md:gap-12 md:pb-36 md:pt-44 lg:gap-20">
         {/* Left: copy */}
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
           className="relative z-10"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-[var(--surface)] px-3 py-1 text-[11.5px] text-foreground/80">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-[var(--surface)] px-3 py-1 text-[12px] text-foreground/90">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--success)] live-dot" />
             Now in private beta with 12 agencies
           </div>
@@ -80,7 +80,7 @@ function Hero() {
             Client portals for ad agencies.
           </h1>
 
-          <p className="mt-6 max-w-[460px] text-[16px] leading-[1.6] text-foreground/75 md:text-[16.5px]">
+          <p className="mt-6 max-w-[460px] text-[16px] leading-[1.65] text-foreground/85 md:text-[16.5px]">
             One branded place for ad reporting, leads, approvals, invoices, and monthly updates — so clients can see what they are paying for.
           </p>
 
@@ -93,7 +93,7 @@ function Hero() {
             </Link>
           </div>
 
-          <p className="mt-7 text-[11.5px] text-[var(--text-faint)]">Sample data shown throughout. Real Meta and Google Ads connections.</p>
+          <p className="mt-7 text-[12px] text-[var(--text-faint)]">Sample data shown throughout. Real Meta and Google Ads connections.</p>
         </motion.div>
 
         {/* Right: dashboard bleeding off the edge */}
@@ -112,63 +112,63 @@ function HeroDashboard() {
   return (
     <div className="relative rounded-[14px] border border-border bg-[var(--surface)] shadow-pop">
       {/* top bar */}
-      <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+      <div className="flex items-center gap-2 border-b border-border px-4 py-3">
         <div className="flex gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-2)]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-2)]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-2)]" />
         </div>
-        <div className="ml-3 text-[11px] text-foreground/55">Northstar · Agency portal</div>
-        <div className="ml-auto flex items-center gap-2 text-[10.5px] text-foreground/60">
+        <div className="ml-3 text-[12px] text-foreground/70">Northstar · Agency portal</div>
+        <div className="ml-auto flex items-center gap-2 text-[12px] text-foreground/75">
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--success)]" /> Live
         </div>
       </div>
 
-      <div className="p-5 md:p-6">
+      <div className="p-7 md:p-8">
         <div className="flex items-end justify-between gap-3">
           <div>
-            <div className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Overview · April</div>
-            <div className="mt-1 text-[20px] font-semibold tracking-tight">Portfolio health</div>
+            <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Overview · April</div>
+            <div className="mt-1.5 text-[22px] font-semibold tracking-tight">Portfolio health</div>
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-foreground/65">
-            <MetaMark /> Meta <span className="text-foreground/30">·</span> <GoogleMark /> Google
+          <div className="flex items-center gap-1.5 text-[12px] text-foreground/75">
+            <MetaMark /> Meta <span className="text-foreground/40">·</span> <GoogleMark /> Google
           </div>
         </div>
 
-        {/* status group cards row */}
-        <div className="mt-5 grid grid-cols-3 gap-3">
-          <StatusTile eyebrow="Lead flow" word="Good" tone="var(--success)" rows={[["Hartland", "+38%"], ["Coastal", "+12%"]]} />
-          <StatusTile eyebrow="Spend pacing" word="Steady" tone="var(--accent)" rows={[["On budget", "9/11"], ["Pacing", "97%"]]} />
-          <StatusTile eyebrow="Approvals" word="2 open" tone="var(--warning)" rows={[["Creative", "v3 primary"], ["Waiting", "Apex"]]} />
+        {/* status group — one outer hairline container, dividers between tiles (no nested boxes) */}
+        <div className="mt-7 grid grid-cols-3 divide-x divide-border rounded-xl border border-border">
+          <StatusTile eyebrow="Lead flow" word="Good" tone="var(--success)" detail="+38% Hartland" />
+          <StatusTile eyebrow="Spend pacing" word="Steady" tone="var(--accent)" detail="9 of 11 on budget" />
+          <StatusTile eyebrow="Approvals" word="2 open" tone="var(--warning)" detail="Waiting on Apex" />
         </div>
 
-        {/* hero number + chart */}
-        <div className="mt-3 rounded-xl border border-border bg-background p-4">
+        {/* hero number — flat, no nested card */}
+        <div className="mt-8">
           <div className="flex items-end justify-between">
             <div>
-              <div className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Leads generated</div>
-              <div className="mt-1 flex items-baseline gap-2">
-                <span className="text-[34px] font-semibold leading-none tracking-tight">847</span>
-                <span className="text-[12px] text-[var(--success)]">+14.2%</span>
+              <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Leads generated</div>
+              <div className="mt-2 flex items-baseline gap-2.5">
+                <span className="text-[40px] font-semibold leading-none tracking-tight">847</span>
+                <span className="text-[13px] text-[var(--success)]">+14.2%</span>
               </div>
             </div>
-            <div className="text-[10.5px] text-foreground/55">Last 12 weeks</div>
+            <div className="text-[12px] text-foreground/70">Last 12 weeks</div>
           </div>
           <HeroChart />
         </div>
 
-        {/* mini client row */}
-        <div className="mt-3 overflow-hidden rounded-xl border border-border bg-background">
+        {/* mini client row — top hairline only, no outer box */}
+        <div className="mt-8 border-t border-border">
           {[
             ["Hartland Plumbing", "63", "$67.94", "good"],
             ["Coastal HVAC", "112", "$41.20", "good"],
             ["Apex Remodeling", "47", "$128.10", "watch"],
           ].map(([name, leads, cpl, tone], i, arr) => (
-            <div key={name as string} className={`flex items-center px-4 py-2.5 text-[12px] ${i < arr.length - 1 ? "border-b border-border" : ""}`}>
+            <div key={name as string} className={`flex items-center py-3 text-[13px] ${i < arr.length - 1 ? "border-b border-border" : ""}`}>
               <span className="h-1.5 w-1.5 rounded-full" style={{ background: tone === "good" ? "var(--success)" : "var(--warning)" }} />
-              <span className="ml-3 flex-1 truncate font-medium text-foreground/90">{name}</span>
-              <span className="mono w-12 text-right text-foreground/70">{leads}</span>
-              <span className="mono w-20 text-right text-foreground/55">{cpl}</span>
+              <span className="ml-3 flex-1 truncate font-medium text-foreground/95">{name}</span>
+              <span className="mono w-12 text-right text-foreground/85">{leads}</span>
+              <span className="mono w-20 text-right text-foreground/70">{cpl}</span>
             </div>
           ))}
         </div>
@@ -177,19 +177,14 @@ function HeroDashboard() {
   );
 }
 
-function StatusTile({ eyebrow, word, tone, rows }: { eyebrow: string; word: string; tone: string; rows: [string, string][] }) {
+function StatusTile({ eyebrow, word, tone, detail }: { eyebrow: string; word: string; tone: string; detail: string }) {
   return (
-    <div className="rounded-xl border border-border bg-background p-3.5">
-      <div className="text-[9.5px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">{eyebrow}</div>
-      <div className="mt-1.5 text-[22px] font-semibold leading-none tracking-tight">{word}</div>
-      <div className="mt-3 space-y-1.5">
-        {rows.map(([l, v]) => (
-          <div key={l} className="flex items-center gap-2 text-[11px]">
-            <span className="h-1 w-1 rounded-full" style={{ background: tone }} />
-            <span className="flex-1 truncate text-foreground/75">{l}</span>
-            <span className="mono text-foreground/55">{v}</span>
-          </div>
-        ))}
+    <div className="px-5 py-5">
+      <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">{eyebrow}</div>
+      <div className="mt-2 text-[24px] font-semibold leading-none tracking-tight">{word}</div>
+      <div className="mt-4 flex items-center gap-2 text-[12.5px]">
+        <span className="h-1.5 w-1.5 rounded-full" style={{ background: tone }} />
+        <span className="truncate text-foreground/80">{detail}</span>
       </div>
     </div>
   );
@@ -202,7 +197,7 @@ function HeroChart() {
   const step = w / (data.length - 1);
   const line = data.map((p, i) => `${i === 0 ? "M" : "L"}${(i * step).toFixed(2)},${(h - (p / max) * h).toFixed(2)}`).join(" ");
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="mt-3 h-16 w-full">
+    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="mt-4 h-20 w-full">
       <defs>
         <linearGradient id="hG" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stopColor="#6366F1" stopOpacity="0.35" />
