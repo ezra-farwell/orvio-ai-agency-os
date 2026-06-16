@@ -33,8 +33,8 @@ const tiers = [
     name: "Pro",
     price: 497,
     sub: "Up to 25 clients",
-    best: "Best for growing agencies that want more automation",
-    features: ["Everything in Growth", "AI report summaries (beta)", "Advanced client health", "Stripe Connect", "More team seats"],
+    best: "Best for growing agencies that need advanced delivery tools",
+    features: ["Everything in Growth", "Advanced client health signals", "Stripe Connect", "More team seats"],
     pop: false,
   },
 ];
@@ -47,9 +47,8 @@ const rows: [string, (string | boolean)[]][] = [
   ["Custom domain", [false, true, true]],
   ["Approvals + invoices", [false, true, true]],
   ["Team seats", ["1", "3", "8"]],
-  ["AI report summaries", [false, false, "Beta"]],
-  ["Stripe Connect", [false, false, true]],
   ["Advanced client health", [false, false, true]],
+  ["Stripe Connect", [false, false, true]],
   ["Support", ["Email", "Priority", "Priority"]],
 ];
 

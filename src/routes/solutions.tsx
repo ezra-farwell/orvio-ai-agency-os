@@ -19,11 +19,11 @@ const verticals = [
 function Solutions() {
   return (
     <MarketingShell>
-      <section className="hero-bg pt-32 pb-16">
+      <section className="pt-32 pb-16">
         <div className="mx-auto max-w-[1000px] px-6 text-center">
-          <div className="chip">Solutions</div>
+          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">Solutions</div>
           <h1 className="mt-3 text-[44px] font-semibold leading-[1.05] tracking-[-0.03em] md:text-[56px]">Built for agencies that serve local service businesses.</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-[15px] text-muted-foreground">Orvio is the operating system for agencies running Meta and Google Ads for the trades. Every metric, lead workflow, and creative format is tuned for how home-services work.</p>
+          <p className="mx-auto mt-4 max-w-2xl text-[15px] text-muted-foreground">Orvio is the client portal and reporting platform for agencies running Meta and Google Ads for the trades. Every metric, lead workflow, and creative format is tuned for how home services work.</p>
         </div>
       </section>
 

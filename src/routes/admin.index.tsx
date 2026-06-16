@@ -26,6 +26,36 @@ function AdminOverview() {
           <KPI label="Avg CPL across platform" value="$74.20" delta={-2.1} />
         </div>
         <Card>
+          <div className="flex flex-wrap items-start justify-between gap-3 p-5 pb-3">
+            <div>
+              <div className="text-[15px] font-semibold">How churn risk is scored</div>
+              <p className="mt-1 max-w-2xl text-[12.5px] text-muted-foreground">
+                A weighted blend of three signals over the last 30 days. Weights are configurable per admin in Settings.
+              </p>
+            </div>
+            <Link to="/admin/settings" className="text-[12.5px] font-medium text-[var(--accent)] hover:underline">Adjust weights →</Link>
+          </div>
+          <div className="grid gap-3 px-5 pb-5 md:grid-cols-3">
+            {[
+              { name: "Lead volume trend", weight: 40, body: "Week-over-week change in qualified leads delivered." },
+              { name: "CPL stability", weight: 35, body: "Variance of cost per lead vs the prior 30-day baseline." },
+              { name: "Portal engagement", weight: 25, body: "Client logins, approval response time, and message activity." },
+            ].map(s => (
+              <div key={s.name} className="rounded-lg border border-border bg-[var(--surface-2)]/40 p-4">
+                <div className="flex items-center justify-between">
+                  <div className="text-[13px] font-semibold">{s.name}</div>
+                  <span className="rounded-full bg-background px-2 py-0.5 text-[11px] font-medium text-muted-foreground">{s.weight}%</span>
+                </div>
+                <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{s.body}</p>
+                <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-background">
+                  <div className="h-full rounded-full bg-[var(--accent)]" style={{ width: `${s.weight}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card>
           <div className="flex items-center justify-between p-5 pb-3">
             <div className="text-[15px] font-semibold">Recent agency activity</div>
             <Link to="/admin/agencies" className="text-[12.5px] font-medium text-[var(--accent)] hover:underline">All agencies →</Link>
