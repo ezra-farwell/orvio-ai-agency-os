@@ -380,7 +380,7 @@ function ProductTour() {
             <div key={s.n} className="rounded-2xl border border-border bg-background p-6">
               <div className="text-[11px] font-mono text-muted-foreground">{s.n}</div>
               <h3 className="mt-2 text-[16px] font-semibold tracking-tight">{s.title}</h3>
-              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground" dangerouslySetInnerHTML={{ __html: s.body }} />
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{s.body}</p>
               <div className="mt-5 rounded-lg border border-border bg-[var(--surface-2)]/40 p-3">
                 {s.mock}
               </div>
