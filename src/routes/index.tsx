@@ -296,7 +296,7 @@ function CoreProduct() {
           {items.map(it => (
             <div key={it.title} className="rounded-2xl border border-border bg-background p-7">
               <div className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--surface-2)] text-foreground">
-                <it.icon className="h-4.5 w-4.5" />
+                <it.icon className="h-4 w-4" />
               </div>
               <h3 className="mt-5 text-[17px] font-semibold tracking-tight">{it.title}</h3>
               <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{it.body}</p>
