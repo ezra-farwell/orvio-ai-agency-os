@@ -157,3 +157,110 @@ export const usd = (n: number) =>
 export const usd2 = (n: number) => `$${n.toFixed(2)}`;
 export const pct = (n: number) => `${n.toFixed(1)}%`;
 export const num = (n: number) => n.toLocaleString("en-US");
+
+// ============= Resend-inspired status-word metric groups =============
+export type MetricTone = "good" | "steady" | "watch" | "risk" | "neutral";
+
+export type MetricRow = {
+  label: string;
+  value: number;
+  format: "usd" | "num" | "pct" | "cpl";
+  secondary?: string; // e.g. "100%" or "+12%"
+};
+
+export type MetricGroup = {
+  eyebrow: string;          // e.g. "LEAD FLOW"
+  statusWord: string;       // e.g. "Good"
+  statusTone: MetricTone;   // drives the dot color
+  rows: [MetricRow, MetricRow]; // two rows like Resend
+};
+
+export const TONE_COLOR: Record<MetricTone, string> = {
+  good: "#10B981",
+  steady: "#4F46E5",
+  watch: "#F59E0B",
+  risk: "#EF4444",
+  neutral: "#A1A1AA",
+};
+
+export function formatMetric(r: MetricRow): string {
+  switch (r.format) {
+    case "usd": return usd(r.value);
+    case "num": return num(r.value);
+    case "pct": return `${r.value.toFixed(1)}%`;
+    case "cpl": return `$${r.value.toFixed(2)}`;
+  }
+}
+
+export function agencyDashboard(): MetricGroup[] {
+  const totalLeads = clients.reduce((a, c) => a + c.leads, 0);
+  const totalSpend = clients.reduce((a, c) => a + c.monthlySpend, 0);
+  const atRisk = clients.filter(c => c.status === "at-risk").length;
+  const active = clients.filter(c => c.status === "active").length;
+  const avgCpl = totalSpend / totalLeads;
+  const openLeads = leads.filter(l => l.status === "New" || l.status === "Contacted").length;
+  return [
+    {
+      eyebrow: "LEAD FLOW",
+      statusWord: "Good",
+      statusTone: "good",
+      rows: [
+        { label: "New leads", value: totalLeads, format: "num", secondary: "+12%" },
+        { label: "Open follow-ups", value: openLeads, format: "num", secondary: `${Math.round(openLeads/totalLeads*100)}%` },
+      ],
+    },
+    {
+      eyebrow: "CLIENT HEALTH",
+      statusWord: atRisk > 0 ? "Watch" : "Steady",
+      statusTone: atRisk > 0 ? "watch" : "steady",
+      rows: [
+        { label: "Active", value: active, format: "num", secondary: `${clients.length} total` },
+        { label: "At risk", value: atRisk, format: "num", secondary: `${Math.round(atRisk/clients.length*100)}%` },
+      ],
+    },
+    {
+      eyebrow: "SPEND EFFICIENCY",
+      statusWord: avgCpl < 100 ? "Good" : "Watch",
+      statusTone: avgCpl < 100 ? "good" : "watch",
+      rows: [
+        { label: "Spend", value: totalSpend, format: "usd", secondary: "+8.2%" },
+        { label: "Avg CPL", value: avgCpl, format: "cpl", secondary: "-4.1%" },
+      ],
+    },
+  ];
+}
+
+export function clientDashboard(client: Client): MetricGroup[] {
+  const myLeads = leads.filter(l => l.client === client.name);
+  const open = myLeads.filter(l => l.status === "New" || l.status === "Contacted").length;
+  const won = myLeads.filter(l => l.status === "Won" || l.status === "Booked").length;
+  return [
+    {
+      eyebrow: "LEAD FLOW",
+      statusWord: "Good",
+      statusTone: "good",
+      rows: [
+        { label: "New leads", value: client.leads, format: "num", secondary: "+12%" },
+        { label: "Open", value: open, format: "num", secondary: `${myLeads.length ? Math.round(open/myLeads.length*100) : 0}%` },
+      ],
+    },
+    {
+      eyebrow: "AD SPEND",
+      statusWord: "Steady",
+      statusTone: "steady",
+      rows: [
+        { label: "This month", value: client.monthlySpend, format: "usd", secondary: "+5%" },
+        { label: "Cost per lead", value: client.cpl, format: "cpl", secondary: "-4.1%" },
+      ],
+    },
+    {
+      eyebrow: "PIPELINE",
+      statusWord: won > 0 ? "Good" : "Steady",
+      statusTone: won > 0 ? "good" : "steady",
+      rows: [
+        { label: "Booked / won", value: won, format: "num", secondary: "this month" },
+        { label: "Approvals pending", value: 2, format: "num", secondary: "needs you" },
+      ],
+    },
+  ];
+}
