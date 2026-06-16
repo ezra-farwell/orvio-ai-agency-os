@@ -2,7 +2,7 @@ import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { type ReactNode } from "react";
 import {
   LayoutDashboard, BarChart3, Inbox, MessageSquare, CheckSquare,
-  CreditCard, FileText, Settings, Bell,
+  CreditCard, FileText, Bell,
 } from "lucide-react";
 import { currentAgency, currentClient } from "@/mock/data";
 
