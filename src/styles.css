@@ -239,3 +239,27 @@
   50%      { opacity: 0.45; transform: scale(0.8); }
 }
 @utility live-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
+
+/* ====== Dark product surface (Resend-inspired) ======
+   Scoped via [data-theme="dark"] on the shell root so the marketing site stays light. */
+[data-theme="dark"] {
+  --background: #0A0A0A;
+  --foreground: #FAFAFA;
+  --ink: #FAFAFA;
+  --surface: #0F0F10;
+  --surface-2: #161618;
+  --border: #232326;
+  --border-strong: #2E2E33;
+  --accent: #6366F1;
+  --accent-soft: rgba(99,102,241,0.14);
+  --success: #34D399;
+  --success-soft: rgba(52,211,153,0.12);
+  --warning: #FBBF24;
+  --warning-soft: rgba(251,191,36,0.12);
+  --danger: #F87171;
+  --danger-soft: rgba(248,113,113,0.12);
+  --text-muted: #A1A1AA;
+  --text-faint: #6B6B73;
+  color-scheme: dark;
+}
+[data-theme="dark"] ::selection { background: #6366F1; color: #fff; }
