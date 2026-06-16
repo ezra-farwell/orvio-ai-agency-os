@@ -56,8 +56,8 @@ export function ClientShell({ children }: { children?: ReactNode }) {
           })}
         </nav>
 
-        <div className="border-t border-border px-4 py-3 text-[12.5px] text-muted-foreground">
-          <span className="inline-flex items-center gap-2"><Settings className="h-3.5 w-3.5" /> Settings coming soon</span>
+        <div className="border-t border-border px-4 py-3 text-[11.5px] text-muted-foreground">
+          Need help? Contact {currentAgency.name}.
         </div>
       </aside>
 
