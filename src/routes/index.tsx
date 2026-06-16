@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   ArrowRight, Check, Palette, BarChart3, Inbox, FileCheck,
-  Phone, MessageCircle, CreditCard, Sparkles,
+  Phone, MessageCircle,
 } from "lucide-react";
 import { MarketingShell } from "@/components/shells/MarketingShell";
 
@@ -10,10 +10,10 @@ export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
     meta: [
-      { title: "Orvio — Branded client portals for ad agencies" },
+      { title: "Orvio, branded client portals for ad agencies" },
       { name: "description", content: "Orvio is the white-label client portal and reporting OS for agencies running Meta and Google ads for local service businesses." },
-      { property: "og:title", content: "Orvio — Branded client portals for ad agencies" },
-      { property: "og:description", content: "Give every ad client a branded portal that proves your agency's work." },
+      { property: "og:title", content: "Orvio, branded client portals for ad agencies" },
+      { property: "og:description", content: "Give every ad client a branded portal for reports, leads, approvals, invoices, and campaign updates." },
     ],
   }),
 });
@@ -22,9 +22,11 @@ function Home() {
   return (
     <MarketingShell>
       <Hero />
-      <BeforeAfter />
-      <MobileShowcase />
-      <Features />
+      <Problem />
+      <CoreProduct />
+      <ProductTour />
+      <WhiteLabel />
+      <ClientPortalPhone />
       <Pricing />
       <FAQ />
       <FinalCTA />
@@ -32,9 +34,7 @@ function Home() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Brand marks                                                        */
-/* ------------------------------------------------------------------ */
+/* ---------------- Brand marks ---------------- */
 
 function MetaMark({ className = "h-3.5 w-3.5" }: { className?: string }) {
   return (
@@ -61,38 +61,34 @@ function GoogleMark({ className = "h-3.5 w-3.5" }: { className?: string }) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Hero                                                               */
-/* ------------------------------------------------------------------ */
+/* ---------------- Hero ---------------- */
 
 function Hero() {
   return (
-    <section className="hero-bg relative overflow-hidden">
-      <div className="absolute inset-0 grid-bg opacity-40" />
-      <div className="relative mx-auto max-w-[1180px] px-6 pb-20 pt-32 md:pt-40">
+    <section className="relative overflow-hidden">
+      <div className="relative mx-auto max-w-[1180px] px-6 pb-24 pt-32 md:pt-40">
         <motion.div
-          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-          className="mx-auto max-w-[820px] text-center"
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+          className="mx-auto max-w-[860px] text-center"
         >
-          <h1 className="text-[40px] font-semibold leading-[1.04] tracking-[-0.035em] sm:text-[52px] md:text-[64px]">
-            Give every ad client a branded portal that{" "}
-            <span className="text-gradient-indigo">proves your work.</span>
+          <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.035em] sm:text-[52px] md:text-[64px]">
+            Give every ad client a branded portal that proves your work.
           </h1>
-          <p className="mx-auto mt-6 max-w-[620px] text-[16px] leading-relaxed text-muted-foreground md:text-[17.5px]">
-            The white-label client portal and reporting OS for agencies running Meta and Google ads for local service businesses.
+          <p className="mx-auto mt-6 max-w-[640px] text-[16px] leading-relaxed text-muted-foreground md:text-[17px]">
+            Orvio gives agencies one white-labeled place for client reports, leads, approvals, invoices, and campaign updates.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-foreground px-5 text-[14px] font-medium text-background hover:bg-foreground/90">
               Book a demo <ArrowRight className="h-4 w-4" />
             </Link>
             <Link to="/product" className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-border bg-background px-5 text-[14px] font-medium text-foreground hover:bg-[var(--surface-2)]">
-              See the product
+              View product
             </Link>
           </div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.15 }}
+          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
           className="relative mx-auto mt-16 max-w-[1080px]"
         >
           <HeroMockup />
@@ -127,7 +123,7 @@ function HeroMockup() {
           <div className="min-w-0 flex-1 p-5 md:p-6">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div className="min-w-0">
-                <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Reporting · April</div>
+                <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Reporting, April</div>
                 <div className="mt-0.5 truncate text-[17px] font-semibold tracking-tight">Hartland Plumbing</div>
               </div>
               <div className="flex shrink-0 items-center gap-1.5 text-[11.5px] text-muted-foreground">
@@ -162,7 +158,7 @@ function HeroMockup() {
               <div className="rounded-lg border border-border bg-background p-4">
                 <div className="text-[12px] font-medium">From your agency</div>
                 <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">
-                  Roof Replacement scaled this month — booked calls up 38% week over week.
+                  Roof Replacement scaled this month. Booked calls up 38% week over week.
                 </p>
                 <div className="mt-3 inline-flex items-center gap-1 rounded-full bg-[var(--success-soft)] px-2 py-0.5 text-[10.5px] font-semibold text-[var(--success)]">
                   <span className="h-1 w-1 rounded-full bg-current" /> On track
@@ -172,7 +168,6 @@ function HeroMockup() {
           </div>
         </div>
       </div>
-      <div className="pointer-events-none absolute -bottom-8 left-1/2 h-16 w-2/3 -translate-x-1/2 rounded-full bg-[var(--accent)]/15 blur-3xl" />
     </div>
   );
 }
@@ -187,50 +182,40 @@ function HeroChart() {
     <svg viewBox={`0 0 ${w} ${h}`} className="mt-3 h-20 w-full">
       <defs>
         <linearGradient id="hG" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#4F46E5" stopOpacity="0.22" />
+          <stop offset="0%" stopColor="#4F46E5" stopOpacity="0.18" />
           <stop offset="100%" stopColor="#4F46E5" stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d={`${line} L${w},${h} L0,${h} Z`} fill="url(#hG)" />
-      <motion.path d={line} fill="none" stroke="#4F46E5" strokeWidth="1.4" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.3 }} />
+      <motion.path d={line} fill="none" stroke="#4F46E5" strokeWidth="1.4" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2 }} />
     </svg>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Before vs After                                                    */
-/* ------------------------------------------------------------------ */
+/* ---------------- Problem ---------------- */
 
-function BeforeAfter() {
+function Problem() {
   return (
-    <section className="py-28 md:py-36">
+    <section className="py-24 md:py-32">
       <div className="mx-auto max-w-[1040px] px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[38px] md:text-[44px]">
-            Clients churn when they can't see the work.
+          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">The problem</div>
+          <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px] md:text-[42px]">
+            Clients churn when they can&apos;t see the work.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[15.5px] leading-relaxed text-muted-foreground">
-            You run the campaigns. They see scattered sheets, Looms, and Stripe links. Orvio puts everything in one branded place.
-          </p>
         </div>
 
         <div className="mt-14 grid gap-4 md:grid-cols-2">
           <div className="rounded-2xl border border-border bg-background p-7">
-            <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Before Orvio</div>
-            <p className="mt-3 text-[17px] font-semibold leading-snug tracking-[-0.01em]">
-              Sheets, Looms, screenshots, Stripe links — approvals lost in email.
-            </p>
-            <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">
-              Every client month is a new patchwork. By month three, they forget what they're paying for.
+            <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Before</div>
+            <p className="mt-3 text-[16px] leading-relaxed text-foreground/85">
+              Reports in Sheets. Updates in Loom. Approvals in email. Invoices somewhere else.
             </p>
           </div>
-          <div className="rounded-2xl border border-[var(--accent)]/30 bg-gradient-to-br from-[var(--accent-soft)] to-background p-7">
-            <div className="text-[11px] uppercase tracking-wider text-[var(--accent)]">After Orvio</div>
-            <p className="mt-3 text-[17px] font-semibold leading-snug tracking-[-0.01em]">
-              One branded portal for leads, reports, approvals, and invoices.
-            </p>
-            <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">
-              Clients log in, see what you delivered, and renew because the value is obvious.
+          <div className="rounded-2xl border border-foreground/15 bg-[var(--surface-2)]/50 p-7">
+            <div className="text-[11px] font-medium uppercase tracking-wider text-foreground">After</div>
+            <p className="mt-3 text-[16px] leading-relaxed text-foreground/85">
+              One branded portal where clients see leads, reports, approvals, invoices, and campaign updates.
             </p>
           </div>
         </div>
@@ -239,47 +224,207 @@ function BeforeAfter() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Mobile portal — central, large                                     */
-/* ------------------------------------------------------------------ */
+/* ---------------- Core product ---------------- */
 
-function MobileShowcase() {
+function CoreProduct() {
+  const items = [
+    {
+      icon: Palette,
+      title: "Client portal",
+      body: "Your logo, your domain, your colors.",
+      preview: (
+        <div className="flex items-center gap-2 rounded-md border border-border bg-background px-2.5 py-1.5">
+          <span className="grid h-5 w-5 place-items-center rounded bg-[var(--accent)] text-[10px] font-bold text-white">N</span>
+          <span className="text-[11.5px] font-medium">portal.northstar.io</span>
+        </div>
+      ),
+    },
+    {
+      icon: BarChart3,
+      title: "Ad reporting",
+      body: "Spend, leads, CPL, CTR explained in plain English.",
+      preview: (
+        <div className="grid grid-cols-3 gap-1.5">
+          {[["Spend", "$4.2k"], ["Leads", "63"], ["CPL", "$67"]].map(([l, v]) => (
+            <div key={l} className="rounded border border-border bg-background px-2 py-1.5">
+              <div className="text-[9px] text-muted-foreground">{l}</div>
+              <div className="text-[12px] font-semibold">{v}</div>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      icon: Inbox,
+      title: "Lead inbox",
+      body: "Form fills and calls in one place. Status, assign, follow up.",
+      preview: (
+        <div className="rounded-md border border-border bg-background px-2.5 py-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[11.5px] font-medium">Brian Connors</span>
+            <span className="rounded-full bg-[var(--warning-soft)] px-1.5 py-0.5 text-[9px] font-semibold text-[var(--warning)]">New</span>
+          </div>
+          <div className="text-[10.5px] text-muted-foreground">Burst pipe, Detroit</div>
+        </div>
+      ),
+    },
+    {
+      icon: FileCheck,
+      title: "Approvals and invoices",
+      body: "Clients approve creative and pay invoices in the same place.",
+      preview: (
+        <div className="flex items-center justify-between rounded-md border border-border bg-background px-2.5 py-1.5">
+          <span className="text-[11.5px] font-medium">Primary v3</span>
+          <span className="inline-flex items-center gap-1 rounded-full bg-[var(--success-soft)] px-1.5 py-0.5 text-[9px] font-semibold text-[var(--success)]">
+            <Check className="h-2.5 w-2.5" /> Approved
+          </span>
+        </div>
+      ),
+    },
+  ];
   return (
-    <section className="hairline-t bg-[var(--surface-2)]/40 py-28 md:py-36">
+    <section className="hairline-t py-24 md:py-32">
       <div className="mx-auto max-w-[1180px] px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="chip">For contractors on the job</div>
-          <h2 className="mt-3 text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[38px] md:text-[44px]">
-            Built for the phone in their truck.
+          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">Core product</div>
+          <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px] md:text-[42px]">
+            Four things your clients actually use.
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[15.5px] leading-relaxed text-muted-foreground">
-            Plumbers, roofers, HVAC techs check the portal between jobs. Leads, approvals, and call shortcuts — exactly where they need them.
+        </div>
+
+        <div className="mt-14 grid gap-4 md:grid-cols-2">
+          {items.map(it => (
+            <div key={it.title} className="rounded-2xl border border-border bg-background p-7">
+              <div className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--surface-2)] text-foreground">
+                <it.icon className="h-4 w-4" />
+              </div>
+              <h3 className="mt-5 text-[17px] font-semibold tracking-tight">{it.title}</h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{it.body}</p>
+              <div className="mt-5 rounded-lg border border-border bg-[var(--surface-2)]/40 p-3">
+                {it.preview}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Product tour ---------------- */
+
+function ProductTour() {
+  const steps = [
+    {
+      n: "01",
+      title: "Add a client",
+      body: "Set their brand, domain, and which ad accounts to connect.",
+      mock: (
+        <div className="space-y-2.5">
+          <Field label="Client name" value="Hartland Plumbing" />
+          <Field label="Brand color" value="#4F46E5" swatch />
+          <Field label="Portal domain" value="portal.northstar.io" />
+        </div>
+      ),
+    },
+    {
+      n: "02",
+      title: "Client views the portal",
+      body: "They sign into your software. Reports, leads, approvals, invoices, all in one place.",
+      mock: (
+        <div className="space-y-2.5">
+          <div className="grid grid-cols-3 gap-2">
+            {[["Spend", "$4,280"], ["Leads", "63"], ["CPL", "$67"]].map(([l, v]) => (
+              <div key={l} className="rounded-md border border-border bg-background p-2">
+                <div className="text-[10px] text-muted-foreground">{l}</div>
+                <div className="text-[14px] font-semibold tracking-tight">{v}</div>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-md border border-border bg-background p-2.5">
+            <div className="text-[11px] font-medium">Brian Connors</div>
+            <div className="text-[10px] text-muted-foreground">Burst pipe, Detroit</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      n: "03",
+      title: "Send the monthly report",
+      body: "A clean PDF or shared link with what changed and what is next.",
+      mock: (
+        <div className="space-y-2">
+          <div className="rounded-md border border-border bg-background px-3 py-2.5">
+            <div className="text-[11px] font-semibold">April performance</div>
+            <div className="text-[10px] text-muted-foreground">Sent to client, April 30</div>
+          </div>
+          <div className="rounded-md border border-border bg-[var(--surface-2)]/50 px-3 py-2 text-[10.5px] text-muted-foreground">
+            Booked calls up 38% WoW. CPL settled at $67.94.
+          </div>
+        </div>
+      ),
+    },
+  ];
+  return (
+    <section className="hairline-t py-24 md:py-32">
+      <div className="mx-auto max-w-[1180px] px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">Product tour</div>
+          <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px] md:text-[42px]">
+            From new client to monthly report.
+          </h2>
+        </div>
+
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {steps.map(s => (
+            <div key={s.n} className="rounded-2xl border border-border bg-background p-6">
+              <div className="text-[11px] font-mono text-muted-foreground">{s.n}</div>
+              <h3 className="mt-2 text-[16px] font-semibold tracking-tight">{s.title}</h3>
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{s.body}</p>
+              <div className="mt-5 rounded-lg border border-border bg-[var(--surface-2)]/40 p-3">
+                {s.mock}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Field({ label, value, swatch }: { label: string; value: string; swatch?: boolean }) {
+  return (
+    <div className="flex items-center justify-between rounded-md border border-border bg-background px-2.5 py-2">
+      <span className="text-[10.5px] uppercase tracking-wider text-muted-foreground">{label}</span>
+      <span className="inline-flex items-center gap-1.5 text-[11.5px] font-medium">
+        {swatch && <span className="h-3 w-3 rounded" style={{ background: value }} />}
+        {value}
+      </span>
+    </div>
+  );
+}
+
+/* ---------------- White-label ---------------- */
+
+function WhiteLabel() {
+  return (
+    <section className="hairline-t py-24 md:py-32">
+      <div className="mx-auto max-w-[1180px] px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">White-label</div>
+          <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px] md:text-[42px]">
+            Your logo. Your domain. Your client experience.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
+            Clients sign into your software at your domain. Orvio stays invisible.
           </p>
         </div>
 
-        <div className="mt-16 grid items-center gap-12 md:grid-cols-[1fr_1.05fr] md:gap-16">
-          <ul className="space-y-5">
-            {[
-              ["Spend, leads & CPL at a glance", "What you invested in ads, how many leads came in, and what each one cost."],
-              ["Booked appointments", "See which leads actually turned into work on the calendar."],
-              ["Approvals in one tap", "Approve or request changes on ad copy without an email thread."],
-              ["Call & text directly", "Tap a lead to call or text — no copying numbers between apps."],
-              ["Monthly update from your agency", "A plain-English note on what changed and what's next."],
-            ].map(([t, b]) => (
-              <li key={t} className="flex gap-3">
-                <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)]">
-                  <Check className="h-3 w-3" />
-                </span>
-                <div>
-                  <div className="text-[15px] font-semibold tracking-tight">{t}</div>
-                  <div className="mt-0.5 text-[13.5px] leading-relaxed text-muted-foreground">{b}</div>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex justify-center md:justify-end">
-            <BigPhoneMockup />
+        <div className="mt-14 grid gap-4 md:grid-cols-[1.6fr_1fr]">
+          <BrandPortalPreview brand="Northstar" color="#4F46E5" letter="N" domain="portal.northstar.io" big />
+          <div className="grid grid-rows-2 gap-4">
+            <BrandPortalPreview brand="Tidewater" color="#0EA5E9" letter="T" domain="clients.tidewater.co" />
+            <BrandPortalPreview brand="Foundry" color="#F97316" letter="F" domain="app.foundrylocal.com" />
           </div>
         </div>
       </div>
@@ -287,23 +432,101 @@ function MobileShowcase() {
   );
 }
 
-function BigPhoneMockup() {
+function BrandPortalPreview({ brand, color, letter, domain, big }: { brand: string; color: string; letter: string; domain: string; big?: boolean }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-border bg-background">
+      <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
+        <div className="flex gap-1">
+          <span className="h-2 w-2 rounded-full bg-border" />
+          <span className="h-2 w-2 rounded-full bg-border" />
+          <span className="h-2 w-2 rounded-full bg-border" />
+        </div>
+        <div className="ml-2 truncate rounded-md bg-[var(--surface-2)] px-2 py-1 text-[10.5px] text-muted-foreground">{domain}</div>
+      </div>
+      <div className={`p-5 ${big ? "md:p-7" : ""}`}>
+        <div className="flex items-center gap-2">
+          <span className="grid h-7 w-7 place-items-center rounded-md text-[12px] font-bold text-white" style={{ background: color }}>{letter}</span>
+          <span className="text-[13px] font-semibold tracking-tight">{brand}</span>
+        </div>
+        <div className={`${big ? "mt-6" : "mt-4"} text-[11px] uppercase tracking-wider text-muted-foreground`}>April performance</div>
+        <div className="mt-1 text-[15px] font-semibold tracking-tight">Hartland Plumbing</div>
+        <div className={`${big ? "mt-5" : "mt-3"} grid grid-cols-3 gap-2`}>
+          {[["Spend", "$4.2k"], ["Leads", "63"], ["CPL", "$67"]].map(([l, v]) => (
+            <div key={l} className="rounded-md border border-border bg-background p-2.5">
+              <div className="text-[9.5px] uppercase tracking-wider text-muted-foreground">{l}</div>
+              <div className={`mt-0.5 font-semibold tracking-tight ${big ? "text-[16px]" : "text-[13px]"}`}>{v}</div>
+              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[var(--surface-2)]">
+                <div className="h-full rounded-full" style={{ width: "62%", background: color }} />
+              </div>
+            </div>
+          ))}
+        </div>
+        {big && (
+          <div className="mt-5 rounded-lg border border-border bg-[var(--surface-2)]/40 p-3 text-[12px] text-muted-foreground">
+            Roof Replacement scaled this month. Booked calls up 38% week over week.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Client portal phone ---------------- */
+
+function ClientPortalPhone() {
+  return (
+    <section className="hairline-t bg-[var(--surface-2)]/40 py-24 md:py-32">
+      <div className="mx-auto max-w-[1180px] px-6">
+        <div className="grid items-center gap-12 md:grid-cols-[1fr_auto] md:gap-20">
+          <div className="max-w-xl">
+            <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">Client portal</div>
+            <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px] md:text-[42px]">
+              Built for the phone in their truck.
+            </h2>
+            <p className="mt-5 text-[15.5px] leading-relaxed text-muted-foreground">
+              Contractors do not need an analytics dashboard. They need to see who came in, what it cost, what needs approval, and what happened this month.
+            </p>
+            <ul className="mt-7 space-y-3.5">
+              {[
+                "Spend, leads, CPL at a glance",
+                "Booked appointments on the calendar",
+                "Call and text leads in one tap",
+                "Approve creative without an email thread",
+                "A plain note from the agency each month",
+              ].map(t => (
+                <li key={t} className="flex items-start gap-3 text-[14px]">
+                  <span className="mt-1 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-foreground text-background">
+                    <Check className="h-2.5 w-2.5" />
+                  </span>
+                  <span className="text-foreground/85">{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex w-full justify-center md:w-auto md:justify-end">
+            <PhoneMockup />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PhoneMockup() {
   return (
     <div className="relative">
-      <div className="pointer-events-none absolute -inset-10 -z-10 rounded-[60px] bg-[var(--accent)]/10 blur-3xl" />
-      <div className="w-[320px] rounded-[44px] border-[10px] border-foreground/90 bg-foreground/90 p-2 shadow-pop sm:w-[400px] md:w-[460px]">
-        <div className="overflow-hidden rounded-[32px] bg-background">
-          {/* Status bar */}
-          <div className="flex items-center justify-between px-6 pt-3 pb-1 text-[11px] font-medium">
+      <div className="pointer-events-none absolute -inset-8 -z-10 rounded-[48px] bg-[var(--accent)]/8 blur-3xl" />
+      <div className="w-[88vw] max-w-[380px] rounded-[40px] border-[10px] border-foreground/90 bg-foreground/90 p-1.5 shadow-pop md:w-[380px]">
+        <div className="overflow-hidden rounded-[30px] bg-background">
+          <div className="flex items-center justify-between px-5 pt-3 pb-1 text-[11px] font-medium">
             <span>9:41</span>
             <span className="flex items-center gap-1 text-foreground/70">
-              <span className="h-2 w-2 rounded-full bg-foreground/60" />
               <span className="h-2 w-2 rounded-full bg-foreground/60" />
               <span className="h-2.5 w-4 rounded-sm border border-foreground/60" />
             </span>
           </div>
 
-          {/* Brand header */}
           <div className="flex items-center justify-between border-b border-border px-5 py-3">
             <div className="flex items-center gap-2">
               <span className="grid h-7 w-7 place-items-center rounded-md bg-[var(--accent)] text-[12px] font-bold text-white">N</span>
@@ -312,72 +535,57 @@ function BigPhoneMockup() {
                 <div className="text-[10.5px] text-muted-foreground">portal</div>
               </div>
             </div>
-            <div className="grid h-8 w-8 place-items-center rounded-full bg-[var(--surface-2)] text-[11px] font-semibold">HP</div>
+            <div className="grid h-7 w-7 place-items-center rounded-full bg-[var(--surface-2)] text-[10.5px] font-semibold">HP</div>
           </div>
 
           <div className="p-5">
             <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Hartland Plumbing</div>
-            <div className="mt-0.5 text-[20px] font-semibold tracking-tight">April performance</div>
+            <div className="mt-0.5 text-[18px] font-semibold tracking-tight">April performance</div>
 
-            {/* Metrics grid */}
-            <div className="mt-4 grid grid-cols-2 gap-2.5">
+            <div className="mt-4 grid grid-cols-2 gap-2">
               {[
-                ["Spend", "$4,280", "Ad investment"],
-                ["Leads", "63", "Form fills + calls"],
-                ["CPL", "$67.94", "Cost per lead"],
-                ["Booked", "18", "On the calendar"],
-              ].map(([l, v, h]) => (
-                <div key={l} className="rounded-xl border border-border bg-[var(--surface-2)]/40 p-3">
-                  <div className="text-[10.5px] uppercase tracking-wider text-muted-foreground">{l}</div>
-                  <div className="mt-1 text-[20px] font-semibold tracking-tight">{v}</div>
-                  <div className="mt-0.5 text-[10px] text-muted-foreground">{h}</div>
+                ["Leads", "63"],
+                ["CPL", "$67.94"],
+                ["Spend", "$4,280"],
+                ["Booked", "18"],
+              ].map(([l, v]) => (
+                <div key={l} className="rounded-xl border border-border bg-[var(--surface-2)]/40 p-2.5">
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{l}</div>
+                  <div className="mt-0.5 text-[17px] font-semibold tracking-tight">{v}</div>
                 </div>
               ))}
             </div>
 
-            {/* New lead card */}
-            <div className="mt-4 rounded-xl border border-border bg-background p-3.5">
+            <div className="mt-3 rounded-xl border border-border bg-background p-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-[13px] font-semibold">Brian Connors</div>
-                  <div className="text-[11px] text-muted-foreground">Burst pipe · Detroit · 9:14am</div>
+                  <div className="text-[12.5px] font-semibold">Brian Connors</div>
+                  <div className="text-[10.5px] text-muted-foreground">Burst pipe, Detroit</div>
                 </div>
-                <span className="rounded-full bg-[var(--warning-soft)] px-2 py-0.5 text-[10px] font-semibold text-[var(--warning)]">New</span>
+                <span className="rounded-full bg-[var(--warning-soft)] px-1.5 py-0.5 text-[9.5px] font-semibold text-[var(--warning)]">New</span>
               </div>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <button className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-foreground text-[12px] font-medium text-background">
-                  <Phone className="h-3.5 w-3.5" /> Call
+              <div className="mt-2.5 grid grid-cols-2 gap-1.5">
+                <button className="inline-flex h-8 items-center justify-center gap-1 rounded-lg bg-foreground text-[11px] font-medium text-background">
+                  <Phone className="h-3 w-3" /> Call
                 </button>
-                <button className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-border text-[12px] font-medium">
-                  <MessageCircle className="h-3.5 w-3.5" /> Text
+                <button className="inline-flex h-8 items-center justify-center gap-1 rounded-lg border border-border text-[11px] font-medium">
+                  <MessageCircle className="h-3 w-3" /> Text
                 </button>
               </div>
             </div>
 
-            {/* Approval row */}
-            <div className="mt-3 rounded-xl border border-border bg-background p-3.5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-[13px] font-semibold">Awaiting your approval</div>
-                  <div className="text-[11px] text-muted-foreground">Emergency Plumbing — primary v3</div>
-                </div>
-                <span className="rounded-full bg-[var(--accent-soft)] px-2 py-0.5 text-[10px] font-semibold text-[var(--accent)]">2</span>
+            <div className="mt-2.5 flex items-center justify-between rounded-xl border border-border bg-background px-3 py-2.5">
+              <div>
+                <div className="text-[12px] font-semibold">Awaiting approval</div>
+                <div className="text-[10.5px] text-muted-foreground">Primary v3</div>
               </div>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <button className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-[var(--success)] text-[12px] font-medium text-white">
-                  <Check className="h-3.5 w-3.5" /> Approve
-                </button>
-                <button className="inline-flex h-9 items-center justify-center rounded-lg border border-border text-[12px] font-medium">
-                  Request changes
-                </button>
-              </div>
+              <span className="rounded-full bg-[var(--accent-soft)] px-1.5 py-0.5 text-[9.5px] font-semibold text-[var(--accent)]">2 pending</span>
             </div>
 
-            {/* Agency note */}
-            <div className="mt-3 rounded-xl border border-[var(--accent)]/30 bg-[var(--accent-soft)] p-3.5">
-              <div className="text-[10.5px] uppercase tracking-wider text-[var(--accent)]">Update from Northstar</div>
-              <p className="mt-1 text-[12.5px] leading-relaxed text-foreground/85">
-                Roof Replacement scaled this month — booked calls up 38% week over week. CPL settled at $67.94.
+            <div className="mt-2.5 rounded-xl border border-border bg-[var(--surface-2)]/40 p-3">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">From Northstar</div>
+              <p className="mt-1 text-[11.5px] leading-relaxed text-foreground/80">
+                Roof Replacement scaled this month. Booked calls up 38% week over week.
               </p>
             </div>
           </div>
@@ -387,107 +595,52 @@ function BigPhoneMockup() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Features — 5 items, one consistent style                           */
-/* ------------------------------------------------------------------ */
-
-function Features() {
-  const items = [
-    { icon: Palette, title: "White-label portal", body: "Your logo, your domain, your colors. Clients sign in to your software, not Orvio." },
-    { icon: BarChart3, title: "Plain-English reporting", body: "Spend, leads, CPL, and CTR explained next to every number — for clients who don't speak ads." },
-    { icon: Inbox, title: "Lead inbox", body: "Every form fill and inbound call in one place. Status, assign, follow up. Nothing lost." },
-    { icon: FileCheck, title: "Approvals", body: "Clients approve creative inside the portal. No more email threads, no more guesswork." },
-    { icon: CreditCard, title: "Invoices & payments", body: "Send invoices and collect payment in the same place clients see the work." },
-  ];
-  return (
-    <section className="hairline-t py-28 md:py-36">
-      <div className="mx-auto max-w-[1180px] px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[38px] md:text-[44px]">
-            One product. Five things your clients actually use.
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-            No bloat. No half-finished modules. Just what makes a contractor renew.
-          </p>
-        </div>
-
-        <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {items.map(it => (
-            <div key={it.title} className="rounded-2xl border border-border bg-background p-6 transition-shadow hover:shadow-soft">
-              <div className="grid h-10 w-10 place-items-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
-                <it.icon className="h-5 w-5" />
-              </div>
-              <h3 className="mt-4 text-[16px] font-semibold tracking-tight">{it.title}</h3>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{it.body}</p>
-            </div>
-          ))}
-          <div className="flex flex-col justify-between rounded-2xl border border-dashed border-border bg-[var(--surface-2)]/40 p-6">
-            <div>
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-background px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wider text-muted-foreground">
-                <Sparkles className="h-3 w-3" /> Roadmap
-              </div>
-              <h3 className="mt-4 text-[16px] font-semibold tracking-tight">AI report summaries, brand memory & more</h3>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">
-                Optional AI features, financing links, multi-brand white-label, contracts & e-sign, and API access — shipping through 2026.
-              </p>
-            </div>
-            <Link to="/product" className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-medium text-foreground hover:underline">
-              See the roadmap <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Pricing                                                            */
-/* ------------------------------------------------------------------ */
+/* ---------------- Pricing ---------------- */
 
 const tiers = [
   {
     name: "Starter",
     price: 97,
-    sub: "Up to 3 clients · 1 seat",
-    best: "Solo agencies starting with client portals",
-    features: ["Branded client portal", "Reporting + lead inbox", "Monthly reports", "Email support"],
+    sub: "Up to 3 clients",
+    best: "For solo agencies starting with client portals.",
+    features: ["Branded client portal", "Reporting", "Lead inbox", "Monthly reports"],
     pop: false,
   },
   {
     name: "Growth",
     price: 297,
-    sub: "Up to 10 clients · 3 seats",
-    best: "Agencies managing active client delivery",
-    features: ["Everything in Starter", "Custom domain", "Approvals + invoices", "Priority support"],
+    sub: "Up to 10 clients",
+    best: "For agencies managing active client delivery.",
+    features: ["Everything in Starter", "Custom domain", "Approvals", "Invoices"],
     pop: true,
   },
   {
     name: "Pro",
     price: 497,
-    sub: "Up to 25 clients · 8 seats",
-    best: "Growing agencies that want more automation",
-    features: ["Everything in Growth", "AI report summaries", "Client health signals", "Stripe Connect"],
+    sub: "Up to 25 clients",
+    best: "For agencies that want more automation.",
+    features: ["Everything in Growth", "AI report summaries", "Client health", "Stripe Connect"],
     pop: false,
   },
 ];
 
 function Pricing() {
   return (
-    <section id="pricing" className="hairline-t py-28 md:py-36">
+    <section id="pricing" className="hairline-t py-24 md:py-32">
       <div className="mx-auto max-w-[1180px] px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[38px] md:text-[44px]">
-            Pricing
+          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">Pricing</div>
+          <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px] md:text-[42px]">
+            Flat pricing per agency.
           </h2>
           <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-muted-foreground">
-            Flat monthly pricing per agency. No per-client fees. 14-day trial on every plan.
+            No per-client fees. 14-day trial on every plan.
           </p>
         </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {tiers.map(t => (
-            <div key={t.name} className={`flex flex-col rounded-2xl border bg-background p-7 ${t.pop ? "border-foreground shadow-pop" : "border-border"}`}>
+            <div key={t.name} className={`flex flex-col rounded-2xl border bg-background p-7 ${t.pop ? "border-foreground" : "border-border"}`}>
               <div className="flex items-center justify-between">
                 <div className="text-[13px] font-medium text-muted-foreground">{t.name}</div>
                 {t.pop && <span className="rounded-full bg-foreground px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-background">Popular</span>}
@@ -504,7 +657,7 @@ function Pricing() {
               <ul className="mt-6 space-y-2.5">
                 {t.features.map(f => (
                   <li key={f} className="flex items-start gap-2 text-[13px]">
-                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--accent)]" />
+                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
                     <span className="text-foreground/85">{f}</span>
                   </li>
                 ))}
@@ -513,13 +666,10 @@ function Pricing() {
           ))}
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-dashed border-border bg-background px-6 py-4">
-          <div className="flex items-center gap-3">
-            <Sparkles className="h-4 w-4 text-[var(--accent)]" />
-            <div>
-              <div className="text-[14px] font-semibold">Enterprise — custom</div>
-              <div className="text-[12.5px] text-muted-foreground">50+ clients, SSO, custom onboarding, dedicated support.</div>
-            </div>
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-background px-6 py-5">
+          <div>
+            <div className="text-[14px] font-semibold">Enterprise</div>
+            <div className="text-[12.5px] text-muted-foreground">For 50+ clients, SSO, API access, custom onboarding, and dedicated support.</div>
           </div>
           <Link to="/book-demo" className="inline-flex h-9 items-center rounded-lg border border-border bg-background px-4 text-[13px] font-medium hover:bg-[var(--surface-2)]">
             Talk to sales <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
@@ -530,22 +680,23 @@ function Pricing() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  FAQ                                                                */
-/* ------------------------------------------------------------------ */
+/* ---------------- FAQ ---------------- */
 
 function FAQ() {
   const faqs: [string, string][] = [
-    ["Is Orvio actually white-label?", "Yes. Your logo, custom domain, brand color, and email sender. Clients never see Orvio branding."],
-    ["Which ad platforms do you support?", "Meta Ads (Facebook + Instagram) and Google Ads — Search, Performance Max, and Demand Gen."],
-    ["How does data come in today?", "Connect Meta and Google via OAuth where available, or import CSVs and enter spend manually. Direct API sync continues to expand."],
-    ["Do you run the campaigns for us?", "No. Orvio is software. Your team runs the campaigns. Orvio is the operating system that makes delivering and reporting them easier."],
-    ["What's on the roadmap?", "AI report summaries, brand memory, financing links, multi-brand white-label, contracts & e-sign, and API access are rolling out through 2026."],
+    ["Is Orvio white-label?", "Yes. Your logo, custom domain, brand color, and email sender. Clients never see Orvio branding."],
+    ["Which ad platforms do you support?", "Meta Ads (Facebook and Instagram) and Google Ads, including Search, Performance Max, and Demand Gen."],
+    ["How does data come in?", "Connect Meta and Google via OAuth where available, or import CSVs and enter spend manually."],
+    ["Do you run the campaigns for us?", "No. Orvio is software. Your team runs the campaigns. Orvio is where you deliver and report on them."],
+    ["What is client health?", "A simple signal showing which clients are trending up, flat, or at risk based on lead volume, CPL stability, and portal engagement."],
   ];
   return (
-    <section className="hairline-t py-28 md:py-36">
+    <section className="hairline-t py-24 md:py-32">
       <div className="mx-auto max-w-[820px] px-6">
-        <h2 className="text-center text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px]">Common questions</h2>
+        <div className="text-center">
+          <div className="text-[12px] font-medium uppercase tracking-wider text-muted-foreground">FAQ</div>
+          <h2 className="mt-3 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[36px]">Common questions</h2>
+        </div>
         <div className="mt-12 divide-y divide-border">
           {faqs.map(([q, a]) => (
             <details key={q} className="group py-5 [&_summary::-webkit-details-marker]:hidden">
@@ -562,27 +713,24 @@ function FAQ() {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Final CTA                                                          */
-/* ------------------------------------------------------------------ */
+/* ---------------- Final CTA ---------------- */
 
 function FinalCTA() {
   return (
-    <section className="hairline-t hero-bg relative overflow-hidden py-28 md:py-36">
-      <div className="absolute inset-0 grid-bg opacity-40" />
+    <section className="hairline-t relative overflow-hidden py-28 md:py-36">
       <div className="relative mx-auto max-w-[860px] px-6 text-center">
-        <h2 className="text-[34px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-[44px] md:text-[56px]">
+        <h2 className="text-[34px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-[44px] md:text-[54px]">
           Give every client a portal that proves your work.
         </h2>
         <p className="mx-auto mt-5 max-w-lg text-[15.5px] leading-relaxed text-muted-foreground">
-          Built for agencies managing paid ads, reporting, and client delivery across local service accounts.
+          One white-labeled place for reports, leads, approvals, invoices, and monthly updates.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-foreground px-5 text-[14px] font-medium text-background hover:bg-foreground/90">
             Book a demo <ArrowRight className="h-4 w-4" />
           </Link>
           <Link to="/product" className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-border bg-background px-5 text-[14px] font-medium hover:bg-[var(--surface-2)]">
-            See the product
+            View product
           </Link>
         </div>
       </div>
