@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, Check, Palette, BarChart3, Inbox, FileCheck,
-  Phone, MessageCircle,
+  ArrowRight, Check, Phone, MessageCircle,
 } from "lucide-react";
 import { MarketingShell } from "@/components/shells/MarketingShell";
 
