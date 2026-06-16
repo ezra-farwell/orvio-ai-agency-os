@@ -757,10 +757,10 @@ function FinalCTA() {
     <section className="hairline-t relative overflow-hidden py-28 md:py-36">
       <div className="relative mx-auto max-w-[860px] px-6 text-center">
         <h2 className="text-[34px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-[44px] md:text-[54px]">
-          Give every client a portal that proves your work.
+          Give every client a portal that looks like your agency built it.
         </h2>
         <p className="mx-auto mt-5 max-w-lg text-[15.5px] leading-relaxed text-muted-foreground">
-          One white-labeled place for reports, leads, approvals, invoices, and monthly updates.
+          One branded place for reports, leads, approvals, invoices, and monthly updates.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-foreground px-5 text-[14px] font-medium text-background hover:bg-foreground/90">
