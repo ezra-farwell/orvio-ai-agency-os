@@ -20,13 +20,13 @@ function Home() {
     <MarketingShell>
       <Hero />
       <IntegrationsStrip />
+      <Problem />
       <Positioning />
       <FeatureReporting />
       <FeatureLeads />
       <FeatureApprovals />
       <FeaturePortal />
       <WhiteLabel />
-      <WhatItReplaces />
       <WhoItsFor />
       <Pricing />
       <FAQ />
