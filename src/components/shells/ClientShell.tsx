@@ -56,9 +56,9 @@ export function ClientShell({ children }: { children?: ReactNode }) {
           })}
         </nav>
 
-        <Link to="/portal/settings" className="border-t border-border px-4 py-3 text-[12.5px] text-muted-foreground hover:text-foreground">
-          <span className="inline-flex items-center gap-2"><Settings className="h-3.5 w-3.5" /> Settings</span>
-        </Link>
+        <div className="border-t border-border px-4 py-3 text-[12.5px] text-muted-foreground">
+          <span className="inline-flex items-center gap-2"><Settings className="h-3.5 w-3.5" /> Settings coming soon</span>
+        </div>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
