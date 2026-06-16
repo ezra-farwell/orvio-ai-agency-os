@@ -83,8 +83,8 @@
   --warning-soft: rgba(251,191,36,0.14);
   --danger: #F87171;
   --danger-soft: rgba(248,113,113,0.14);
-  --text-muted: #A1A1AA;
-  --text-faint: #6B6B73;
+  --text-muted: #B4B4BD;
+  --text-faint: #7A7A82;
 
   /* Resend-style diagonal beam of light + soft top glow */
   --gradient-hero:
