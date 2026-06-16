@@ -72,7 +72,7 @@ function Hero() {
           className="mx-auto max-w-[860px] text-center"
         >
           <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.035em] sm:text-[52px] md:text-[64px]">
-            Give every ad client a branded portal that proves your work.
+            Give every ad client a <span style={{ color: "#4F46E5" }}>branded portal</span> that proves your work.
           </h1>
           <p className="mx-auto mt-6 max-w-[640px] text-[16px] leading-relaxed text-muted-foreground md:text-[17px]">
             Orvio gives agencies one white-labeled place for client reports, leads, approvals, invoices, and campaign updates.
