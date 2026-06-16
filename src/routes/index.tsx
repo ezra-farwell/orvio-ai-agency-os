@@ -10,10 +10,10 @@ export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
     meta: [
-      { title: "Orvio, branded client portals for ad agencies" },
-      { name: "description", content: "Orvio is the white-label client portal and reporting OS for agencies running Meta and Google ads for local service businesses." },
-      { property: "og:title", content: "Orvio, branded client portals for ad agencies" },
-      { property: "og:description", content: "Give every ad client a branded portal for reports, leads, approvals, invoices, and campaign updates." },
+      { title: "Orvio, white-label client portals for ad agencies" },
+      { name: "description", content: "Orvio is the white-label client portal and reporting platform for agencies running Meta and Google ads for local service businesses." },
+      { property: "og:title", content: "Orvio, white-label client portals for ad agencies" },
+      { property: "og:description", content: "One branded place for ad reporting, leads, approvals, invoices, and monthly updates." },
     ],
   }),
 });
