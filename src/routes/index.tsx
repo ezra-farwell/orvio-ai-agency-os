@@ -407,6 +407,38 @@ function Field({ label, value, swatch }: { label: string; value: string; swatch?
 /* ---------------- White-label ---------------- */
 
 function WhiteLabel() {
+  const brands = [
+    {
+      brand: "Northstar",
+      letter: "N",
+      color: "#4F46E5",
+      domain: "portal.northstar.io",
+      client: "Hartland Plumbing",
+      tagline: "April performance",
+      metrics: [["Leads", "63"], ["CPL", "$67"], ["Booked", "18"]] as const,
+      note: "Roof Replacement scaled. Booked calls up 38% WoW.",
+    },
+    {
+      brand: "Tidewater",
+      letter: "T",
+      color: "#0EA5E9",
+      domain: "clients.tidewater.co",
+      client: "Coastal HVAC",
+      tagline: "Spring tune-up push",
+      metrics: [["Leads", "112"], ["CPL", "$41"], ["Booked", "34"]] as const,
+      note: "Search CPL down 14% after negative keyword sweep.",
+    },
+    {
+      brand: "Foundry",
+      letter: "F",
+      color: "#F97316",
+      domain: "app.foundrylocal.com",
+      client: "Apex Remodeling",
+      tagline: "Kitchen leads, Q2",
+      metrics: [["Leads", "47"], ["CPL", "$128"], ["Booked", "9"]] as const,
+      note: "Carousel v3 outperforming v1 by 2.1x CTR.",
+    },
+  ];
   return (
     <section className="hairline-t py-24 md:py-32">
       <div className="mx-auto max-w-[1180px] px-6">
@@ -420,21 +452,23 @@ function WhiteLabel() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 md:grid-cols-[1.6fr_1fr]">
-          <BrandPortalPreview brand="Northstar" color="#4F46E5" letter="N" domain="portal.northstar.io" big />
-          <div className="grid grid-rows-2 gap-4">
-            <BrandPortalPreview brand="Tidewater" color="#0EA5E9" letter="T" domain="clients.tidewater.co" />
-            <BrandPortalPreview brand="Foundry" color="#F97316" letter="F" domain="app.foundrylocal.com" />
-          </div>
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {brands.map(b => <BrandPortalPreview key={b.brand} {...b} />)}
         </div>
       </div>
     </section>
   );
 }
 
-function BrandPortalPreview({ brand, color, letter, domain, big }: { brand: string; color: string; letter: string; domain: string; big?: boolean }) {
+function BrandPortalPreview({
+  brand, color, letter, domain, client, tagline, metrics, note,
+}: {
+  brand: string; color: string; letter: string; domain: string;
+  client: string; tagline: string;
+  metrics: readonly (readonly [string, string])[]; note: string;
+}) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-background">
+    <div className="group overflow-hidden rounded-2xl border border-border bg-background transition-shadow hover:shadow-pop">
       <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
         <div className="flex gap-1">
           <span className="h-2 w-2 rounded-full bg-border" />
@@ -443,29 +477,32 @@ function BrandPortalPreview({ brand, color, letter, domain, big }: { brand: stri
         </div>
         <div className="ml-2 truncate rounded-md bg-[var(--surface-2)] px-2 py-1 text-[10.5px] text-muted-foreground">{domain}</div>
       </div>
-      <div className={`p-5 ${big ? "md:p-7" : ""}`}>
-        <div className="flex items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-md text-[12px] font-bold text-white" style={{ background: color }}>{letter}</span>
-          <span className="text-[13px] font-semibold tracking-tight">{brand}</span>
+      <div className="relative p-6">
+        <div className="absolute inset-x-0 top-0 h-[2px]" style={{ background: color }} />
+        <div className="flex items-center gap-2.5">
+          <span className="grid h-8 w-8 place-items-center rounded-md text-[13px] font-bold text-white" style={{ background: color }}>{letter}</span>
+          <div className="leading-tight">
+            <div className="text-[13px] font-semibold tracking-tight">{brand}</div>
+            <div className="text-[10.5px] text-muted-foreground">Client portal</div>
+          </div>
         </div>
-        <div className={`${big ? "mt-6" : "mt-4"} text-[11px] uppercase tracking-wider text-muted-foreground`}>April performance</div>
-        <div className="mt-1 text-[15px] font-semibold tracking-tight">Hartland Plumbing</div>
-        <div className={`${big ? "mt-5" : "mt-3"} grid grid-cols-3 gap-2`}>
-          {[["Spend", "$4.2k"], ["Leads", "63"], ["CPL", "$67"]].map(([l, v]) => (
-            <div key={l} className="rounded-md border border-border bg-background p-2.5">
-              <div className="text-[9.5px] uppercase tracking-wider text-muted-foreground">{l}</div>
-              <div className={`mt-0.5 font-semibold tracking-tight ${big ? "text-[16px]" : "text-[13px]"}`}>{v}</div>
-              <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[var(--surface-2)]">
-                <div className="h-full rounded-full" style={{ width: "62%", background: color }} />
-              </div>
+
+        <div className="mt-6 text-[10.5px] uppercase tracking-wider text-muted-foreground">{tagline}</div>
+        <div className="mt-0.5 text-[15px] font-semibold tracking-tight">{client}</div>
+
+        <div className="mt-4 space-y-1.5">
+          {metrics.map(([l, v]) => (
+            <div key={l} className="flex items-center justify-between rounded-md border border-border bg-background px-3 py-2">
+              <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{l}</span>
+              <span className="text-[14px] font-semibold tracking-tight">{v}</span>
             </div>
           ))}
         </div>
-        {big && (
-          <div className="mt-5 rounded-lg border border-border bg-[var(--surface-2)]/40 p-3 text-[12px] text-muted-foreground">
-            Roof Replacement scaled this month. Booked calls up 38% week over week.
-          </div>
-        )}
+
+        <div className="mt-4 flex items-start gap-2 rounded-md bg-[var(--surface-2)]/50 p-3 text-[11.5px] leading-relaxed text-muted-foreground">
+          <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: color }} />
+          {note}
+        </div>
       </div>
     </div>
   );
