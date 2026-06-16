@@ -1,5 +1,52 @@
 import { type ReactNode } from "react";
 import { ArrowDownRight, ArrowUpRight, Info } from "lucide-react";
+import { TONE_COLOR, formatMetric, type MetricGroup } from "@/mock/data";
+
+/**
+ * StatusGroupCard — Resend-inspired metric card.
+ * Eyebrow label, big status word, then two rows: dot + label + muted value + muted %.
+ */
+export function StatusGroupCard({ group }: { group: MetricGroup }) {
+  const dot = TONE_COLOR[group.statusTone];
+  return (
+    <div className="rounded-2xl border border-border bg-[var(--surface)] p-6">
+      <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-faint)]">
+        {group.eyebrow}
+      </div>
+      <div className="mt-2 text-[34px] font-semibold leading-none tracking-tight">
+        {group.statusWord}
+      </div>
+      <div className="mt-6 space-y-3">
+        {group.rows.map((r, i) => (
+          <div key={i} className="flex items-center gap-3 text-[13px]">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: dot }} />
+            <span className="flex-1 text-foreground/90">{r.label}</span>
+            <span className="mono tabular-nums text-muted-foreground">{formatMetric(r)}</span>
+            {r.secondary && (
+              <span className="mono w-14 text-right text-[12px] text-[var(--text-faint)]">{r.secondary}</span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** HeroNumber — one big number with eyebrow label and optional chart slot. */
+export function HeroNumber({
+  label, value, sub, children,
+}: { label: string; value: ReactNode; sub?: ReactNode; children?: ReactNode }) {
+  return (
+    <div className="rounded-2xl border border-border bg-[var(--surface)] p-6">
+      <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-faint)]">{label}</div>
+      <div className="mt-2 flex items-baseline gap-3">
+        <div className="text-[44px] font-semibold leading-none tracking-tight">{value}</div>
+        {sub && <div className="text-[13px] text-muted-foreground">{sub}</div>}
+      </div>
+      {children}
+    </div>
+  );
+}
 
 export function KPI({
   label, value, sub, delta, helper, icon,
