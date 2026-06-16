@@ -20,13 +20,13 @@ function Home() {
     <MarketingShell>
       <Hero />
       <IntegrationsStrip />
+      <Problem />
       <Positioning />
       <FeatureReporting />
       <FeatureLeads />
       <FeatureApprovals />
       <FeaturePortal />
       <WhiteLabel />
-      <WhatItReplaces />
       <WhoItsFor />
       <Pricing />
       <FAQ />
@@ -86,7 +86,7 @@ function CallRailMark({ className = "h-4" }: { className?: string }) {
 function Hero() {
   return (
     <section className="relative overflow-hidden beam-bg">
-      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-16 px-6 pb-32 pt-44 md:grid-cols-[minmax(0,460px)_minmax(0,1fr)] md:gap-14 md:pb-40 md:pt-56 lg:gap-20">
+      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-14 px-6 pb-20 pt-28 md:grid-cols-[minmax(0,460px)_minmax(0,1fr)] md:gap-14 md:pb-24 md:pt-36 lg:gap-20">
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
           className="relative z-10"
@@ -159,7 +159,7 @@ function HeroDashboard() {
         </div>
 
         <div className="mt-8 grid grid-cols-3 divide-x divide-border rounded-xl border border-border">
-          <StatusTile eyebrow="Lead flow" word="Good" tone="var(--success)" detail="+38% Hartland" />
+          <StatusTile eyebrow="Lead flow" word="Good" tone="var(--success)" detail="+38% Austin" />
           <StatusTile eyebrow="Spend pacing" word="Steady" tone="var(--accent)" detail="9 of 11 on budget" />
           <StatusTile eyebrow="Approvals" word="2 open" tone="var(--warning)" detail="Waiting on Apex" />
         </div>
@@ -219,26 +219,65 @@ function HeroChart() {
 
 function IntegrationsStrip() {
   return (
-    <section className="hairline-t py-24 md:py-28">
+    <section className="hairline-t py-10 md:py-12">
       <div className="mx-auto max-w-[1180px] px-6">
-        <p className="text-center text-[13px] uppercase tracking-[0.18em] text-[var(--text-faint)]">
-          Connects the tools you already run
-        </p>
-        <div className="mt-10 grid grid-cols-2 items-center gap-y-10 sm:grid-cols-4">
-          <div className="flex items-center justify-center gap-2 text-foreground/85">
-            <MetaMark className="h-5 w-5" />
-            <span className="text-[15px] font-semibold tracking-tight">Meta Ads</span>
+        <div className="flex flex-col items-center justify-between gap-6 md:flex-row md:gap-10">
+          <p className="text-[12.5px] uppercase tracking-[0.18em] text-[var(--text-faint)] md:max-w-[200px] md:text-left">
+            Connects the tools you already run
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-16">
+            <div className="flex items-center gap-2.5 text-foreground/90">
+              <MetaMark className="h-6 w-6" />
+              <span className="text-[17px] font-semibold tracking-tight">Meta Ads</span>
+            </div>
+            <div className="flex items-center gap-2.5 text-foreground/90">
+              <GoogleMark className="h-6 w-6" />
+              <span className="text-[17px] font-semibold tracking-tight">Google Ads</span>
+            </div>
+            <StripeMark className="h-7" />
+            <CallRailMark className="h-5" />
           </div>
-          <div className="flex items-center justify-center gap-2 text-foreground/85">
-            <GoogleMark className="h-5 w-5" />
-            <span className="text-[15px] font-semibold tracking-tight">Google Ads</span>
-          </div>
-          <div className="flex items-center justify-center">
-            <StripeMark className="h-6" />
-          </div>
-          <div className="flex items-center justify-center">
-            <CallRailMark />
-          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Problem ---------------- */
+
+function Problem() {
+  const scattered = [
+    { icon: FileSpreadsheet, label: "Google Sheets", note: "Monthly reports" },
+    { icon: Video, label: "Loom", note: "Update videos" },
+    { icon: CreditCard, label: "Stripe links", note: "Invoicing" },
+    { icon: PhoneCall, label: "CallRail tabs", note: "Call tracking" },
+    { icon: MessageSquare, label: "Email and texts", note: "Approvals" },
+  ];
+  return (
+    <section className="hairline-t bg-[var(--surface)]/40 py-32 md:py-40">
+      <div className="mx-auto max-w-[1180px] px-6">
+        <div className="max-w-2xl">
+          <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">The problem</div>
+          <h2 className="mt-4 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[44px]">
+            Clients churn when they can't see the work.
+          </h2>
+          <p className="mt-6 max-w-[60ch] text-[15.5px] leading-[1.7] text-foreground/90">
+            Reports live in Sheets. Updates live in Loom. Approvals live in email. Invoices live in Stripe. Call data lives in CallRail. The client lives in the dark, and at month three they start asking what they're paying for.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-3 sm:grid-cols-2 md:grid-cols-5">
+          {scattered.map(s => (
+            <div key={s.label} className="flex items-center gap-3 rounded-xl border border-border bg-[var(--surface)] px-4 py-4">
+              <span className="grid h-9 w-9 place-items-center rounded-md border border-border bg-[var(--surface-2)] text-foreground/80">
+                <s.icon className="h-4 w-4" />
+              </span>
+              <div>
+                <div className="text-[13px] font-medium text-foreground/95">{s.label}</div>
+                <div className="text-[11.5px] text-[var(--text-faint)]">{s.note}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -249,12 +288,16 @@ function IntegrationsStrip() {
 
 function Positioning() {
   return (
-    <section className="hairline-t py-40 md:py-56">
-      <div className="mx-auto max-w-[1100px] px-6">
-        <h2 className="text-[40px] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-[56px] md:text-[68px]">
-          <span className="text-foreground">The operating layer</span>{" "}
-          <span className="text-foreground/40">for agencies that deliver paid ads to local service businesses. Reporting, leads, approvals, and invoices — under one brand, at one URL.</span>
+    <section className="hairline-t py-28 md:py-36">
+      <div className="mx-auto max-w-[1000px] px-6">
+        <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">The shift</div>
+        <h2 className="mt-4 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] md:text-[40px]">
+          <span className="text-foreground">The operating layer for paid-ad agencies.</span>{" "}
+          <span className="text-foreground/55">One branded portal for reporting, leads, approvals, and invoices.</span>
         </h2>
+        <p className="mt-6 max-w-[62ch] text-[15px] leading-[1.7] text-foreground/85">
+          Dashboards, sign-offs, and billing run inside the same product, on your domain. The client sees one place. You stop stitching tools together every month.
+        </p>
       </div>
     </section>
   );
@@ -371,7 +414,7 @@ function FeatureLeads() {
       align="right"
       tag="Lead inbox"
       title="Every form fill and call in one place."
-      body="Phone calls, web forms, and click-to-text all land in a single inbox. Move them through New, Contacted, Booked, and Won — the client sees the same board you do."
+      body="Phone calls, web forms, and click-to-text all land in a single inbox. Move them through New, Contacted, Booked, and Won. The client sees the same board you do."
     >
       <LeadsMockup />
     </FeatureSection>
@@ -381,20 +424,20 @@ function FeatureLeads() {
 function LeadsMockup() {
   const cols: { title: string; tone: string; cards: { name: string; city: string; src: "call" | "form"; t: string }[] }[] = [
     { title: "New", tone: "var(--accent)", cards: [
-      { name: "Lauren M.", city: "Hartland, WI", src: "call", t: "2m" },
-      { name: "Devon R.", city: "Pewaukee, WI", src: "form", t: "14m" },
-      { name: "Marco S.", city: "Brookfield, WI", src: "call", t: "38m" },
+      { name: "Lauren M.", city: "Austin, TX", src: "call", t: "2m" },
+      { name: "Devon R.", city: "Tampa, FL", src: "form", t: "14m" },
+      { name: "Marco S.", city: "Phoenix, AZ", src: "call", t: "38m" },
     ]},
     { title: "Contacted", tone: "var(--warning)", cards: [
-      { name: "Priya K.", city: "Wauwatosa, WI", src: "form", t: "1h" },
-      { name: "Tom B.", city: "Mequon, WI", src: "call", t: "3h" },
+      { name: "Priya K.", city: "Denver, CO", src: "form", t: "1h" },
+      { name: "Tom B.", city: "Charlotte, NC", src: "call", t: "3h" },
     ]},
     { title: "Booked", tone: "var(--accent)", cards: [
-      { name: "Jess A.", city: "Cedarburg, WI", src: "form", t: "Tue" },
-      { name: "Ravi P.", city: "Elm Grove, WI", src: "call", t: "Wed" },
+      { name: "Jess A.", city: "Nashville, TN", src: "form", t: "Tue" },
+      { name: "Ravi P.", city: "Columbus, OH", src: "call", t: "Wed" },
     ]},
     { title: "Won", tone: "var(--success)", cards: [
-      { name: "Karen L.", city: "Delafield, WI", src: "form", t: "$1,840" },
+      { name: "Karen L.", city: "Sacramento, CA", src: "form", t: "$1,840" },
     ]},
   ];
   return (
@@ -460,7 +503,7 @@ function FeatureApprovals() {
 function ApprovalsMockup() {
   return (
     <div className="relative rounded-[14px] border border-border bg-[var(--surface)] shadow-pop">
-      <WindowChrome label="Hartland HVAC · Spring Tune-Up · Review" />
+      <WindowChrome label="Sunbelt HVAC · Spring tune-up · Review" />
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr]">
         <div className="border-b border-border p-7 md:border-b-0 md:border-r">
           <div className="flex items-center justify-between">
@@ -468,7 +511,7 @@ function ApprovalsMockup() {
             <span className="chip-warning">Awaiting client</span>
           </div>
           <div className="relative mt-5 aspect-[4/5] overflow-hidden rounded-xl border border-border bg-gradient-to-br from-[#1F2A6B] via-[#4F46E5] to-[#0EA5E9]">
-            <div className="absolute inset-x-6 top-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Hartland HVAC</div>
+            <div className="absolute inset-x-6 top-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Sunbelt HVAC</div>
             <div className="absolute inset-x-6 bottom-24 text-[28px] font-semibold leading-[1.05] tracking-tight text-white">
               Spring tune-up<br />from $89.
             </div>
@@ -488,7 +531,7 @@ function ApprovalsMockup() {
           <div className="mt-4 space-y-4">
             {[
               { who: "Sarah · Northstar", t: "10:14", msg: "Hook line is strong. Push the price up so it reads in 1s.", tone: "border-border" },
-              { who: "Dan · Hartland HVAC", t: "10:42", msg: "Looks great. Can we add \"Locally owned\" near the bottom?", tone: "border-[var(--accent)]/40" },
+              { who: "Dan · Sunbelt HVAC", t: "10:42", msg: "Looks great. Can we add \"Locally owned\" near the bottom?", tone: "border-[var(--accent)]/40" },
               { who: "Sarah · Northstar", t: "10:48", msg: "Updated in v3. Ready for your sign-off.", tone: "border-border" },
             ].map(c => (
               <div key={c.t} className={`rounded-lg border ${c.tone} bg-[var(--surface-2)] p-3.5`}>
@@ -518,7 +561,7 @@ function FeaturePortal() {
       align="right"
       tag="Client portal"
       title="A clean home for your client, on every device."
-      body="Reports, leads, approvals, and invoices — all at your domain. Clients open it on their phone between jobs and know exactly where things stand."
+      body="Reports, leads, approvals, and invoices, all at your domain. Clients open it on their phone between jobs and know exactly where things stand."
     >
       <PortalPhone />
     </FeatureSection>
