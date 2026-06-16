@@ -159,7 +159,7 @@ function HeroDashboard() {
         </div>
 
         <div className="mt-8 grid grid-cols-3 divide-x divide-border rounded-xl border border-border">
-          <StatusTile eyebrow="Lead flow" word="Good" tone="var(--success)" detail="+38% Hartland" />
+          <StatusTile eyebrow="Lead flow" word="Good" tone="var(--success)" detail="+38% Austin" />
           <StatusTile eyebrow="Spend pacing" word="Steady" tone="var(--accent)" detail="9 of 11 on budget" />
           <StatusTile eyebrow="Approvals" word="2 open" tone="var(--warning)" detail="Waiting on Apex" />
         </div>
@@ -414,7 +414,7 @@ function FeatureLeads() {
       align="right"
       tag="Lead inbox"
       title="Every form fill and call in one place."
-      body="Phone calls, web forms, and click-to-text all land in a single inbox. Move them through New, Contacted, Booked, and Won — the client sees the same board you do."
+      body="Phone calls, web forms, and click-to-text all land in a single inbox. Move them through New, Contacted, Booked, and Won. The client sees the same board you do."
     >
       <LeadsMockup />
     </FeatureSection>
@@ -503,7 +503,7 @@ function FeatureApprovals() {
 function ApprovalsMockup() {
   return (
     <div className="relative rounded-[14px] border border-border bg-[var(--surface)] shadow-pop">
-      <WindowChrome label="Hartland HVAC · Spring Tune-Up · Review" />
+      <WindowChrome label="Sunbelt HVAC · Spring tune-up · Review" />
       <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr]">
         <div className="border-b border-border p-7 md:border-b-0 md:border-r">
           <div className="flex items-center justify-between">
@@ -511,7 +511,7 @@ function ApprovalsMockup() {
             <span className="chip-warning">Awaiting client</span>
           </div>
           <div className="relative mt-5 aspect-[4/5] overflow-hidden rounded-xl border border-border bg-gradient-to-br from-[#1F2A6B] via-[#4F46E5] to-[#0EA5E9]">
-            <div className="absolute inset-x-6 top-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Hartland HVAC</div>
+            <div className="absolute inset-x-6 top-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/80">Sunbelt HVAC</div>
             <div className="absolute inset-x-6 bottom-24 text-[28px] font-semibold leading-[1.05] tracking-tight text-white">
               Spring tune-up<br />from $89.
             </div>
@@ -531,7 +531,7 @@ function ApprovalsMockup() {
           <div className="mt-4 space-y-4">
             {[
               { who: "Sarah · Northstar", t: "10:14", msg: "Hook line is strong. Push the price up so it reads in 1s.", tone: "border-border" },
-              { who: "Dan · Hartland HVAC", t: "10:42", msg: "Looks great. Can we add \"Locally owned\" near the bottom?", tone: "border-[var(--accent)]/40" },
+              { who: "Dan · Sunbelt HVAC", t: "10:42", msg: "Looks great. Can we add \"Locally owned\" near the bottom?", tone: "border-[var(--accent)]/40" },
               { who: "Sarah · Northstar", t: "10:48", msg: "Updated in v3. Ready for your sign-off.", tone: "border-border" },
             ].map(c => (
               <div key={c.t} className={`rounded-lg border ${c.tone} bg-[var(--surface-2)] p-3.5`}>
@@ -561,7 +561,7 @@ function FeaturePortal() {
       align="right"
       tag="Client portal"
       title="A clean home for your client, on every device."
-      body="Reports, leads, approvals, and invoices — all at your domain. Clients open it on their phone between jobs and know exactly where things stand."
+      body="Reports, leads, approvals, and invoices, all at your domain. Clients open it on their phone between jobs and know exactly where things stand."
     >
       <PortalPhone />
     </FeatureSection>
