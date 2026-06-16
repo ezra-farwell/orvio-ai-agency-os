@@ -47,9 +47,8 @@ const rows: [string, (string | boolean)[]][] = [
   ["Custom domain", [false, true, true]],
   ["Approvals + invoices", [false, true, true]],
   ["Team seats", ["1", "3", "8"]],
-  ["AI report summaries", [false, false, "Beta"]],
-  ["Stripe Connect", [false, false, true]],
   ["Advanced client health", [false, false, true]],
+  ["Stripe Connect", [false, false, true]],
   ["Support", ["Email", "Priority", "Priority"]],
 ];
 
