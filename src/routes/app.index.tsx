@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { PageHeader, StatusGroupCard, HeroNumber } from "@/components/bits";
-import { clients, leads, agencyDashboard, trend30d, usd, num, TONE_COLOR } from "@/mock/data";
+import { trend30d, usd, num, TONE_COLOR } from "@/mock/data";
+import { getAgencyDashboard, getClients, getLeads } from "@/lib/data";
 import { Plus } from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
@@ -10,10 +12,12 @@ export const Route = createFileRoute("/app/")({
 });
 
 function AgencyOverview() {
-  const groups = agencyDashboard();
+  const { data: groups = [] } = useQuery({ queryKey: ["agency-dashboard"], queryFn: getAgencyDashboard });
+  const { data: clients = [] } = useQuery({ queryKey: ["clients"], queryFn: getClients });
+  const { data: allLeads = [] } = useQuery({ queryKey: ["leads"], queryFn: getLeads });
   const totalSpend = clients.reduce((a, c) => a + c.monthlySpend, 0);
   const totalLeads = clients.reduce((a, c) => a + c.leads, 0);
-  const recentLeads = leads.slice(0, 6);
+  const recentLeads = allLeads.slice(0, 6);
 
   return (
     <>
