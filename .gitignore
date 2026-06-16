@@ -34,3 +34,6 @@ dist-ssr
 # Local env (Supabase keys)
 .env
 .env.local
+
+# Vercel build output
+.vercel
