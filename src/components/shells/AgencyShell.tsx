@@ -22,7 +22,7 @@ const nav = [
 export function AgencyShell({ children }: { children?: ReactNode }) {
   const pathname = useRouterState({ select: s => s.location.pathname });
   return (
-    <div className="flex min-h-screen bg-[var(--surface-2)] text-foreground">
+    <div data-theme="dark" className="flex min-h-screen bg-[var(--background)] text-foreground">
       <aside className="hidden w-[244px] shrink-0 flex-col border-r border-border bg-background md:flex">
         <div className="flex h-14 items-center gap-2.5 border-b border-border px-4">
           <span className="grid h-6 w-6 place-items-center rounded bg-foreground">

@@ -19,7 +19,7 @@ const nav = [
 export function ClientShell({ children }: { children?: ReactNode }) {
   const pathname = useRouterState({ select: s => s.location.pathname });
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div data-theme="dark" className="flex min-h-screen bg-background text-foreground">
       <aside className="hidden w-[240px] shrink-0 flex-col border-r border-border bg-background md:flex">
         <div className="flex h-14 items-center gap-2.5 border-b border-border px-4">
           <span
