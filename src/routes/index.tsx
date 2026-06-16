@@ -424,20 +424,20 @@ function FeatureLeads() {
 function LeadsMockup() {
   const cols: { title: string; tone: string; cards: { name: string; city: string; src: "call" | "form"; t: string }[] }[] = [
     { title: "New", tone: "var(--accent)", cards: [
-      { name: "Lauren M.", city: "Hartland, WI", src: "call", t: "2m" },
-      { name: "Devon R.", city: "Pewaukee, WI", src: "form", t: "14m" },
-      { name: "Marco S.", city: "Brookfield, WI", src: "call", t: "38m" },
+      { name: "Lauren M.", city: "Austin, TX", src: "call", t: "2m" },
+      { name: "Devon R.", city: "Tampa, FL", src: "form", t: "14m" },
+      { name: "Marco S.", city: "Phoenix, AZ", src: "call", t: "38m" },
     ]},
     { title: "Contacted", tone: "var(--warning)", cards: [
-      { name: "Priya K.", city: "Wauwatosa, WI", src: "form", t: "1h" },
-      { name: "Tom B.", city: "Mequon, WI", src: "call", t: "3h" },
+      { name: "Priya K.", city: "Denver, CO", src: "form", t: "1h" },
+      { name: "Tom B.", city: "Charlotte, NC", src: "call", t: "3h" },
     ]},
     { title: "Booked", tone: "var(--accent)", cards: [
-      { name: "Jess A.", city: "Cedarburg, WI", src: "form", t: "Tue" },
-      { name: "Ravi P.", city: "Elm Grove, WI", src: "call", t: "Wed" },
+      { name: "Jess A.", city: "Nashville, TN", src: "form", t: "Tue" },
+      { name: "Ravi P.", city: "Columbus, OH", src: "call", t: "Wed" },
     ]},
     { title: "Won", tone: "var(--success)", cards: [
-      { name: "Karen L.", city: "Delafield, WI", src: "form", t: "$1,840" },
+      { name: "Karen L.", city: "Sacramento, CA", src: "form", t: "$1,840" },
     ]},
   ];
   return (
