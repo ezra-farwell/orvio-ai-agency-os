@@ -10,10 +10,10 @@ export const Route = createFileRoute("/")({
   component: Home,
   head: () => ({
     meta: [
-      { title: "Orvio, branded client portals for ad agencies" },
-      { name: "description", content: "Orvio is the white-label client portal and reporting OS for agencies running Meta and Google ads for local service businesses." },
-      { property: "og:title", content: "Orvio, branded client portals for ad agencies" },
-      { property: "og:description", content: "Give every ad client a branded portal for reports, leads, approvals, invoices, and campaign updates." },
+      { title: "Orvio, white-label client portals for ad agencies" },
+      { name: "description", content: "Orvio is the white-label client portal and reporting platform for agencies running Meta and Google ads for local service businesses." },
+      { property: "og:title", content: "Orvio, white-label client portals for ad agencies" },
+      { property: "og:description", content: "One branded place for ad reporting, leads, approvals, invoices, and monthly updates." },
     ],
   }),
 });
@@ -72,10 +72,10 @@ function Hero() {
           className="mx-auto max-w-[860px] text-center"
         >
           <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.035em] sm:text-[52px] md:text-[64px]">
-            Give every ad client a <span style={{ color: "#4F46E5" }}>branded portal</span> that proves your work.
+            White-label <span style={{ color: "#4F46E5" }}>client portals</span> for agencies that run ads.
           </h1>
           <p className="mx-auto mt-6 max-w-[640px] text-[16px] leading-relaxed text-muted-foreground md:text-[17px]">
-            Orvio gives agencies one white-labeled place for client reports, leads, approvals, invoices, and campaign updates.
+            Orvio gives your agency one branded place for ad reporting, leads, approvals, invoices, and monthly updates, so clients can see what they are paying for.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-foreground px-5 text-[14px] font-medium text-background hover:bg-foreground/90">
@@ -757,10 +757,10 @@ function FinalCTA() {
     <section className="hairline-t relative overflow-hidden py-28 md:py-36">
       <div className="relative mx-auto max-w-[860px] px-6 text-center">
         <h2 className="text-[34px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-[44px] md:text-[54px]">
-          Give every client a portal that proves your work.
+          Give every client a portal that looks like your agency built it.
         </h2>
         <p className="mx-auto mt-5 max-w-lg text-[15.5px] leading-relaxed text-muted-foreground">
-          One white-labeled place for reports, leads, approvals, invoices, and monthly updates.
+          One branded place for reports, leads, approvals, invoices, and monthly updates.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-foreground px-5 text-[14px] font-medium text-background hover:bg-foreground/90">

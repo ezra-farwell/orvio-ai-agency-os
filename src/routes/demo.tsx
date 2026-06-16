@@ -8,10 +8,10 @@ export const Route = createFileRoute("/demo")({
 });
 
 const tiles = [
-  { to: "/app", label: "Agency portal", body: "Run every client account, ad reporting, leads, pipeline, payments, and Content Studio." },
-  { to: "/portal", label: "Client portal", body: "How a contractor sees their campaigns, leads, and approvals in plain English." },
-  { to: "/app/studio", label: "Content Studio", body: "Generate ads with live Meta and Google previews, per-client brand memory." },
-  { to: "/admin", label: "Master admin", body: "How Orvio's internal team manages every agency on the platform." },
+  { to: "/app", label: "Agency portal", body: "Run every client account, ad reporting, leads, pipeline, and payments.", beta: false },
+  { to: "/portal", label: "Client portal", body: "How a contractor sees their campaigns, leads, and approvals in plain language.", beta: false },
+  { to: "/app/studio", label: "Content Studio", body: "Draft ads with Meta and Google previews. AI assist features are in beta.", beta: true },
+  { to: "/admin", label: "Master admin", body: "How Orvio's internal team manages every agency on the platform.", beta: false },
 ];
 
 function Demo() {
@@ -29,7 +29,10 @@ function Demo() {
           {tiles.map(t => (
             <Link key={t.to} to={t.to as any} className="group rounded-2xl border border-border bg-background p-6 transition-shadow hover:shadow-soft">
               <div className="flex items-center justify-between">
-                <div className="text-[18px] font-semibold tracking-tight">{t.label}</div>
+                <div className="flex items-center gap-2">
+                  <div className="text-[18px] font-semibold tracking-tight">{t.label}</div>
+                  {t.beta && <span className="rounded-full border border-border bg-[var(--surface-2)] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">Beta</span>}
+                </div>
                 <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
               </div>
               <p className="mt-2 text-[13.5px] text-muted-foreground">{t.body}</p>
