@@ -8,10 +8,10 @@ export const Route = createFileRoute("/demo")({
 });
 
 const tiles = [
-  { to: "/app", label: "Agency portal", body: "Run every client account, ad reporting, leads, pipeline, payments, and Content Studio." },
-  { to: "/portal", label: "Client portal", body: "How a contractor sees their campaigns, leads, and approvals in plain English." },
-  { to: "/app/studio", label: "Content Studio", body: "Generate ads with live Meta and Google previews, per-client brand memory." },
-  { to: "/admin", label: "Master admin", body: "How Orvio's internal team manages every agency on the platform." },
+  { to: "/app", label: "Agency portal", body: "Run every client account, ad reporting, leads, pipeline, and payments.", beta: false },
+  { to: "/portal", label: "Client portal", body: "How a contractor sees their campaigns, leads, and approvals in plain language.", beta: false },
+  { to: "/app/studio", label: "Content Studio", body: "Draft ads with Meta and Google previews. AI assist features are in beta.", beta: true },
+  { to: "/admin", label: "Master admin", body: "How Orvio's internal team manages every agency on the platform.", beta: false },
 ];
 
 function Demo() {
