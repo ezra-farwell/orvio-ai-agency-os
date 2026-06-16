@@ -25,46 +25,42 @@ export function Nav() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-border/70 bg-background/75 backdrop-blur-xl"
+          ? "border-b border-border/70 bg-background/70 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between gap-6 px-6 sm:px-8">
-        {/* Left: logo */}
+      <div className="mx-auto flex h-[68px] max-w-[1280px] items-center justify-between gap-6 px-6 sm:px-8">
         <div className="flex shrink-0 items-center gap-3">
-          <Link to="/" className="flex items-center gap-2.5 text-foreground">
-            <span className="relative grid h-7 w-7 place-items-center rounded-md bg-gradient-to-br from-indigo to-[#4F46E5]">
-              <span className="absolute inset-[3px] rounded-[4px] bg-background" />
-              <span className="relative h-1.5 w-1.5 rounded-full bg-indigo glow-pulse" />
+          <Link to="/" className="flex items-center gap-2 text-foreground">
+            <span className="grid h-6 w-6 place-items-center rounded-md bg-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-background" />
             </span>
-            <span className="text-[16px] font-semibold tracking-tight">Orvio</span>
+            <span className="text-[15px] font-semibold tracking-tight">Orvio</span>
           </Link>
         </div>
 
-        {/* Center: nav links */}
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
             <Link
               key={l.label}
               to={l.to}
               hash={l.hash}
-              className="text-[13.5px] text-foreground/70 transition-colors hover:text-foreground"
+              className="text-[13px] text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
             </Link>
           ))}
         </nav>
 
-        {/* Right: CTAs */}
-        <div className="hidden items-center gap-3 md:flex">
-          <Link to="/login" className="text-[13.5px] text-foreground/70 transition-colors hover:text-foreground">
-            Sign in
+        <div className="hidden items-center gap-2 md:flex">
+          <Link to="/login" className="text-[13px] text-muted-foreground transition-colors hover:text-foreground px-3">
+            Log in
           </Link>
           <Link
-            to="/login"
-            className="inline-flex h-9 items-center gap-2 rounded-lg bg-indigo px-4 text-[13px] font-medium text-white transition-all hover:bg-[#4F46E5] shadow-[0_6px_24px_-8px_rgba(99,102,241,0.6)]"
+            to="/book-demo"
+            className="inline-flex h-9 items-center rounded-full bg-foreground px-4 text-[13px] font-medium text-background hover:bg-foreground/90 transition-colors"
           >
-            Start free trial
+            Get started
           </Link>
         </div>
 

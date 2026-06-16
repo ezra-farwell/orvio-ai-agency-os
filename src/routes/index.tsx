@@ -65,34 +65,44 @@ function GoogleMark({ className = "h-3.5 w-3.5" }: { className?: string }) {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="relative mx-auto max-w-[1180px] px-6 pb-24 pt-32 md:pt-40">
+    <section className="relative overflow-hidden beam-bg">
+      <div className="relative mx-auto max-w-[1180px] px-6 pb-24 pt-36 md:pt-44">
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          className="mx-auto max-w-[860px] text-center"
+          className="max-w-[820px]"
         >
-          <h1 className="text-[40px] font-semibold leading-[1.05] tracking-[-0.035em] sm:text-[52px] md:text-[64px]">
-            White-label <span style={{ color: "#4F46E5" }}>client portals</span> for agencies that run ads.
+          <Link to="/product" className="chip-gradient">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--success)]" />
+            New · Branded client portals for agencies
+            <ArrowRight className="h-3 w-3 opacity-70" />
+          </Link>
+
+          <h1 className="mt-8 font-serif text-[56px] leading-[1.02] sm:text-[76px] md:text-[92px]">
+            Client portals
+            <br />
+            <span className="italic text-foreground/80">for ad agencies.</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-[640px] text-[16px] leading-relaxed text-muted-foreground md:text-[17px]">
+
+          <p className="mt-7 max-w-[560px] text-[16.5px] leading-relaxed text-muted-foreground md:text-[17.5px]">
             Orvio gives your agency one branded place for ad reporting, leads, approvals, invoices, and monthly updates, so clients can see what they are paying for.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-foreground px-5 text-[14px] font-medium text-background hover:bg-foreground/90">
-              Book a demo <ArrowRight className="h-4 w-4" />
+
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <Link to="/book-demo" className="inline-flex h-11 items-center gap-1.5 rounded-full bg-[var(--surface)] px-5 text-[14px] font-medium text-foreground ring-1 ring-border hover:bg-[var(--surface-2)] hover:ring-border-strong transition-colors">
+              Book a demo <ArrowRight className="h-4 w-4 opacity-70" />
             </Link>
-            <Link to="/product" className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-border bg-background px-5 text-[14px] font-medium text-foreground hover:bg-[var(--surface-2)]">
+            <Link to="/product" className="inline-flex h-11 items-center gap-1.5 px-2 text-[14px] font-medium text-muted-foreground hover:text-foreground transition-colors">
               View product
             </Link>
           </div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-          className="relative mx-auto mt-16 max-w-[1080px]"
+          initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }}
+          className="relative mx-auto mt-20 max-w-[1080px]"
         >
           <HeroMockup />
-          <p className="mt-4 text-center text-[11.5px] text-muted-foreground">
+          <p className="mt-4 text-center text-[11.5px] text-[var(--text-faint)]">
             Product screens shown with sample data.
           </p>
         </motion.div>
