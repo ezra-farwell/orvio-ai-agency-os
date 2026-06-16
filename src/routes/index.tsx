@@ -86,7 +86,7 @@ function CallRailMark({ className = "h-4" }: { className?: string }) {
 function Hero() {
   return (
     <section className="relative overflow-hidden beam-bg">
-      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-16 px-6 pb-32 pt-44 md:grid-cols-[minmax(0,460px)_minmax(0,1fr)] md:gap-14 md:pb-40 md:pt-56 lg:gap-20">
+      <div className="relative mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-14 px-6 pb-20 pt-28 md:grid-cols-[minmax(0,460px)_minmax(0,1fr)] md:gap-14 md:pb-24 md:pt-36 lg:gap-20">
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
           className="relative z-10"
