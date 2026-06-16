@@ -29,7 +29,10 @@ function Demo() {
           {tiles.map(t => (
             <Link key={t.to} to={t.to as any} className="group rounded-2xl border border-border bg-background p-6 transition-shadow hover:shadow-soft">
               <div className="flex items-center justify-between">
-                <div className="text-[18px] font-semibold tracking-tight">{t.label}</div>
+                <div className="flex items-center gap-2">
+                  <div className="text-[18px] font-semibold tracking-tight">{t.label}</div>
+                  {t.beta && <span className="rounded-full border border-border bg-[var(--surface-2)] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">Beta</span>}
+                </div>
                 <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
               </div>
               <p className="mt-2 text-[13.5px] text-muted-foreground">{t.body}</p>
