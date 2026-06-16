@@ -214,20 +214,20 @@ function HeroChart() {
 
 function Problem() {
   return (
-    <section className="hairline-t py-24 md:py-32">
+    <section className="hairline-t py-32 md:py-40">
       <div className="mx-auto max-w-[1180px] px-6">
-        <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-16">
+        <div className="grid gap-14 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] md:gap-20">
           <div className="md:sticky md:top-28 md:self-start">
-            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">The problem</div>
+            <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">The problem</div>
             <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] text-foreground md:text-[40px]">
               Clients churn when they can&apos;t see the work.
             </h2>
-            <p className="mt-5 max-w-md text-[15px] leading-[1.65] text-foreground/70">
+            <p className="mt-5 max-w-md text-[15.5px] leading-[1.7] text-foreground/85">
               Most agencies deliver across five tools. Clients only remember one — invoice day. Orvio puts everything in front of them, branded as you.
             </p>
           </div>
 
-          <div className="space-y-px overflow-hidden rounded-xl border border-border">
+          <div className="border-t border-border">
             {[
               ["Reports", "Buried in Sheets, sent monthly."],
               ["Updates", "Looms that never get watched."],
@@ -235,9 +235,9 @@ function Problem() {
               ["Invoices", "Stripe link in a separate inbox."],
               ["Leads", "Forms, calls, texts — spread everywhere."],
             ].map(([k, v]) => (
-              <div key={k} className="grid grid-cols-[120px_1fr] items-center bg-[var(--surface)] px-5 py-4">
-                <span className="text-[12px] font-medium uppercase tracking-[0.1em] text-foreground/55">{k}</span>
-                <span className="text-[14px] text-foreground/85">{v}</span>
+              <div key={k} className="grid grid-cols-[140px_1fr] items-center gap-4 border-b border-border py-5">
+                <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-foreground/70">{k}</span>
+                <span className="text-[15px] text-foreground/90">{v}</span>
               </div>
             ))}
           </div>
@@ -251,98 +251,96 @@ function Problem() {
 
 function CoreProduct() {
   return (
-    <section className="hairline-t py-24 md:py-32">
+    <section className="hairline-t py-32 md:py-40">
       <div className="mx-auto max-w-[1180px] px-6">
         <div className="max-w-2xl">
-          <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Core product</div>
+          <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Core product</div>
           <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">
             Four surfaces your clients actually open.
           </h2>
-          <p className="mt-4 max-w-lg text-[15px] leading-[1.65] text-foreground/70">
+          <p className="mt-4 max-w-lg text-[15.5px] leading-[1.7] text-foreground/85">
             Every tile below is the real component from the portal, just smaller. Nothing is a stock illustration.
           </p>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-6 md:grid-rows-2">
-          {/* Reporting — large */}
-          <div className="md:col-span-4 md:row-span-1 rounded-2xl border border-border bg-[var(--surface)] p-6">
-            <div className="flex items-end justify-between">
+        <div className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-6 md:grid-rows-2">
+          {/* Reporting — large. Flat: no nested filled metric boxes. */}
+          <div className="md:col-span-4 md:row-span-1 rounded-2xl border border-border bg-[var(--surface)] p-7">
+            <div className="flex items-end justify-between gap-4">
               <div>
-                <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Ad reporting</div>
+                <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Ad reporting</div>
                 <h3 className="mt-2 text-[19px] font-semibold tracking-tight">Spend, leads, CPL — explained.</h3>
-                <p className="mt-2 max-w-sm text-[13.5px] leading-relaxed text-foreground/70">
+                <p className="mt-2 max-w-sm text-[13.5px] leading-relaxed text-foreground/80">
                   Meta + Google rolled into one view, with plain-English notes from your team.
                 </p>
               </div>
-              <div className="hidden items-center gap-1.5 text-[11px] text-foreground/55 md:flex">
-                <MetaMark /> Meta <span className="text-foreground/30">·</span> <GoogleMark /> Google
+              <div className="hidden items-center gap-1.5 text-[12px] text-foreground/75 md:flex">
+                <MetaMark /> Meta <span className="text-foreground/40">·</span> <GoogleMark /> Google
               </div>
             </div>
-            <div className="mt-5 grid grid-cols-4 gap-2">
+            <div className="mt-7 grid grid-cols-4 divide-x divide-border border-y border-border">
               {[["Spend", "$4,280"], ["Leads", "63"], ["CPL", "$67.94"], ["Booked", "18"]].map(([l, v]) => (
-                <div key={l} className="rounded-lg border border-border bg-background p-3">
-                  <div className="text-[10px] uppercase tracking-wider text-foreground/55">{l}</div>
-                  <div className="mt-1 text-[17px] font-semibold tracking-tight">{v}</div>
+                <div key={l} className="px-4 py-4">
+                  <div className="text-[12px] uppercase tracking-wider text-foreground/65">{l}</div>
+                  <div className="mt-1 text-[20px] font-semibold tracking-tight">{v}</div>
                 </div>
               ))}
             </div>
-            <div className="mt-3 rounded-lg border border-border bg-background p-3">
-              <HeroChart />
-            </div>
+            <HeroChart />
           </div>
 
-          {/* Lead inbox — tall */}
-          <div className="md:col-span-2 md:row-span-2 rounded-2xl border border-border bg-[var(--surface)] p-6">
-            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Lead inbox</div>
+          {/* Lead inbox — tall. Flat: list rows with hairlines, no per-row card. */}
+          <div className="md:col-span-2 md:row-span-2 rounded-2xl border border-border bg-[var(--surface)] p-7">
+            <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Lead inbox</div>
             <h3 className="mt-2 text-[19px] font-semibold tracking-tight">Form fills and calls, one place.</h3>
-            <p className="mt-2 text-[13.5px] leading-relaxed text-foreground/70">
+            <p className="mt-2 text-[13.5px] leading-relaxed text-foreground/80">
               Status, assign, follow up. Clients see the same list you do.
             </p>
-            <div className="mt-5 space-y-2">
+            <div className="mt-6 border-t border-border">
               {[
                 ["Brian Connors", "Burst pipe, Detroit", "New", "warning"],
                 ["Sarah Liu", "Roof inspection, Royal Oak", "Booked", "success"],
                 ["Marcus T.", "AC install quote", "Contacted", "neutral"],
                 ["Ana Reyes", "Drain backup, Ferndale", "New", "warning"],
               ].map(([name, ctx, status, tone]) => (
-                <div key={name as string} className="rounded-lg border border-border bg-background p-3">
+                <div key={name as string} className="border-b border-border py-3">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="truncate text-[12.5px] font-medium">{name}</span>
-                    <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9.5px] font-semibold ${tone === "warning" ? "bg-[var(--warning-soft)] text-[var(--warning)]" : tone === "success" ? "bg-[var(--success-soft)] text-[var(--success)]" : "bg-[var(--surface-2)] text-foreground/70"}`}>
+                    <span className="truncate text-[13px] font-medium text-foreground/95">{name}</span>
+                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[12px] font-medium ${tone === "warning" ? "bg-[var(--warning-soft)] text-[var(--warning)]" : tone === "success" ? "bg-[var(--success-soft)] text-[var(--success)]" : "bg-[var(--surface-2)] text-foreground/80"}`}>
                       {status}
                     </span>
                   </div>
-                  <div className="mt-1 text-[10.5px] text-foreground/55">{ctx}</div>
+                  <div className="mt-1 text-[12px] text-foreground/70">{ctx}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* White-label — wide short */}
-          <div className="md:col-span-2 rounded-2xl border border-border bg-[var(--surface)] p-6">
-            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">White-label</div>
+          <div className="md:col-span-2 rounded-2xl border border-border bg-[var(--surface)] p-7">
+            <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">White-label</div>
             <h3 className="mt-2 text-[17px] font-semibold tracking-tight">Your domain, your logo.</h3>
-            <div className="mt-5 flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2">
-              <span className="grid h-6 w-6 place-items-center rounded bg-[var(--accent)] text-[11px] font-bold text-white">N</span>
-              <span className="mono text-[12px] text-foreground/85">portal.northstar.io</span>
-              <span className="ml-auto chip-success !py-0.5">Live</span>
+            <div className="mt-6 flex items-center gap-2.5 border-t border-border pt-4">
+              <span className="grid h-7 w-7 place-items-center rounded bg-[var(--accent)] text-[12px] font-bold text-white">N</span>
+              <span className="mono text-[13px] text-foreground/95">portal.northstar.io</span>
+              <span className="ml-auto chip-success">Live</span>
             </div>
           </div>
 
           {/* Approvals & invoices */}
-          <div className="md:col-span-2 rounded-2xl border border-border bg-[var(--surface)] p-6">
-            <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Approvals & invoices</div>
+          <div className="md:col-span-2 rounded-2xl border border-border bg-[var(--surface)] p-7">
+            <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Approvals & invoices</div>
             <h3 className="mt-2 text-[17px] font-semibold tracking-tight">Sign-off and payment, in the portal.</h3>
-            <div className="mt-5 space-y-2">
-              <div className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2">
-                <span className="text-[12px] font-medium">Creative — Primary v3</span>
-                <span className="inline-flex items-center gap-1 rounded-full bg-[var(--success-soft)] px-1.5 py-0.5 text-[9.5px] font-semibold text-[var(--success)]">
-                  <Check className="h-2.5 w-2.5" /> Approved
+            <div className="mt-6 border-t border-border">
+              <div className="flex items-center justify-between border-b border-border py-3">
+                <span className="text-[13px] font-medium text-foreground/95">Creative — Primary v3</span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-[var(--success-soft)] px-2 py-0.5 text-[12px] font-medium text-[var(--success)]">
+                  <Check className="h-3 w-3" /> Approved
                 </span>
               </div>
-              <div className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2">
-                <span className="text-[12px] font-medium">Invoice · April</span>
-                <span className="mono text-[12px] text-foreground/80">$2,400</span>
+              <div className="flex items-center justify-between py-3">
+                <span className="text-[13px] font-medium text-foreground/95">Invoice · April</span>
+                <span className="mono text-[13px] text-foreground/90">$2,400</span>
               </div>
             </div>
           </div>
