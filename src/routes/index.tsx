@@ -76,7 +76,7 @@ function Hero() {
             Client portals for ad agencies.
           </h1>
 
-          <p className="mt-7 max-w-[440px] text-[16px] leading-[1.65] text-foreground/80">
+          <p className="mt-7 max-w-[65ch] text-[16px] leading-[1.65] text-foreground/90">
             One branded place for reporting, leads, approvals, and invoices.
           </p>
 
@@ -113,7 +113,7 @@ function HeroDashboard() {
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-2)]" />
         </div>
         <div className="ml-3 text-[12px] text-foreground/70">Northstar · Agency portal</div>
-        <div className="ml-auto flex items-center gap-2 text-[12px] text-foreground/75">
+        <div className="ml-auto flex items-center gap-2 text-[12px] text-foreground/85">
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--success)]" /> Live
         </div>
       </div>
@@ -124,7 +124,7 @@ function HeroDashboard() {
             <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Overview · April</div>
             <div className="mt-1.5 text-[22px] font-semibold tracking-tight">Portfolio health</div>
           </div>
-          <div className="flex items-center gap-1.5 text-[12px] text-foreground/75">
+          <div className="flex items-center gap-1.5 text-[12px] text-foreground/85">
             <MetaMark /> Meta <span className="text-foreground/40">·</span> <GoogleMark /> Google
           </div>
         </div>
@@ -160,7 +160,7 @@ function StatusTile({ eyebrow, word, tone, detail }: { eyebrow: string; word: st
       <div className="mt-2 text-[24px] font-semibold leading-none tracking-tight">{word}</div>
       <div className="mt-4 flex items-center gap-2 text-[12.5px]">
         <span className="h-1.5 w-1.5 rounded-full" style={{ background: tone }} />
-        <span className="truncate text-foreground/80">{detail}</span>
+        <span className="truncate text-foreground/90">{detail}</span>
       </div>
     </div>
   );
@@ -198,7 +198,7 @@ function Problem() {
             <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] text-foreground md:text-[40px]">
               Clients churn when they can&apos;t see the work.
             </h2>
-            <p className="mt-6 max-w-md text-[15.5px] leading-[1.7] text-foreground/80">
+            <p className="mt-6 max-w-[65ch] text-[15.5px] leading-[1.7] text-foreground/90">
               Most agencies deliver across five tools. Clients only remember one — invoice day. Orvio puts everything in front of them, branded as you.
             </p>
           </div>
@@ -213,7 +213,7 @@ function Problem() {
             ].map(([k, v]) => (
               <div key={k} className="grid grid-cols-[140px_1fr] items-center gap-4 border-b border-border py-6">
                 <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-foreground/70">{k}</span>
-                <span className="text-[15px] text-foreground/85">{v}</span>
+                <span className="text-[15px] text-foreground/90">{v}</span>
               </div>
             ))}
           </div>
@@ -248,7 +248,7 @@ function CoreProduct() {
               <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-foreground/75">{label}</div>
               <div>
                 <h3 className="text-[22px] font-semibold leading-[1.2] tracking-tight md:text-[26px]">{title}</h3>
-                <p className="mt-3 max-w-[520px] text-[15px] leading-[1.7] text-foreground/75">{body}</p>
+                <p className="mt-3 max-w-[65ch] text-[15px] leading-[1.7] text-foreground/85">{body}</p>
               </div>
             </div>
           ))}
@@ -270,8 +270,7 @@ function ProductTour() {
     <section className="hairline-t py-32 md:py-44">
       <div className="mx-auto max-w-[1180px] px-6">
         <div className="max-w-2xl">
-          <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">Product tour</div>
-          <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">
+          <h2 className="text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">
             From new client to monthly report.
           </h2>
         </div>
@@ -281,7 +280,7 @@ function ProductTour() {
             <div key={n} className="bg-[var(--surface)] p-10 md:p-12">
               <div className="mono text-[12px] text-[var(--text-faint)]">{n}</div>
               <h3 className="mt-6 text-[20px] font-semibold tracking-tight">{title}</h3>
-              <p className="mt-3 text-[14px] leading-[1.7] text-foreground/75">{body}</p>
+              <p className="mt-3 text-[14px] leading-[1.7] text-foreground/85">{body}</p>
             </div>
           ))}
         </div>
@@ -302,11 +301,10 @@ function WhiteLabel() {
     <section className="hairline-t py-32 md:py-44">
       <div className="mx-auto max-w-[1180px] px-6">
         <div className="max-w-2xl">
-          <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">White-label</div>
-          <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">
+          <h2 className="text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">
             Your logo. Your domain. Your software.
           </h2>
-          <p className="mt-6 max-w-lg text-[15.5px] leading-[1.7] text-foreground/80">
+          <p className="mt-6 max-w-[65ch] text-[15.5px] leading-[1.7] text-foreground/90">
             Clients sign into your product at your domain. Orvio stays invisible.
           </p>
         </div>
@@ -318,10 +316,10 @@ function WhiteLabel() {
                 <span className="grid h-9 w-9 place-items-center rounded-md text-[14px] font-bold text-white" style={{ background: b.color }}>{b.letter}</span>
                 <div className="leading-tight">
                   <div className="text-[14px] font-semibold tracking-tight">{b.brand}</div>
-                  <div className="mono text-[12px] text-foreground/65">{b.domain}</div>
+                  <div className="mono text-[12px] text-foreground/75">{b.domain}</div>
                 </div>
               </div>
-              <p className="mt-6 text-[13.5px] leading-relaxed text-foreground/75">{b.line}</p>
+              <p className="mt-6 text-[13.5px] leading-relaxed text-foreground/85">{b.line}</p>
             </div>
           ))}
         </div>
@@ -368,7 +366,7 @@ function Pricing() {
           <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">
             Flat pricing per agency.
           </h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-[1.7] text-foreground/80">
+          <p className="mx-auto mt-5 max-w-[65ch] text-[15px] leading-[1.7] text-foreground/90">
             No per-client fees. 14-day trial on every plan.
           </p>
         </div>
@@ -377,23 +375,23 @@ function Pricing() {
           {tiers.map(t => (
             <div key={t.name} className={`flex flex-col rounded-2xl border bg-[var(--surface)] p-7 ${t.pop ? "border-foreground" : "border-border"}`}>
               <div className="flex items-center justify-between">
-                <div className="text-[13px] font-medium text-foreground/75">{t.name}</div>
+                <div className="text-[13px] font-medium text-foreground/85">{t.name}</div>
                 {t.pop && <span className="rounded-full bg-foreground px-2 py-0.5 text-[12px] font-semibold uppercase tracking-wider text-background">Popular</span>}
               </div>
               <div className="mt-3 flex items-baseline gap-1">
                 <span className="text-[40px] font-semibold tracking-[-0.02em]">${t.price}</span>
-                <span className="text-[13px] text-foreground/70">/mo</span>
+                <span className="text-[13px] text-foreground/80">/mo</span>
               </div>
-              <div className="mt-1 text-[13px] text-foreground/70">{t.sub}</div>
-              <p className="mt-4 text-[13px] leading-relaxed text-foreground/70">{t.best}</p>
+              <div className="mt-1 text-[13px] text-foreground/80">{t.sub}</div>
+              <p className="mt-4 text-[13px] leading-relaxed text-foreground/80">{t.best}</p>
               <Link to="/book-demo" className={`mt-6 flex h-10 items-center justify-center rounded-lg text-[13px] font-medium ${t.pop ? "bg-foreground text-background hover:bg-foreground/90" : "border border-border bg-[var(--surface)] hover:bg-[var(--surface-2)]"}`}>
                 Start 14-day trial
               </Link>
               <ul className="mt-6 space-y-2.5">
                 {t.features.map(f => (
                   <li key={f} className="flex items-start gap-2 text-[13px]">
-                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/60" />
-                    <span className="text-foreground/85">{f}</span>
+                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-foreground/70" />
+                    <span className="text-foreground/90">{f}</span>
                   </li>
                 ))}
               </ul>
@@ -404,7 +402,7 @@ function Pricing() {
         <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-border bg-[var(--surface)] px-6 py-5">
           <div>
             <div className="text-[14px] font-semibold">Enterprise</div>
-            <div className="text-[12.5px] text-foreground/70">For 50+ clients, SSO, API access, custom onboarding, and dedicated support.</div>
+            <div className="text-[12.5px] text-foreground/80">For 50+ clients, SSO, API access, custom onboarding, and dedicated support.</div>
           </div>
           <Link to="/book-demo" className="inline-flex h-9 items-center rounded-lg border border-border bg-[var(--surface)] px-4 text-[13px] font-medium hover:bg-[var(--surface-2)]">
             Talk to sales <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
@@ -429,8 +427,7 @@ function FAQ() {
     <section className="hairline-t py-32 md:py-40">
       <div className="mx-auto max-w-[820px] px-6">
         <div className="text-center">
-          <div className="text-[12px] font-medium uppercase tracking-[0.14em] text-[var(--text-faint)]">FAQ</div>
-          <h2 className="mt-3 text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">Common questions</h2>
+          <h2 className="text-[32px] font-semibold leading-[1.08] tracking-[-0.025em] md:text-[40px]">Common questions</h2>
         </div>
         <div className="mt-14 divide-y divide-border">
           {faqs.map(([q, a]) => (
@@ -439,7 +436,7 @@ function FAQ() {
                 {q}
                 <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full border border-border text-foreground/70 transition-transform group-open:rotate-45">+</span>
               </summary>
-              <p className="mt-3 max-w-[680px] text-[14px] leading-[1.7] text-foreground/75">{a}</p>
+              <p className="mt-3 max-w-[65ch] text-[14px] leading-[1.7] text-foreground/85">{a}</p>
             </details>
           ))}
         </div>
@@ -457,7 +454,7 @@ function FinalCTA() {
         <h2 className="text-[36px] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-[48px] md:text-[58px]">
           A portal that looks like your agency built it.
         </h2>
-        <p className="mx-auto mt-6 max-w-md text-[15.5px] leading-[1.7] text-foreground/80">
+        <p className="mx-auto mt-6 max-w-[65ch] text-[15.5px] leading-[1.7] text-foreground/90">
           One branded place for reports, leads, approvals, and invoices.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
