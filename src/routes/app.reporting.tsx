@@ -200,7 +200,7 @@ function AIInsightCard({ best, worst, totals }: { best?: Campaign; worst?: Campa
 }
 
 function CampaignCard({ label, tone, Icon, c }: { label: string; tone: "success" | "warning"; Icon: any; c?: Campaign }) {
-
+  if (!c) return null;
   const color = tone === "success" ? "var(--success)" : "var(--warning)";
   return (
     <Card className="p-5">
