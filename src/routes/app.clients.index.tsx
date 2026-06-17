@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { PageHeader, Card, StatusBadge } from "@/components/bits";
 import { getClients } from "@/lib/data";
-import { getChurnMap } from "@/lib/data/insights";
+import { getChurnMap, churnTier, TIER_COLOR } from "@/lib/data/insights";
 import { usd } from "@/mock/data";
-import { Plus, X, Mail, Phone } from "lucide-react";
+import { Plus, X, Mail, Phone, Sparkles, AlertTriangle } from "lucide-react";
 
 export const Route = createFileRoute("/app/clients/")({
   component: Clients,
@@ -39,12 +39,17 @@ function Clients() {
                   <th className="px-4 py-2.5">CPL</th>
                   <th className="px-4 py-2.5">Integrations</th>
                   <th className="px-4 py-2.5">Health</th>
+                  <th className="px-4 py-2.5">Orvio AI</th>
                   <th className="px-4 py-2.5">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {clients.map(c => {
-                  const health = c.status === "at-risk" ? 62 : c.status === "onboarding" ? 78 : Math.round(78 + ((c.leads % 17) * 1.2));
+                  const ins = churn[c.id];
+                  const tier = churnTier(ins);
+                  const health = ins?.score != null
+                    ? Math.max(0, Math.min(100, 100 - Math.round(Number(ins.score))))
+                    : c.status === "at-risk" ? 62 : c.status === "onboarding" ? 78 : Math.round(78 + ((c.leads % 17) * 1.2));
                   return (
                   <tr key={c.id} className="hover:bg-[var(--surface-2)]/60">
                     <td className="px-4 py-3">
@@ -69,6 +74,16 @@ function Clients() {
                     </td>
                     <td className="px-4 py-3">
                       <HealthBar score={health} />
+                    </td>
+                    <td className="px-4 py-3">
+                      {ins ? (
+                        <span title={ins.body ?? ""} className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold" style={{ color: TIER_COLOR[tier], background: `color-mix(in oklab, ${TIER_COLOR[tier]} 14%, transparent)` }}>
+                          {tier === "low" ? <Sparkles className="h-3 w-3" /> : <AlertTriangle className="h-3 w-3" />}
+                          {tier === "low" ? "Healthy" : `Churn ${Math.round(Number(ins.score))}`}
+                        </span>
+                      ) : (
+                        <span className="text-[11.5px] text-[var(--text-faint)]">—</span>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       {c.status === "active" && <StatusBadge kind="success">Active</StatusBadge>}

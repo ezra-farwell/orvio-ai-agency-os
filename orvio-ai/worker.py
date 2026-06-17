@@ -94,66 +94,79 @@ def build_context(client):
         "lead_breakdown": by, "benchmark": bm_line,
     }
 
-def analyze(client):
-    state, trade, ctx = build_context(client)
-    ctxs = json.dumps(ctx, indent=2)
-    insights = []
-
+def churn_insight(ctxs):
     churn = ollama_json(
         f"Client data:\n{ctxs}\n\nReturn JSON: {{\"score\": 0-100 churn risk, "
         f"\"severity\": \"low|medium|high\", \"reason\": \"one sentence\"}}.",
         "You assess churn risk for a marketing agency's contractor client. Higher CPL vs "
         "benchmark, falling leads, or 'at-risk' status raise the score. Be conservative and specific.")
-    if churn:
-        insights.append({"kind": "churn_risk", "score": churn.get("score"),
-                         "severity": churn.get("severity"), "title": "Churn risk",
-                         "body": churn.get("reason"), "data": churn})
+    if not churn:
+        return None
+    return {"kind": "churn_risk", "score": churn.get("score"),
+            "severity": churn.get("severity"), "title": "Churn risk",
+            "body": churn.get("reason"), "data": churn}
 
+def summary_insight(ctxs):
     summary = ollama(
         f"Client data:\n{ctxs}\n\nWrite 2-3 plain-English sentences a non-marketer contractor "
         f"would understand about how their ads did this month. No jargon, no numbers they didn't ask for.",
         "You explain ad performance to a busy contractor. Warm, clear, honest.")
-    insights.append({"kind": "analytics_summary", "title": "This month, in plain English", "body": summary})
+    return {"kind": "analytics_summary", "title": "This month, in plain English", "body": summary}
 
+def flags_insight(ctxs):
     flags = ollama_json(
         f"Client data:\n{ctxs}\n\nReturn JSON: {{\"flags\": [\"short issue the agency should follow up on\"]}}. "
         f"Empty list if all healthy.",
         "You flag operational follow-ups for the agency team (e.g. CPL above benchmark, leads not contacted).")
-    if flags.get("flags"):
-        flag_list = [as_text(f) for f in flags["flags"]]
-        insights.append({"kind": "followup_flag", "severity": "medium",
-                         "title": f"{len(flag_list)} follow-up(s)", "body": "; ".join(flag_list),
-                         "data": {"flags": flag_list}})
+    if not flags.get("flags"):
+        return None
+    flag_list = [as_text(f) for f in flags["flags"]]
+    return {"kind": "followup_flag", "severity": "medium",
+            "title": f"{len(flag_list)} follow-up(s)", "body": "; ".join(flag_list),
+            "data": {"flags": flag_list}}
 
+def actions_insight(ctxs):
     actions = ollama_json(
         f"Client data:\n{ctxs}\n\nReturn JSON: {{\"actions\": [\"specific next action for the agency\"]}} "
         f"(max 4, ordered by impact).",
         "You recommend concrete next actions for the agency to improve this client's results.")
-    if actions.get("actions"):
-        action_list = [as_text(a) for a in actions["actions"]]
-        insights.append({"kind": "next_actions", "title": "Recommended next actions",
-                         "body": "\n".join(f"• {a}" for a in action_list), "data": {"actions": action_list}})
+    if not actions.get("actions"):
+        return None
+    action_list = [as_text(a) for a in actions["actions"]]
+    return {"kind": "next_actions", "title": "Recommended next actions",
+            "body": "\n".join(f"• {a}" for a in action_list), "data": {"actions": action_list}}
 
+def report_insight(ctxs):
     report = ollama(
         f"Client data:\n{ctxs}\n\nWrite a short, friendly monthly update (4-6 sentences) the agency can "
         f"send this client. Lead with the win, be transparent about anything soft, end with what's next.",
         "You ghost-write a contractor-friendly monthly report for a white-label agency. No jargon.")
-    insights.append({"kind": "client_report", "title": "Monthly client report", "body": report})
+    return {"kind": "client_report", "title": "Monthly client report", "body": report}
 
-    return insights
+# Each insight is independent — a single model/JSON failure can't drop the others.
+BUILDERS = [churn_insight, summary_insight, flags_insight, actions_insight, report_insight]
 
 def run():
     clients = sb_get("clients?select=id,name,area,category,monthly_spend,leads,cpl,status")
     print(f"Analyzing {len(clients)} clients with {MODEL}…")
     for c in clients:
-        try:
-            for ins in analyze(c):
+        _, _, ctx = build_context(c)
+        ctxs = json.dumps(ctx, indent=2)
+        ok, fail = 0, 0
+        for build in BUILDERS:
+            try:
+                ins = build(ctxs)
+                if not ins:
+                    continue
                 ins["client_id"] = c["id"]; ins["model"] = MODEL
                 sb_insert("ai_insights", ins)
-            print(f"  ✓ {c['name']}")
-        except Exception as e:
-            print(f"  ✗ {c['name']}: {e}")
-        time.sleep(0.5)
+                ok += 1
+            except Exception as e:
+                fail += 1
+                print(f"      · {c['name']} / {build.__name__}: {e}")
+        mark = "✓" if fail == 0 else "partial"
+        print(f"  {mark} {c['name']} ({ok} insight{'s' if ok != 1 else ''}{', ' + str(fail) + ' failed' if fail else ''})")
+        time.sleep(0.3)
     print("Done.")
 
 if __name__ == "__main__":

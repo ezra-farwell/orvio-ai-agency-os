@@ -56,12 +56,40 @@ export async function getClientInsights(clientId: string): Promise<Partial<Recor
   return out;
 }
 
-/** Latest churn_risk per client across the agency → keyed by client_id (for list badges). */
-export async function getChurnMap(): Promise<Record<string, Insight>> {
+/** Latest insight of one kind across the agency → keyed by client_id. */
+async function mapByKind(kind: InsightKind): Promise<Record<string, Insight>> {
   if (!isSupabaseConfigured || !supabase) return {};
-  const { data, error } = await supabase.from("ai_latest").select("*").eq("kind", "churn_risk");
+  const { data, error } = await supabase.from("ai_latest").select("*").eq("kind", kind);
   if (error) throw error;
   const out: Record<string, Insight> = {};
-  for (const row of (data as Insight[]) ?? []) out[row.client_id] = row;
+  for (const row of (data as Insight[]) ?? []) out[row.client_id] = clean(row);
   return out;
 }
+
+/** Latest churn_risk per client across the agency → keyed by client_id (for list badges). */
+export function getChurnMap(): Promise<Record<string, Insight>> {
+  return mapByKind("churn_risk");
+}
+
+/** Latest follow-up flags per client across the agency → keyed by client_id. */
+export function getFollowupMap(): Promise<Record<string, Insight>> {
+  return mapByKind("followup_flag");
+}
+
+export type ChurnTier = "high" | "medium" | "low" | "none";
+
+/** Severity → tier, falling back to score thresholds when the model omits severity. */
+export function churnTier(ins?: Insight): ChurnTier {
+  if (!ins) return "none";
+  const sev = ins.severity?.toLowerCase();
+  if (sev === "high" || sev === "medium" || sev === "low") return sev;
+  const s = Number(ins.score ?? 0);
+  return s >= 67 ? "high" : s >= 40 ? "medium" : "low";
+}
+
+export const TIER_COLOR: Record<ChurnTier, string> = {
+  high: "var(--danger)",
+  medium: "var(--warning)",
+  low: "var(--success)",
+  none: "var(--text-faint)",
+};

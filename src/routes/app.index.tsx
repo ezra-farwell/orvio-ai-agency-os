@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { PageHeader, StatusGroupCard, HeroNumber } from "@/components/bits";
 import { trend30d, usd, num, TONE_COLOR } from "@/mock/data";
 import { getAgencyDashboard, getClients, getLeads } from "@/lib/data";
-import { Plus } from "lucide-react";
+import { getChurnMap, getFollowupMap, churnTier, TIER_COLOR } from "@/lib/data/insights";
+import { Plus, Sparkles, AlertTriangle, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export const Route = createFileRoute("/app/")({
@@ -15,9 +16,18 @@ function AgencyOverview() {
   const { data: groups = [] } = useQuery({ queryKey: ["agency-dashboard"], queryFn: getAgencyDashboard });
   const { data: clients = [] } = useQuery({ queryKey: ["clients"], queryFn: getClients });
   const { data: allLeads = [] } = useQuery({ queryKey: ["leads"], queryFn: getLeads });
+  const { data: churn = {} } = useQuery({ queryKey: ["churn-map"], queryFn: getChurnMap });
+  const { data: followups = {} } = useQuery({ queryKey: ["followup-map"], queryFn: getFollowupMap });
   const totalSpend = clients.reduce((a, c) => a + c.monthlySpend, 0);
   const totalLeads = clients.reduce((a, c) => a + c.leads, 0);
   const recentLeads = allLeads.slice(0, 6);
+
+  const analyzed = clients.filter((c) => churn[c.id]).length;
+  const totalFollowups = clients.reduce((a, c) => a + (followups[c.id]?.data?.flags?.length ?? 0), 0);
+  const attention = clients
+    .map((c) => ({ c, ins: churn[c.id], tier: churnTier(churn[c.id]), flags: followups[c.id]?.data?.flags ?? [] }))
+    .filter((x) => x.tier === "high" || x.tier === "medium" || x.flags.length > 0)
+    .sort((a, b) => Number(b.ins?.score ?? 0) - Number(a.ins?.score ?? 0));
 
   return (
     <>
@@ -41,6 +51,53 @@ function AgencyOverview() {
         <div className="grid gap-4 md:grid-cols-3">
           {groups.map((g, i) => <StatusGroupCard key={i} group={g} />)}
         </div>
+
+        {/* Orvio AI — needs attention */}
+        {analyzed > 0 && (
+          <section className="rounded-2xl border border-border bg-[var(--surface)] p-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]"><Sparkles className="h-4 w-4" /></span>
+                <div>
+                  <div className="text-[15px] font-semibold tracking-tight">Orvio AI</div>
+                  <div className="text-[11.5px] text-[var(--text-faint)]">Watching {analyzed} {analyzed === 1 ? "client" : "clients"} · {totalFollowups} open follow-up{totalFollowups === 1 ? "" : "s"}</div>
+                </div>
+              </div>
+              <Link to="/app/clients" className="text-[12.5px] font-medium text-muted-foreground hover:text-foreground">All clients →</Link>
+            </div>
+
+            {attention.length === 0 ? (
+              <div className="mt-4 flex items-center gap-2 rounded-xl border border-dashed border-border bg-[var(--surface-2)]/40 px-4 py-3 text-[13px] text-muted-foreground">
+                <CheckCircle2 className="h-4 w-4 text-[var(--success)]" /> All clear — no clients flagged for churn risk or follow-up right now.
+              </div>
+            ) : (
+              <ul className="mt-4 space-y-2">
+                {attention.map(({ c, ins, tier, flags }) => (
+                  <li key={c.id}>
+                    <Link to="/app/clients/$id" params={{ id: c.id }} className="flex items-center gap-3 rounded-xl border border-border bg-[var(--surface-2)]/40 px-4 py-3 hover:bg-[var(--surface-2)]">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-[10px] font-semibold text-white" style={{ background: c.color }}>{c.initials}</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[13.5px] font-medium">{c.name}</span>
+                          {ins?.score != null && (
+                            <span className="inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10.5px] font-semibold" style={{ color: TIER_COLOR[tier], background: `color-mix(in oklab, ${TIER_COLOR[tier]} 14%, transparent)` }}>
+                              <AlertTriangle className="h-2.5 w-2.5" /> Churn {Math.round(Number(ins.score))}
+                            </span>
+                          )}
+                          {flags.length > 0 && (
+                            <span className="text-[10.5px] font-medium text-[var(--warning)]">{flags.length} follow-up{flags.length === 1 ? "" : "s"}</span>
+                          )}
+                        </div>
+                        <div className="truncate text-[11.5px] text-[var(--text-faint)]">{ins?.body ?? flags[0] ?? `${c.category} · ${c.area}`}</div>
+                      </div>
+                      <ArrowRight className="h-4 w-4 shrink-0 text-[var(--text-faint)]" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
 
         {/* Hero number + trend */}
         <HeroNumber label="LEADS GENERATED" value={num(totalLeads)} sub={`${usd(totalSpend)} spent · last 30 days`}>
