@@ -91,15 +91,8 @@ function Reporting() {
             </div>
           </Card>
 
-          <Card className="p-5">
-            <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-[var(--accent)]" /><div className="text-[14px] font-semibold">AI insight summary</div></div>
-            <div className="mt-3 text-[12.5px] leading-relaxed text-muted-foreground">
-              <p>Spend grew <span className="font-medium text-foreground">+8.2%</span> while CPL dropped <span className="font-medium text-foreground">-4.1%</span> — a healthy trend.</p>
-              <p className="mt-2"><span className="font-medium text-foreground">{best?.name}</span> is the strongest performer at ${best?.cpl.toFixed(2)} CPL — 1.6× better than the network average. Recommend scaling daily budget +20%.</p>
-              <p className="mt-2"><span className="font-medium text-foreground">{worst?.name}</span> is bleeding spend at ${worst?.cpl.toFixed(2)} CPL. Pause underperforming ad sets and rotate creative from Brand Memory.</p>
-            </div>
-            <button className="mt-3 inline-flex h-8 items-center gap-1.5 rounded-md bg-[var(--accent-soft)] px-2.5 text-[12px] font-medium text-[var(--accent)]"><Sparkles className="h-3 w-3" />Generate client recommendation</button>
-          </Card>
+          <AIInsightCard best={best} worst={worst} totals={t} />
+
         </div>
 
         {/* Best/worst */}
@@ -153,6 +146,56 @@ function Reporting() {
         </Card>
       </div>
     </>
+  );
+}
+
+function AIInsightCard({ best, worst, totals }: { best?: Campaign; worst?: Campaign; totals: ReturnType<typeof agg> }) {
+  const [recommendation, setRecommendation] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  function generate() {
+    setLoading(true);
+    setRecommendation(null);
+    // Local Orvio AI placeholder — produces a deterministic recommendation
+    // from the current data. Swap with an Ollama call when wired.
+    setTimeout(() => {
+      const lines: string[] = [];
+      lines.push(`Network spend ${usd(totals.spend)} produced ${num(totals.leads)} leads at a blended $${totals.cpl.toFixed(2)} CPL.`);
+      if (best) {
+        const targetBudget = Math.round(best.spend * 1.2);
+        lines.push(`✓ Scale ${best.name} (${best.client}) daily budget from ${usd(best.spend)} → ${usd(targetBudget)} this week — CPL of $${best.cpl.toFixed(2)} is well below network average.`);
+      }
+      if (worst) {
+        lines.push(`⚠ Pause ${worst.name} (${worst.client}) — $${worst.cpl.toFixed(2)} CPL is dragging the network. Rotate to a Brand Memory–approved creative variant and re-test for 72h.`);
+      }
+      lines.push(`Next 7-day target: hold blended CPL under $${(totals.cpl * 0.95).toFixed(2)} and grow leads ${num(Math.round(totals.leads * 1.1))}.`);
+      setRecommendation(lines.join("\n\n"));
+      setLoading(false);
+    }, 700);
+  }
+
+  return (
+    <Card className="p-5">
+      <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-[var(--accent)]" /><div className="text-[14px] font-semibold">AI insight summary</div></div>
+      <div className="mt-3 text-[12.5px] leading-relaxed text-muted-foreground">
+        <p>Spend grew <span className="font-medium text-foreground">+8.2%</span> while CPL dropped <span className="font-medium text-foreground">-4.1%</span> — a healthy trend.</p>
+        <p className="mt-2"><span className="font-medium text-foreground">{best?.name}</span> is the strongest performer at ${best?.cpl.toFixed(2)} CPL — 1.6× better than the network average. Recommend scaling daily budget +20%.</p>
+        <p className="mt-2"><span className="font-medium text-foreground">{worst?.name}</span> is bleeding spend at ${worst?.cpl.toFixed(2)} CPL. Pause underperforming ad sets and rotate creative from Brand Memory.</p>
+      </div>
+      {recommendation && (
+        <div className="mt-3 whitespace-pre-line rounded-lg border border-[var(--accent)]/30 bg-[var(--accent-soft)]/40 px-3 py-2.5 text-[12.5px] leading-relaxed text-foreground">
+          {recommendation}
+        </div>
+      )}
+      <button
+        onClick={generate}
+        disabled={loading}
+        className="mt-3 inline-flex h-8 items-center gap-1.5 rounded-md bg-[var(--accent-soft)] px-2.5 text-[12px] font-medium text-[var(--accent)] hover:bg-[var(--accent-soft)]/70 disabled:opacity-60"
+      >
+        <Sparkles className={`h-3 w-3 ${loading ? "animate-spin" : ""}`} />
+        {loading ? "Generating…" : recommendation ? "Regenerate recommendation" : "Generate client recommendation"}
+      </button>
+    </Card>
   );
 }
 
