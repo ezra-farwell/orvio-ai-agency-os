@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-const columns: { label: string; links: { label: string; href?: string; to?: "/" | "/demo" | "/pricing" | "/login" | "/portal-preview" }[] }[] = [
+const columns: { label: string; links: { label: string; href?: string; to?: "/" | "/demo" | "/pricing" | "/login" | "/portal" }[] }[] = [
   {
     label: "Platform",
     links: [
@@ -14,7 +14,7 @@ const columns: { label: string; links: { label: string; href?: string; to?: "/" 
     label: "Product",
     links: [
       { label: "Pricing", to: "/pricing" },
-      { label: "Client portal", to: "/portal-preview" },
+      { label: "Client portal", to: "/portal" },
       { label: "Product tour", to: "/demo" },
       { label: "Changelog", href: "#" },
     ],

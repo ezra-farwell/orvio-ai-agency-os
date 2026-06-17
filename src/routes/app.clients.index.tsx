@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { PageHeader, Card, StatusBadge } from "@/components/bits";
-import { clients, usd } from "@/mock/data";
+import { getClients } from "@/lib/data";
+import { getChurnMap } from "@/lib/data/insights";
+import { usd } from "@/mock/data";
 import { Plus, X, Mail, Phone } from "lucide-react";
 
 export const Route = createFileRoute("/app/clients/")({
@@ -11,6 +14,8 @@ export const Route = createFileRoute("/app/clients/")({
 
 function Clients() {
   const [open, setOpen] = useState(false);
+  const { data: clients = [] } = useQuery({ queryKey: ["clients"], queryFn: getClients });
+  const { data: churn = {} } = useQuery({ queryKey: ["churn-map"], queryFn: getChurnMap });
   return (
     <>
       <PageHeader title="Clients" sub={`${clients.length} accounts · ${clients.filter(c=>c.status==="active").length} active`}

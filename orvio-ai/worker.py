@@ -61,6 +61,12 @@ def ollama_json(prompt, system):
         m = re.search(r"\{.*\}", raw, re.S)
         return json.loads(m.group(0)) if m else {}
 
+def as_text(a):
+    """Models sometimes return list items as objects — coerce to a clean string."""
+    if isinstance(a, dict):
+        return a.get("action") or a.get("text") or a.get("description") or "; ".join(str(v) for v in a.values())
+    return str(a)
+
 # --- benchmarks -------------------------------------------------------------
 def state_of(area):  # "Phoenix, AZ" -> "AZ"
     m = re.search(r",\s*([A-Z]{2})\b", area or "")
@@ -114,17 +120,19 @@ def analyze(client):
         f"Empty list if all healthy.",
         "You flag operational follow-ups for the agency team (e.g. CPL above benchmark, leads not contacted).")
     if flags.get("flags"):
+        flag_list = [as_text(f) for f in flags["flags"]]
         insights.append({"kind": "followup_flag", "severity": "medium",
-                         "title": f"{len(flags['flags'])} follow-up(s)", "body": "; ".join(flags["flags"]),
-                         "data": flags})
+                         "title": f"{len(flag_list)} follow-up(s)", "body": "; ".join(flag_list),
+                         "data": {"flags": flag_list}})
 
     actions = ollama_json(
         f"Client data:\n{ctxs}\n\nReturn JSON: {{\"actions\": [\"specific next action for the agency\"]}} "
         f"(max 4, ordered by impact).",
         "You recommend concrete next actions for the agency to improve this client's results.")
     if actions.get("actions"):
+        action_list = [as_text(a) for a in actions["actions"]]
         insights.append({"kind": "next_actions", "title": "Recommended next actions",
-                         "body": "\n".join(f"• {a}" for a in actions["actions"]), "data": actions})
+                         "body": "\n".join(f"• {a}" for a in action_list), "data": {"actions": action_list}})
 
     report = ollama(
         f"Client data:\n{ctxs}\n\nWrite a short, friendly monthly update (4-6 sentences) the agency can "

@@ -119,7 +119,7 @@ export function SkyBand({
 
 /* ----------------- PillCTA — universal glass-pill button ----------------- */
 type PillCTAProps = {
-  to?: "/" | "/demo" | "/pricing" | "/login" | "/portal-preview";
+  to?: "/" | "/demo" | "/pricing" | "/login" | "/portal";
   href?: string;
   children: ReactNode;
   tone?: "primary" | "ghost" | "amber";

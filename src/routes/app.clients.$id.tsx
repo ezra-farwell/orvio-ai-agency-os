@@ -1,22 +1,35 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { clients, campaigns, leads, usd } from "@/mock/data";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { usd } from "@/mock/data";
+import { getClient, getCampaigns, getLeads } from "@/lib/data";
+import { getClientInsights } from "@/lib/data/insights";
 import { PageHeader, Card, KPI, StatusBadge } from "@/components/bits";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { Sparkles, ArrowRight, AlertTriangle, ListChecks } from "lucide-react";
+
+const churnTone = (sev?: string | null) =>
+  sev === "high" ? "var(--danger)" : sev === "medium" ? "var(--warning)" : "var(--success)";
 
 export const Route = createFileRoute("/app/clients/$id")({
   component: ClientDetail,
-  loader: ({ params }) => {
-    const c = clients.find(x => x.id === params.id);
-    if (!c) throw notFound();
-    return c;
-  },
-  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.name ?? "Client"} — Orvio` }] }),
+  loader: ({ params }) => ({ id: params.id }),
+  head: () => ({ meta: [{ title: "Client — Orvio" }] }),
 });
 
 function ClientDetail() {
-  const c = Route.useLoaderData();
-  const myCampaigns = campaigns.filter(x => x.client === c.name);
-  const myLeads = leads.filter(l => l.client === c.name);
+  const { id } = Route.useLoaderData();
+  const { data: client } = useQuery({ queryKey: ["client", id], queryFn: () => getClient(id) });
+  const { data: allCampaigns = [] } = useQuery({ queryKey: ["campaigns"], queryFn: getCampaigns });
+  const { data: allLeads = [] } = useQuery({ queryKey: ["leads"], queryFn: getLeads });
+  const { data: ai = {} } = useQuery({
+    queryKey: ["client-insights", id], queryFn: () => getClientInsights(id),
+  });
+  const c = client;
+  const myCampaigns = c ? allCampaigns.filter(x => x.client === c.name) : [];
+  const myLeads = c ? allLeads.filter(l => l.client === c.name) : [];
+  const churn = ai.churn_risk;
+  const actions = ai.next_actions?.data?.actions ?? [];
+  const flags = ai.followup_flag?.data?.flags ?? [];
+  if (!c) return <div className="px-6 py-10 text-[13px] text-muted-foreground">Loading client…</div>;
   return (
     <>
       <PageHeader
@@ -74,11 +87,50 @@ function ClientDetail() {
             </ul>
           </Card>
           <Card className="p-5">
-            <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-[var(--accent)]" /><div className="text-[15px] font-semibold">Account insight</div></div>
-            <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              {c.name} is {c.status === "at-risk" ? "trending toward churn — engagement down 32% this week" : "performing in the top quartile of accounts"}. Recommended next move: refresh ad creative from Brand Memory and schedule a monthly check-in.
-            </p>
-            <Link to="/app/studio" className="mt-3 inline-flex items-center gap-1 text-[12.5px] font-medium text-[var(--accent)] hover:underline">Generate new creative <ArrowRight className="h-3 w-3" /></Link>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-[var(--accent)]" /><div className="text-[15px] font-semibold">Orvio AI insight</div></div>
+              {churn?.score != null && (
+                <span className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-semibold" style={{ color: churnTone(churn.severity), background: `color-mix(in oklab, ${churnTone(churn.severity)} 14%, transparent)` }}>
+                  <AlertTriangle className="h-3 w-3" /> Churn {Math.round(Number(churn.score))}
+                </span>
+              )}
+            </div>
+
+            {!ai.churn_risk && !ai.next_actions && (
+              <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">No AI insight yet — runs after the local Orvio AI worker analyzes this client.</p>
+            )}
+
+            {churn?.body && (
+              <p className="mt-3 text-[13px] leading-relaxed text-foreground/90">{churn.body}</p>
+            )}
+
+            {flags.length > 0 && (
+              <div className="mt-4">
+                <div className="text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--text-faint)]">Follow-ups</div>
+                <ul className="mt-2 space-y-1.5">
+                  {flags.map((f, i) => (
+                    <li key={i} className="flex items-start gap-2 text-[12.5px] text-foreground/85">
+                      <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--warning)]" /> {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {actions.length > 0 && (
+              <div className="mt-4">
+                <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--text-faint)]"><ListChecks className="h-3.5 w-3.5" /> Recommended next actions</div>
+                <ul className="mt-2 space-y-1.5">
+                  {actions.map((a, i) => (
+                    <li key={i} className="flex items-start gap-2 text-[12.5px] text-foreground/85">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" /> {a}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <Link to="/app/studio" className="mt-4 inline-flex items-center gap-1 text-[12.5px] font-medium text-[var(--accent)] hover:underline">Generate new creative <ArrowRight className="h-3 w-3" /></Link>
           </Card>
         </div>
       </div>

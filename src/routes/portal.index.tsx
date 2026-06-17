@@ -4,6 +4,7 @@ import { PageHeader, StatusGroupCard, HeroNumber } from "@/components/bits";
 import { TONE_COLOR, num } from "@/mock/data";
 import { getProfile } from "@/lib/auth";
 import { getClient, getClients, getClientDashboard, getLeads } from "@/lib/data";
+import { getClientInsights } from "@/lib/data/insights";
 import { Phone, MessageSquare } from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
@@ -34,6 +35,9 @@ function ClientOverview() {
   });
   const { data: allLeads = [] } = useQuery({
     queryKey: ["leads"], queryFn: getLeads, enabled: !!clientId,
+  });
+  const { data: insights = {} } = useQuery({
+    queryKey: ["client-insights", clientId], queryFn: () => getClientInsights(clientId!), enabled: !!clientId,
   });
 
   const myLeads = client ? allLeads.filter((l) => l.client === client.name).slice(0, 4) : [];
@@ -105,12 +109,22 @@ function ClientOverview() {
           </div>
         </section>
 
+        {insights.analytics_summary?.body && (
+          <div className="rounded-2xl border border-border bg-[var(--surface)] p-6">
+            <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-faint)]">THIS MONTH, IN PLAIN ENGLISH</div>
+            <p className="mt-3 whitespace-pre-line text-[14px] leading-relaxed text-foreground/90">{insights.analytics_summary.body}</p>
+          </div>
+        )}
+
         <div className="rounded-2xl border border-border bg-[var(--surface)] p-6">
           <div className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-faint)]">LATEST FROM YOUR AGENCY</div>
-          <p className="mt-3 text-[14px] leading-relaxed text-foreground/90">
-            Your Roof Replacement campaign is converting <span className="font-semibold">1.6× better</span> than average. We're scaling daily budget by 20% and refreshing three creatives. Approvals coming Thursday.
+          <p className="mt-3 whitespace-pre-line text-[14px] leading-relaxed text-foreground/90">
+            {insights.client_report?.body ??
+              "Your monthly update will appear here once your agency's latest report is ready."}
           </p>
-          <div className="mt-3 text-[11.5px] text-[var(--text-faint)]">From your agency · 3h ago</div>
+          <div className="mt-3 text-[11.5px] text-[var(--text-faint)]">
+            From your agency{insights.client_report ? "" : " · pending"}
+          </div>
         </div>
       </div>
     </>
