@@ -37,3 +37,8 @@ dist-ssr
 
 # Vercel build output
 .vercel
+
+.env
+.env.local
+supabase/.env
+orvio-ai/orvio-ai-agency-os/
