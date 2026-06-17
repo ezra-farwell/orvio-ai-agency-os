@@ -1,3 +1,4 @@
+import type React from "react";
 // Brand logos as inline SVG. Keep them recognizable but lightweight —
 // these render at 16–40px in cards, badges, and table cells.
 
@@ -121,7 +122,7 @@ export function CallRailLogo({ className, size = 24 }: Props) {
 }
 
 // Generic — looks up by provider id/name.
-const MAP: Record<string, (p: Props) => JSX.Element> = {
+const MAP: Record<string, (p: Props) => React.ReactElement> = {
   meta: MetaLogo,
   "meta ads": MetaLogo,
   "meta marketing api": MetaLogo,
