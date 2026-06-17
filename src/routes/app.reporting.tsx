@@ -149,8 +149,6 @@ function Reporting() {
   );
 }
 
-}
-
 function AIInsightCard({ best, worst, totals }: { best?: Campaign; worst?: Campaign; totals: ReturnType<typeof agg> }) {
   const [recommendation, setRecommendation] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -200,7 +198,9 @@ function AIInsightCard({ best, worst, totals }: { best?: Campaign; worst?: Campa
     </Card>
   );
 }
-  if (!c) return null;
+
+function CampaignCard({ label, tone, Icon, c }: { label: string; tone: "success" | "warning"; Icon: any; c?: Campaign }) {
+
   const color = tone === "success" ? "var(--success)" : "var(--warning)";
   return (
     <Card className="p-5">
