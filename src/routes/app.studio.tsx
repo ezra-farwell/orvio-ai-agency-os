@@ -1,8 +1,9 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PageHeader, Card, StatusBadge } from "@/components/bits";
+import { BrandLogo } from "@/components/BrandLogo";
 import { assets, clients, type ContentAsset } from "@/mock/data";
-import { Sparkles, Plus, Wand2, Send } from "lucide-react";
+import { Sparkles, Plus, Wand2, Send, FileText, Mail, BarChart3, Image as ImageIcon, Layout, Palette } from "lucide-react";
 
 export const Route = createFileRoute("/app/studio")({
   component: StudioLayout,
