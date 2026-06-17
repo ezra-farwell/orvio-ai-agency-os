@@ -10,14 +10,14 @@ export const Route = createFileRoute("/app/settings/integrations")({
   head: () => ({ meta: [{ title: "Integrations — Orvio" }] }),
 });
 
-const live: { id: Provider | "stripe"; name: string; blurb: string; color: string }[] = [
+const live: { id: Provider; name: string; blurb: string; color: string }[] = [
   { id: "meta", name: "Meta Ads", blurb: "Pull spend, leads, CPL and CTR from Facebook & Instagram campaigns.", color: "#0866FF" },
-  { id: "google", name: "Google Ads", blurb: "Search, Performance Max and Demand Gen metrics in one place.", color: "#4285F4" },
   { id: "stripe", name: "Stripe", blurb: "Invoices, subscriptions and homeowner payments via Stripe Connect.", color: "#635BFF" },
 ];
 
 // Ad platforms with public APIs we plan to add next.
 const soon = [
+  { name: "Google Ads", blurb: "Search, Performance Max and Demand Gen metrics in one place.", color: "#4285F4" },
   { name: "TikTok Ads", blurb: "TikTok Marketing API — spend, leads and creative performance.", color: "#FE2C55" },
   { name: "Reddit Ads", blurb: "Reddit Ads API — community-targeted campaign reporting.", color: "#FF4500" },
   { name: "X Ads", blurb: "X (Twitter) Ads API — promoted post and lead metrics.", color: "#1D9BF0" },
