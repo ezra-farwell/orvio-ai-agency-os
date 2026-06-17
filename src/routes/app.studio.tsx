@@ -112,14 +112,33 @@ function StudioHome() {
   );
 }
 
+const KIND_BG: Record<ContentAsset["kind"], string> = {
+  Ad:      "from-[#4F46E5] via-[#7C3AED] to-[#A972FF]",
+  Social:  "from-[#FE2C55] via-[#FF4F8A] to-[#FFB199]",
+  Landing: "from-[#10B981] via-[#34D399] to-[#A7F3D0]",
+  Email:   "from-[#F59E0B] via-[#FBBF24] to-[#FDE68A]",
+  Report:  "from-[#0EA5E9] via-[#38BDF8] to-[#BAE6FD]",
+  Brand:   "from-[#1F2937] via-[#374151] to-[#6B7280]",
+};
+const KIND_ICON: Record<ContentAsset["kind"], typeof FileText> = {
+  Ad: ImageIcon, Social: ImageIcon, Landing: Layout,
+  Email: Mail, Report: BarChart3, Brand: Palette,
+};
+
 function AssetCard({ a }: { a: ContentAsset }) {
+  const Icon = KIND_ICON[a.kind];
   return (
     <div className="rounded-2xl border border-border bg-background p-3">
-      <div className="grid aspect-[16/9] place-items-center rounded-lg bg-gradient-to-br from-[var(--surface-2)] to-background">
+      <div className={`relative grid aspect-[16/9] place-items-center overflow-hidden rounded-lg bg-gradient-to-br ${KIND_BG[a.kind]} text-white`}>
+        {a.platform && (
+          <div className="absolute right-2 top-2 rounded-md bg-black/30 p-1 backdrop-blur-sm">
+            <BrandLogo name={a.platform} size={18} />
+          </div>
+        )}
         <div className="text-center">
-          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{a.kind}</div>
-          {a.platform && <div className="mt-1 text-[12px] font-medium">{a.platform}</div>}
-          <Sparkles className="mx-auto mt-2 h-5 w-5 text-[var(--accent)]/40" />
+          <Icon className="mx-auto h-8 w-8 opacity-90" />
+          <div className="mt-1.5 text-[10px] font-medium uppercase tracking-[0.15em] opacity-80">{a.kind}</div>
+          {a.platform && <div className="text-[11.5px] font-semibold">{a.platform}</div>}
         </div>
       </div>
       <div className="mt-3">
