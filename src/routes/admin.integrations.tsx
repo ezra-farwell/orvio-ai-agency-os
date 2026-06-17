@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader, Card, StatusBadge } from "@/components/bits";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/admin/integrations")({
   component: Integrations,
@@ -23,10 +24,13 @@ function Integrations() {
         {ints.map(([name,state,note,kind]) => (
           <Card key={name as string} className="p-5">
             <div className="flex items-center justify-between">
-              <div className="text-[14px] font-semibold">{name}</div>
+              <div className="flex items-center gap-3">
+                <BrandLogo name={name as string} size={32} />
+                <div className="text-[14px] font-semibold">{name}</div>
+              </div>
               <StatusBadge kind={kind as any}>{state}</StatusBadge>
             </div>
-            <div className="mt-1 text-[12.5px] text-muted-foreground">{note}</div>
+            <div className="mt-2 ml-[44px] text-[12.5px] text-muted-foreground">{note}</div>
           </Card>
         ))}
       </div>

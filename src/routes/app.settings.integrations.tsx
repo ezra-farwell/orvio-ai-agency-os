@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Check, Loader2, ArrowRight, Clock } from "lucide-react";
 import { PageHeader } from "@/components/bits";
+import { BrandLogo } from "@/components/BrandLogo";
 import { getConnections, startConnect, type Provider } from "@/lib/integrations";
 
 export const Route = createFileRoute("/app/settings/integrations")({
@@ -10,17 +11,17 @@ export const Route = createFileRoute("/app/settings/integrations")({
   head: () => ({ meta: [{ title: "Integrations — Orvio" }] }),
 });
 
-const live: { id: Provider; name: string; blurb: string; color: string }[] = [
-  { id: "meta", name: "Meta Ads", blurb: "Pull spend, leads, CPL and CTR from Facebook & Instagram campaigns.", color: "#0866FF" },
-  { id: "stripe", name: "Stripe", blurb: "Invoices, subscriptions and homeowner payments via Stripe Connect.", color: "#635BFF" },
+const live: { id: Provider; name: string; blurb: string }[] = [
+  { id: "meta", name: "Meta Ads", blurb: "Pull spend, leads, CPL and CTR from Facebook & Instagram campaigns." },
+  { id: "stripe", name: "Stripe", blurb: "Invoices, subscriptions and homeowner payments via Stripe Connect." },
 ];
 
 // Ad platforms with public APIs we plan to add next.
 const soon = [
-  { name: "Google Ads", blurb: "Search, Performance Max and Demand Gen metrics in one place.", color: "#4285F4" },
-  { name: "TikTok Ads", blurb: "TikTok Marketing API — spend, leads and creative performance.", color: "#FE2C55" },
-  { name: "Reddit Ads", blurb: "Reddit Ads API — community-targeted campaign reporting.", color: "#FF4500" },
-  { name: "X Ads", blurb: "X (Twitter) Ads API — promoted post and lead metrics.", color: "#1D9BF0" },
+  { name: "Google Ads", blurb: "Search, Performance Max and Demand Gen metrics in one place." },
+  { name: "TikTok Ads", blurb: "TikTok Marketing API — spend, leads and creative performance." },
+  { name: "Reddit Ads", blurb: "Reddit Ads API — community-targeted campaign reporting." },
+  { name: "X Ads", blurb: "X (Twitter) Ads API — promoted post and lead metrics." },
 ];
 
 function Integrations() {
@@ -58,9 +59,7 @@ function Integrations() {
               return (
                 <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-[var(--surface)] p-5">
                   <div className="flex items-center justify-between">
-                    <span className="grid h-9 w-9 place-items-center rounded-lg text-[13px] font-bold text-white" style={{ background: p.color }}>
-                      {p.name.charAt(0)}
-                    </span>
+                    <BrandLogo name={p.id} size={36} />
                     {connected && (
                       <span className="inline-flex items-center gap-1 rounded-full bg-[var(--success-soft)] px-2 py-0.5 text-[11px] font-semibold text-[var(--success)]">
                         <Check className="h-3 w-3" /> Connected
@@ -94,9 +93,7 @@ function Integrations() {
             {soon.map((p) => (
               <div key={p.name} className="flex flex-col rounded-2xl border border-dashed border-border bg-[var(--surface)]/50 p-5">
                 <div className="flex items-center justify-between">
-                  <span className="grid h-9 w-9 place-items-center rounded-lg text-[13px] font-bold text-white opacity-70" style={{ background: p.color }}>
-                    {p.name.charAt(0)}
-                  </span>
+                  <BrandLogo name={p.name} size={36} className="opacity-80" />
                   <span className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
                     <Clock className="h-3 w-3" /> Coming soon
                   </span>
