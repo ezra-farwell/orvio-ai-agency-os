@@ -30,12 +30,8 @@ function Integrations() {
 
   const statusOf = (id: string) => connections.find((c) => c.provider === id)?.status;
 
-  async function connect(id: Provider | "stripe") {
+  async function connect(id: Provider) {
     setError(null);
-    if (id === "stripe") {
-      setError("Stripe Connect setup is coming once your Stripe keys are added.");
-      return;
-    }
     setBusy(id);
     try {
       await startConnect(id);

@@ -5,7 +5,7 @@
 
 import { supabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
-export type Provider = "meta" | "google";
+export type Provider = "meta" | "google" | "stripe";
 
 export type Connection = {
   id: string;
@@ -31,7 +31,7 @@ function requireClient() {
  */
 export async function startConnect(provider: Provider): Promise<void> {
   const sb = requireClient();
-  const fn = provider === "meta" ? "meta-oauth" : "google-oauth";
+  const fn = provider === "meta" ? "meta-oauth" : provider === "google" ? "google-oauth" : "stripe-connect";
   const { data, error } = await sb.functions.invoke(`${fn}?action=start`, { method: "GET" });
   if (error) throw error;
   if (!data?.url) throw new Error("No consent URL returned");
