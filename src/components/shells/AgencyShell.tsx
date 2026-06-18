@@ -10,6 +10,7 @@ import { getProfile, signOut } from "@/lib/auth";
 
 const nav = [
   { to: "/app", label: "Overview", icon: LayoutDashboard, exact: true },
+  { to: "/app/ai", label: "Orvio AI", icon: Sparkles },
   { to: "/app/clients", label: "Clients", icon: Users },
   { to: "/app/reporting", label: "Ad Reporting", icon: BarChart3 },
   { to: "/app/leads", label: "Leads", icon: Inbox },
