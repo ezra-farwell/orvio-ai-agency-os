@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { z } from "zod";
 import {
   Bot,
   Clock3,
@@ -21,6 +22,23 @@ import {
 import { getClients } from "@/lib/data";
 
 export const Route = createFileRoute("/app/ai")({
+  validateSearch: z.object({
+    clientId: z.string().uuid().optional().catch(undefined),
+    mode: z
+      .enum([
+        "general",
+        "campaign_ideas",
+        "lead_followup",
+        "creative_prompt",
+        "competitor_summary",
+        "report_summary",
+        "task_recommendations",
+      ])
+      .optional()
+      .catch(undefined),
+    prompt: z.string().max(8_000).optional().catch(undefined),
+    context: z.string().max(12_000).optional().catch(undefined),
+  }),
   component: OrvioAIPage,
   head: () => ({ meta: [{ title: "Orvio AI — Agency assistant" }] }),
 });
@@ -88,19 +106,22 @@ function formatConversationTime(value: string): string {
 }
 
 function OrvioAIPage() {
+  const search = Route.useSearch();
   const queryClient = useQueryClient();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const initialClientAppliedRef = useRef(false);
   const [activeConversationId, setActiveConversationId] = useState<string>();
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const [clientId, setClientId] = useState("");
-  const [mode, setMode] = useState<Mode>("general");
-  const [draft, setDraft] = useState("");
+  const [mode, setMode] = useState<Mode>(search.mode ?? "general");
+  const [draft, setDraft] = useState(search.prompt ?? "");
+  const [starterContext, setStarterContext] = useState(search.context ?? "");
   const [loadingConversationId, setLoadingConversationId] = useState<string>();
   const [sending, setSending] = useState(false);
   const [deletingId, setDeletingId] = useState<string>();
   const [error, setError] = useState<string>();
 
-  const { data: clients = [] } = useQuery({
+  const { data: clients = [], isSuccess: clientsLoaded } = useQuery({
     queryKey: ["clients"],
     queryFn: getClients,
   });
@@ -125,12 +146,26 @@ function OrvioAIPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, sending]);
 
+  useEffect(() => {
+    if (initialClientAppliedRef.current || !clientsLoaded) return;
+    initialClientAppliedRef.current = true;
+
+    if (
+      search.clientId &&
+      clients.some((client) => client.id === search.clientId)
+    ) {
+      setClientId(search.clientId);
+    }
+  }, [clients, clientsLoaded, search.clientId]);
+
   function startNewChat() {
+    initialClientAppliedRef.current = true;
     setActiveConversationId(undefined);
     setMessages([]);
     setClientId("");
     setMode("general");
     setDraft("");
+    setStarterContext("");
     setError(undefined);
   }
 
@@ -211,6 +246,7 @@ function OrvioAIPage() {
           conversationId: activeConversationId,
           clientId: clientId || undefined,
           mode,
+          context: starterContext || undefined,
         },
       });
 
@@ -409,6 +445,25 @@ function OrvioAIPage() {
                   ? " Start a new chat to change client or mode."
                   : ""}
               </p>
+              {starterContext && !conversationLocked && (
+                <div className="mt-3 rounded-lg border border-border bg-[var(--surface-2)] px-3 py-2.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10.5px] font-medium uppercase tracking-[0.08em] text-[var(--text-faint)]">
+                      Context included when sent
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setStarterContext("")}
+                      className="text-[11px] text-muted-foreground hover:text-foreground"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <div className="mt-1 whitespace-pre-wrap text-[11.5px] leading-relaxed text-muted-foreground">
+                    {starterContext}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="min-h-[360px] flex-1 overflow-y-auto px-4 py-5 sm:px-6">
