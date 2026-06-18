@@ -30,6 +30,28 @@ const conversationInput = z.object({
   conversationId: z.string().uuid(),
 });
 
+const taskSuggestionStatuses = [
+  "suggested",
+  "accepted",
+  "dismissed",
+  "completed",
+] as const;
+
+const listTaskSuggestionsInput = z.object({
+  clientId: z.string().uuid().optional(),
+  status: z.enum(taskSuggestionStatuses).optional(),
+  limit: z.number().int().min(1).max(50).default(20),
+});
+
+const updateTaskSuggestionStatusInput = z.object({
+  taskSuggestionId: z.string().uuid(),
+  status: z.enum(["accepted", "dismissed", "completed"]),
+});
+
+const taskSuggestionInput = z.object({
+  taskSuggestionId: z.string().uuid(),
+});
+
 const testInput = z.object({
   message: z.string().trim().min(1).max(2_000),
 });
@@ -48,12 +70,14 @@ export const sendOrvioAIMessage = createServerFn({ method: "POST" })
       { OrvioAIConfigurationError },
       { completeOrvioAIChat, OrvioAIProviderError },
       persistence,
+      taskSuggestions,
     ] = await Promise.all([
       import("../ai/context.server"),
       import("../ai/prompts.server"),
       import("../ai/config.server"),
       import("../ai/provider.server"),
       import("../ai/persistence.server"),
+      import("../ai/task-suggestions.server"),
     ]);
 
     const supabase = context.supabase as unknown as Parameters<
@@ -160,7 +184,14 @@ export const sendOrvioAIMessage = createServerFn({ method: "POST" })
       };
 
       const result = await completeOrvioAIChat({
-        systemPrompt: buildOrvioAISystemPrompt(effectiveMode),
+        systemPrompt: [
+          buildOrvioAISystemPrompt(effectiveMode),
+          effectiveMode === "task_recommendations"
+            ? taskSuggestions.TASK_RECOMMENDATION_FORMAT_INSTRUCTIONS
+            : "",
+        ]
+          .filter(Boolean)
+          .join("\n\n"),
         userMessage: data.message,
         context: aiContext,
         temperature: 0.3,
@@ -186,6 +217,22 @@ export const sendOrvioAIMessage = createServerFn({ method: "POST" })
         agencyId: requestContext.agencyId,
         conversationId: conversation.id,
       });
+
+      if (effectiveMode === "task_recommendations") {
+        try {
+          await persistence.insertOrvioAITaskSuggestions({
+            supabase,
+            agencyId: requestContext.agencyId,
+            userId: requestContext.profile.userId,
+            clientId: effectiveClientId,
+            conversationId: conversation.id,
+            suggestions: taskSuggestions.extractTaskSuggestions(result.text),
+          });
+        } catch {
+          // Task extraction and persistence are best-effort. The chat response
+          // remains usable even when no safe suggestions can be saved.
+        }
+      }
 
       return {
         conversationId: conversation.id,
@@ -366,6 +413,124 @@ export const deleteOrvioAIConversation = createServerFn({ method: "POST" })
       return { deleted: true, conversationId: data.conversationId };
     } catch {
       throw publicError("The Orvio AI conversation could not be deleted.");
+    }
+  });
+
+export const listOrvioAITaskSuggestions = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(listTaskSuggestionsInput)
+  .handler(async ({ data, context }) => {
+    const [{ loadOrvioAIRequestContext }, persistence] = await Promise.all([
+      import("../ai/context.server"),
+      import("../ai/persistence.server"),
+    ]);
+
+    try {
+      const requestContext = await loadOrvioAIRequestContext({
+        supabase: context.supabase as unknown as Parameters<
+          typeof loadOrvioAIRequestContext
+        >[0]["supabase"],
+        userId: context.userId,
+        clientId: data.clientId,
+      });
+      const rows = await persistence.listOrvioAITaskSuggestionsForAgency({
+        supabase: context.supabase as unknown as Parameters<
+          typeof persistence.listOrvioAITaskSuggestionsForAgency
+        >[0]["supabase"],
+        agencyId: requestContext.agencyId,
+        clientId: data.clientId,
+        status: data.status,
+        limit: data.limit,
+      });
+
+      return rows.map((row) => ({
+        id: row.id,
+        clientId: row.client_id ?? undefined,
+        clientName: row.clients?.name,
+        sourceConversationId: row.source_conversation_id ?? undefined,
+        title: row.title,
+        description: row.description ?? undefined,
+        priority: row.priority ?? undefined,
+        status: row.status,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+      }));
+    } catch {
+      throw publicError("Orvio AI task suggestions could not be loaded.");
+    }
+  });
+
+export const updateOrvioAITaskSuggestionStatus = createServerFn({
+  method: "POST",
+})
+  .middleware([requireSupabaseAuth])
+  .inputValidator(updateTaskSuggestionStatusInput)
+  .handler(async ({ data, context }) => {
+    const [{ loadOrvioAIRequestContext }, persistence] = await Promise.all([
+      import("../ai/context.server"),
+      import("../ai/persistence.server"),
+    ]);
+
+    try {
+      const requestContext = await loadOrvioAIRequestContext({
+        supabase: context.supabase as unknown as Parameters<
+          typeof loadOrvioAIRequestContext
+        >[0]["supabase"],
+        userId: context.userId,
+      });
+      const row =
+        await persistence.updateOrvioAITaskSuggestionStatusForAgency({
+          supabase: context.supabase as unknown as Parameters<
+            typeof persistence.updateOrvioAITaskSuggestionStatusForAgency
+          >[0]["supabase"],
+          agencyId: requestContext.agencyId,
+          taskSuggestionId: data.taskSuggestionId,
+          status: data.status,
+        });
+
+      return {
+        id: row.id,
+        clientId: row.client_id ?? undefined,
+        sourceConversationId: row.source_conversation_id ?? undefined,
+        title: row.title,
+        description: row.description ?? undefined,
+        priority: row.priority ?? undefined,
+        status: row.status,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+      };
+    } catch {
+      throw publicError("The Orvio AI task suggestion could not be updated.");
+    }
+  });
+
+export const deleteOrvioAITaskSuggestion = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(taskSuggestionInput)
+  .handler(async ({ data, context }) => {
+    const [{ loadOrvioAIRequestContext }, persistence] = await Promise.all([
+      import("../ai/context.server"),
+      import("../ai/persistence.server"),
+    ]);
+
+    try {
+      const requestContext = await loadOrvioAIRequestContext({
+        supabase: context.supabase as unknown as Parameters<
+          typeof loadOrvioAIRequestContext
+        >[0]["supabase"],
+        userId: context.userId,
+      });
+      await persistence.deleteOrvioAITaskSuggestionForAgency({
+        supabase: context.supabase as unknown as Parameters<
+          typeof persistence.deleteOrvioAITaskSuggestionForAgency
+        >[0]["supabase"],
+        agencyId: requestContext.agencyId,
+        taskSuggestionId: data.taskSuggestionId,
+      });
+
+      return { deleted: true, taskSuggestionId: data.taskSuggestionId };
+    } catch {
+      throw publicError("The Orvio AI task suggestion could not be deleted.");
     }
   });
 

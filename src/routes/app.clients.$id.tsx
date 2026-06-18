@@ -5,6 +5,7 @@ import { getClient, getCampaigns, getLeads } from "@/lib/data";
 import { getClientInsights } from "@/lib/data/insights";
 import { PageHeader, Card, KPI, StatusBadge } from "@/components/bits";
 import { Sparkles, ArrowRight, AlertTriangle, ListChecks } from "lucide-react";
+import { AIActionMenu } from "@/components/orvio/AIActionMenu";
 
 const churnTone = (sev?: string | null) =>
   sev === "high" ? "var(--danger)" : sev === "medium" ? "var(--warning)" : "var(--success)";
@@ -29,6 +30,18 @@ function ClientDetail() {
   const churn = ai.churn_risk;
   const actions = ai.next_actions?.data?.actions ?? [];
   const flags = ai.followup_flag?.data?.flags ?? [];
+  const clientContext = c ? [
+    `Client: ${c.name}`,
+    `Category: ${c.category || "Not provided"}`,
+    `Service area: ${c.area || "Not provided"}`,
+    `Status: ${c.status}`,
+    `Monthly spend: ${usd(c.monthlySpend)}`,
+    `Leads: ${c.leads}`,
+    `CPL: $${c.cpl.toFixed(2)}`,
+    `Campaigns shown: ${myCampaigns.length}`,
+    `Recent leads shown: ${myLeads.length}`,
+    churn?.body ? `Existing churn insight: ${churn.body}` : "",
+  ].filter(Boolean).join("\n") : "";
   if (!c) return <div className="px-6 py-10 text-[13px] text-muted-foreground">Loading client…</div>;
   return (
     <>
@@ -42,6 +55,16 @@ function ClientDetail() {
         sub={`${c.category} · ${c.area} · ${c.owner}`}
         actions={
           <>
+            <AIActionMenu
+              clientId={c.id}
+              actions={[
+                { label: "Summarize this client", mode: "general", prompt: `Summarize ${c.name}'s current account health and identify the most important next steps.`, context: clientContext },
+                { label: "Generate campaign ideas", mode: "campaign_ideas", prompt: `Generate practical paid-ad campaign ideas for ${c.name}.`, context: clientContext },
+                { label: "Write lead follow-up plan", mode: "lead_followup", prompt: `Create a lead follow-up plan for ${c.name}.`, context: clientContext },
+                { label: "Explain churn risk", mode: "general", prompt: `Explain ${c.name}'s churn risk or client health in practical agency terms.`, context: clientContext },
+                { label: "Create report summary", mode: "report_summary", prompt: `Draft a clear client-ready performance summary for ${c.name}.`, context: clientContext },
+              ]}
+            />
             <Link to="/portal" className="inline-flex h-9 items-center rounded-lg border border-border bg-background px-3 text-[13px] hover:bg-[var(--surface-2)]">View client portal →</Link>
             <Link to="/app/studio/brand/$id" params={{ id: c.id }} className="inline-flex h-9 items-center rounded-lg bg-foreground px-3 text-[13px] font-medium text-background">Open brand memory</Link>
           </>

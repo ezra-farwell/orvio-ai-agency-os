@@ -4,20 +4,26 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 import {
   Bot,
+  Check,
   Clock3,
+  ListTodo,
   LoaderCircle,
   MessageSquarePlus,
   Send,
   Sparkles,
   Trash2,
+  X,
 } from "lucide-react";
 
 import { Card, PageHeader } from "@/components/bits";
 import {
+  deleteOrvioAITaskSuggestion,
   deleteOrvioAIConversation,
   getOrvioAIConversation,
   listOrvioAIConversations,
+  listOrvioAITaskSuggestions,
   sendOrvioAIMessage,
+  updateOrvioAITaskSuggestionStatus,
 } from "@/lib/api/ai.functions";
 import { getClients } from "@/lib/data";
 
@@ -91,6 +97,10 @@ type ConversationMessage = Awaited<
   ReturnType<typeof getOrvioAIConversation>
 >["messages"][number];
 
+type TaskSuggestion = Awaited<
+  ReturnType<typeof listOrvioAITaskSuggestions>
+>[number];
+
 function cleanError(error: unknown, fallback: string): string {
   if (error instanceof Error && error.message) return error.message;
   return fallback;
@@ -119,6 +129,7 @@ function OrvioAIPage() {
   const [loadingConversationId, setLoadingConversationId] = useState<string>();
   const [sending, setSending] = useState(false);
   const [deletingId, setDeletingId] = useState<string>();
+  const [updatingTaskId, setUpdatingTaskId] = useState<string>();
   const [error, setError] = useState<string>();
 
   const { data: clients = [], isSuccess: clientsLoaded } = useQuery({
@@ -133,6 +144,15 @@ function OrvioAIPage() {
   } = useQuery({
     queryKey: ["orvio-ai-conversations"],
     queryFn: () => listOrvioAIConversations({ data: { limit: 50 } }),
+  });
+
+  const {
+    data: taskSuggestions = [],
+    isLoading: taskSuggestionsLoading,
+    error: taskSuggestionsError,
+  } = useQuery({
+    queryKey: ["orvio-ai-task-suggestions"],
+    queryFn: () => listOrvioAITaskSuggestions({ data: { limit: 20 } }),
   });
 
   const clientNames = useMemo(
@@ -273,6 +293,11 @@ function OrvioAIPage() {
       await queryClient.invalidateQueries({
         queryKey: ["orvio-ai-conversations"],
       });
+      if (result.mode === "task_recommendations") {
+        await queryClient.invalidateQueries({
+          queryKey: ["orvio-ai-task-suggestions"],
+        });
+      }
     } catch (sendError) {
       setError(cleanError(sendError, "Orvio AI could not complete the request."));
       await queryClient.invalidateQueries({
@@ -280,6 +305,55 @@ function OrvioAIPage() {
       });
     } finally {
       setSending(false);
+    }
+  }
+
+  async function updateTaskStatus(
+    taskSuggestionId: string,
+    status: "accepted" | "dismissed" | "completed",
+  ) {
+    if (updatingTaskId) return;
+    setUpdatingTaskId(taskSuggestionId);
+    setError(undefined);
+
+    try {
+      await updateOrvioAITaskSuggestionStatus({
+        data: { taskSuggestionId, status },
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["orvio-ai-task-suggestions"],
+      });
+    } catch (updateError) {
+      setError(
+        cleanError(
+          updateError,
+          "The Orvio AI task suggestion could not be updated.",
+        ),
+      );
+    } finally {
+      setUpdatingTaskId(undefined);
+    }
+  }
+
+  async function deleteTaskSuggestion(taskSuggestionId: string) {
+    if (updatingTaskId) return;
+    setUpdatingTaskId(taskSuggestionId);
+    setError(undefined);
+
+    try {
+      await deleteOrvioAITaskSuggestion({ data: { taskSuggestionId } });
+      await queryClient.invalidateQueries({
+        queryKey: ["orvio-ai-task-suggestions"],
+      });
+    } catch (deleteError) {
+      setError(
+        cleanError(
+          deleteError,
+          "The Orvio AI task suggestion could not be deleted.",
+        ),
+      );
+    } finally {
+      setUpdatingTaskId(undefined);
     }
   }
 
@@ -445,6 +519,13 @@ function OrvioAIPage() {
                   ? " Start a new chat to change client or mode."
                   : ""}
               </p>
+              {mode === "task_recommendations" && (
+                <p className="mt-1.5 flex items-center gap-1.5 text-[11.5px] text-muted-foreground">
+                  <ListTodo className="h-3.5 w-3.5 text-[var(--accent)]" />
+                  Concrete recommendations may be saved as suggested tasks for
+                  review.
+                </p>
+              )}
               {starterContext && !conversationLocked && (
                 <div className="mt-3 rounded-lg border border-border bg-[var(--surface-2)] px-3 py-2.5">
                   <div className="flex items-center justify-between gap-3">
@@ -503,12 +584,20 @@ function OrvioAIPage() {
               )}
             </div>
 
-            {(error || conversationsError) && (
+            <SuggestedTasksPanel
+              tasks={taskSuggestions}
+              loading={taskSuggestionsLoading}
+              updatingTaskId={updatingTaskId}
+              onStatusChange={updateTaskStatus}
+              onDelete={deleteTaskSuggestion}
+            />
+
+            {(error || conversationsError || taskSuggestionsError) && (
               <div className="mx-4 mb-3 rounded-lg border border-[var(--danger)]/30 bg-[var(--danger-soft)] px-3 py-2.5 text-[12.5px] text-[var(--danger)] sm:mx-5">
                 {error ||
                   cleanError(
-                    conversationsError,
-                    "Orvio AI conversations could not be loaded.",
+                    conversationsError || taskSuggestionsError,
+                    "Orvio AI data could not be loaded.",
                   )}
               </div>
             )}
@@ -559,6 +648,138 @@ function OrvioAIPage() {
         </Card>
       </div>
     </>
+  );
+}
+
+function SuggestedTasksPanel({
+  tasks,
+  loading,
+  updatingTaskId,
+  onStatusChange,
+  onDelete,
+}: {
+  tasks: TaskSuggestion[];
+  loading: boolean;
+  updatingTaskId?: string;
+  onStatusChange: (
+    taskSuggestionId: string,
+    status: "accepted" | "dismissed" | "completed",
+  ) => Promise<void>;
+  onDelete: (taskSuggestionId: string) => Promise<void>;
+}) {
+  return (
+    <section className="border-t border-border bg-[var(--surface)] px-4 py-3 sm:px-5">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <ListTodo className="h-4 w-4 text-[var(--accent)]" />
+          <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--text-faint)]">
+            Suggested Tasks
+          </span>
+        </div>
+        <span className="text-[11px] text-muted-foreground">{tasks.length}</span>
+      </div>
+
+      {loading ? (
+        <div className="mt-3 flex items-center gap-2 text-[12px] text-muted-foreground">
+          <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
+          Loading suggested tasks…
+        </div>
+      ) : tasks.length === 0 ? (
+        <p className="mt-2 text-[11.5px] text-muted-foreground">
+          Task recommendations saved by Orvio AI will appear here.
+        </p>
+      ) : (
+        <div className="mt-2 max-h-52 space-y-2 overflow-y-auto pr-1">
+          {tasks.map((task) => {
+            const updating = updatingTaskId === task.id;
+            return (
+              <div
+                key={task.id}
+                className="rounded-lg border border-border bg-background px-3 py-2.5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-[12.5px] font-medium">{task.title}</div>
+                    <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[10.5px] text-muted-foreground">
+                      <span className="capitalize">
+                        {task.priority || "No priority"}
+                      </span>
+                      <span>·</span>
+                      <span className="capitalize">{task.status}</span>
+                      {task.clientName && (
+                        <>
+                          <span>·</span>
+                          <span>{task.clientName}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  {updating && (
+                    <LoaderCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 animate-spin text-muted-foreground" />
+                  )}
+                </div>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {task.status !== "accepted" && (
+                    <TaskAction
+                      disabled={Boolean(updatingTaskId)}
+                      onClick={() => void onStatusChange(task.id, "accepted")}
+                    >
+                      <Check className="h-3 w-3" />
+                      Accept
+                    </TaskAction>
+                  )}
+                  {task.status !== "completed" && (
+                    <TaskAction
+                      disabled={Boolean(updatingTaskId)}
+                      onClick={() => void onStatusChange(task.id, "completed")}
+                    >
+                      Complete
+                    </TaskAction>
+                  )}
+                  {task.status !== "dismissed" && (
+                    <TaskAction
+                      disabled={Boolean(updatingTaskId)}
+                      onClick={() => void onStatusChange(task.id, "dismissed")}
+                    >
+                      <X className="h-3 w-3" />
+                      Dismiss
+                    </TaskAction>
+                  )}
+                  <TaskAction
+                    danger
+                    disabled={Boolean(updatingTaskId)}
+                    onClick={() => void onDelete(task.id)}
+                  >
+                    <Trash2 className="h-3 w-3" />
+                    Delete
+                  </TaskAction>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function TaskAction({
+  children,
+  danger = false,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { danger?: boolean }) {
+  return (
+    <button
+      type="button"
+      className={`inline-flex h-7 items-center gap-1 rounded-md border px-2 text-[10.5px] font-medium disabled:cursor-not-allowed disabled:opacity-40 ${
+        danger
+          ? "border-[var(--danger)]/25 text-[var(--danger)] hover:bg-[var(--danger-soft)]"
+          : "border-border text-muted-foreground hover:bg-[var(--surface-2)] hover:text-foreground"
+      }`}
+      {...props}
+    >
+      {children}
+    </button>
   );
 }
 

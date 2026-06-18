@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { PageHeader, Card, StatusBadge } from "@/components/bits";
 import { leads, clients, type Lead } from "@/mock/data";
 import { Phone, Mail, X } from "lucide-react";
+import { AIActionLink } from "@/components/orvio/AIActionMenu";
 
 export const Route = createFileRoute("/app/leads")({
   component: Leads,
@@ -19,6 +20,7 @@ function Leads() {
     (status === "all" || l.status === status) &&
     (client === "all" || l.client === client)
   ), [status, client]);
+  const selectedClient = sel ? clients.find((c) => c.name === sel.client) : undefined;
 
   return (
     <>
@@ -83,6 +85,23 @@ function Leads() {
               <div className="mt-1 rounded-lg border border-border bg-[var(--surface-2)] p-3 text-[13px]">{sel.notes}</div>
             </div>
             <div className="flex flex-wrap gap-2">
+              <AIActionLink
+                clientId={selectedClient?.id}
+                mode="lead_followup"
+                prompt={`Draft a practical follow-up message and next-step plan for ${sel.name}.`}
+                context={[
+                  `Lead: ${sel.name}`,
+                  `Client: ${sel.client}`,
+                  `Campaign: ${sel.campaign}`,
+                  `Source: ${sel.source}`,
+                  `Status: ${sel.status}`,
+                  `Submitted: ${sel.submitted}`,
+                  `Visible notes: ${sel.notes || "None"}`,
+                ].join("\n")}
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-3 text-[13px] font-medium text-[var(--accent)]"
+              >
+                Draft follow-up with AI
+              </AIActionLink>
               <button className="inline-flex h-9 items-center gap-1 rounded-lg bg-foreground px-3 text-[13px] font-medium text-background">Mark contacted</button>
               <button className="inline-flex h-9 items-center gap-1 rounded-lg border border-border bg-background px-3 text-[13px]">Convert to job</button>
               <button className="inline-flex h-9 items-center gap-1 rounded-lg border border-border bg-background px-3 text-[13px]">Assign owner</button>
