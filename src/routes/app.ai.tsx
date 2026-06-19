@@ -101,6 +101,8 @@ type TaskSuggestion = Awaited<
   ReturnType<typeof listOrvioAITaskSuggestions>
 >[number];
 
+const taskSuggestionsQueryKey = ["orvio-ai-task-suggestions"] as const;
+
 function cleanError(error: unknown, fallback: string): string {
   if (error instanceof Error && error.message) return error.message;
   return fallback;
@@ -151,8 +153,21 @@ function OrvioAIPage() {
     isLoading: taskSuggestionsLoading,
     error: taskSuggestionsError,
   } = useQuery({
-    queryKey: ["orvio-ai-task-suggestions"],
-    queryFn: () => listOrvioAITaskSuggestions({ data: { limit: 20 } }),
+    queryKey: taskSuggestionsQueryKey,
+    queryFn: async () => {
+      const [suggested, accepted] = await Promise.all([
+        listOrvioAITaskSuggestions({
+          data: { status: "suggested", limit: 20 },
+        }),
+        listOrvioAITaskSuggestions({
+          data: { status: "accepted", limit: 20 },
+        }),
+      ]);
+
+      return [...suggested, ...accepted]
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+        .slice(0, 20);
+    },
   });
 
   const clientNames = useMemo(
@@ -295,7 +310,7 @@ function OrvioAIPage() {
       });
       if (result.mode === "task_recommendations") {
         await queryClient.invalidateQueries({
-          queryKey: ["orvio-ai-task-suggestions"],
+          queryKey: taskSuggestionsQueryKey,
         });
       }
     } catch (sendError) {
@@ -317,19 +332,26 @@ function OrvioAIPage() {
     setError(undefined);
 
     try {
-      await updateOrvioAITaskSuggestionStatus({
+      const updatedTask = await updateOrvioAITaskSuggestionStatus({
         data: { taskSuggestionId, status },
       });
-      await queryClient.invalidateQueries({
-        queryKey: ["orvio-ai-task-suggestions"],
-      });
-    } catch (updateError) {
-      setError(
-        cleanError(
-          updateError,
-          "The Orvio AI task suggestion could not be updated.",
-        ),
+
+      queryClient.setQueryData<TaskSuggestion[]>(
+        taskSuggestionsQueryKey,
+        (current = []) =>
+          status === "accepted"
+            ? current.map((task) =>
+                task.id === taskSuggestionId
+                  ? { ...task, ...updatedTask }
+                  : task,
+              )
+            : current.filter((task) => task.id !== taskSuggestionId),
       );
+      await queryClient.invalidateQueries({
+        queryKey: taskSuggestionsQueryKey,
+      });
+    } catch {
+      setError("The task suggestion could not be updated. Please try again.");
     } finally {
       setUpdatingTaskId(undefined);
     }
@@ -342,16 +364,16 @@ function OrvioAIPage() {
 
     try {
       await deleteOrvioAITaskSuggestion({ data: { taskSuggestionId } });
-      await queryClient.invalidateQueries({
-        queryKey: ["orvio-ai-task-suggestions"],
-      });
-    } catch (deleteError) {
-      setError(
-        cleanError(
-          deleteError,
-          "The Orvio AI task suggestion could not be deleted.",
-        ),
+      queryClient.setQueryData<TaskSuggestion[]>(
+        taskSuggestionsQueryKey,
+        (current = []) =>
+          current.filter((task) => task.id !== taskSuggestionId),
       );
+      await queryClient.invalidateQueries({
+        queryKey: taskSuggestionsQueryKey,
+      });
+    } catch {
+      setError("The task suggestion could not be deleted. Please try again.");
     } finally {
       setUpdatingTaskId(undefined);
     }
