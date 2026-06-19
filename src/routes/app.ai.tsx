@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
@@ -101,10 +101,66 @@ type TaskSuggestion = Awaited<
   ReturnType<typeof listOrvioAITaskSuggestions>
 >[number];
 
+type TaskSuggestionData = {
+  active: TaskSuggestion[];
+  history: TaskSuggestion[];
+};
+
+type StarterPrompt = {
+  category: string;
+  label: string;
+  mode: Mode;
+  prompt: string;
+};
+
+const STARTER_PROMPTS: StarterPrompt[] = [
+  { category: "Campaign ideas", label: "Campaign angles", mode: "campaign_ideas", prompt: "Give me five campaign angles for a local service business." },
+  { category: "Campaign ideas", label: "Offer ideas", mode: "campaign_ideas", prompt: "Develop three compelling offers for the selected client." },
+  { category: "Campaign ideas", label: "Ad hooks", mode: "campaign_ideas", prompt: "Write ten concise ad hooks based on common customer pain points." },
+  { category: "Campaign ideas", label: "Campaign structure", mode: "campaign_ideas", prompt: "Outline a practical 30-day campaign structure and testing plan." },
+  { category: "Campaign ideas", label: "Seasonal campaign", mode: "campaign_ideas", prompt: "Create a seasonal campaign concept with an offer, audience, and CTA." },
+  { category: "Campaign ideas", label: "Retargeting plan", mode: "campaign_ideas", prompt: "Suggest a simple retargeting campaign for leads who did not book." },
+  { category: "Lead follow-up", label: "New lead sequence", mode: "lead_followup", prompt: "Create a five-touch follow-up sequence for a new inbound lead." },
+  { category: "Lead follow-up", label: "Missed call SMS", mode: "lead_followup", prompt: "Draft a short missed-call text message that encourages a reply." },
+  { category: "Lead follow-up", label: "No-response email", mode: "lead_followup", prompt: "Write a concise follow-up email for a lead who stopped responding." },
+  { category: "Lead follow-up", label: "Appointment reminder", mode: "lead_followup", prompt: "Draft an appointment reminder SMS with a clear confirmation CTA." },
+  { category: "Lead follow-up", label: "Lead qualification", mode: "lead_followup", prompt: "Create five practical questions for qualifying a new lead." },
+  { category: "Lead follow-up", label: "Reactivation message", mode: "lead_followup", prompt: "Draft a reactivation message for older leads who never booked." },
+  { category: "Client reports", label: "Monthly summary", mode: "report_summary", prompt: "Create a concise structure for a client-ready monthly performance summary." },
+  { category: "Client reports", label: "Explain CPL change", mode: "report_summary", prompt: "Explain how to communicate a rising cost per lead without sounding defensive." },
+  { category: "Client reports", label: "Wins and risks", mode: "report_summary", prompt: "Turn the available performance context into wins, risks, and next actions." },
+  { category: "Client reports", label: "Missing data", mode: "report_summary", prompt: "Identify the data needed for a useful client performance report." },
+  { category: "Client reports", label: "Executive update", mode: "report_summary", prompt: "Draft a brief executive update a busy client can scan in one minute." },
+  { category: "Client reports", label: "Reporting agenda", mode: "report_summary", prompt: "Create an agenda for a 30-minute monthly client reporting call." },
+  { category: "Task recommendations", label: "Weekly priorities", mode: "task_recommendations", prompt: "Recommend the highest-priority agency tasks for the next seven days." },
+  { category: "Task recommendations", label: "Today's actions", mode: "task_recommendations", prompt: "Give me five concrete agency actions to complete today." },
+  { category: "Task recommendations", label: "Client next steps", mode: "task_recommendations", prompt: "Recommend the next operational steps for the selected client." },
+  { category: "Task recommendations", label: "Onboarding checklist", mode: "task_recommendations", prompt: "Create a prioritized onboarding checklist for a new agency client." },
+  { category: "Task recommendations", label: "Reporting cleanup", mode: "task_recommendations", prompt: "Recommend tasks to improve our reporting process and data quality." },
+  { category: "Task recommendations", label: "Agency bottlenecks", mode: "task_recommendations", prompt: "Help me identify likely agency workflow bottlenecks and actions to fix them." },
+  { category: "Creative prompts", label: "Static ad prompt", mode: "creative_prompt", prompt: "Write an original image-generation prompt for a high-converting static ad." },
+  { category: "Creative prompts", label: "Short video prompt", mode: "creative_prompt", prompt: "Create a 15-second vertical video prompt with a hook, scene plan, and CTA." },
+  { category: "Creative prompts", label: "Before and after", mode: "creative_prompt", prompt: "Create a compliant before-and-after creative concept without unrealistic claims." },
+  { category: "Creative prompts", label: "Testimonial concept", mode: "creative_prompt", prompt: "Write a customer-testimonial ad concept and production prompt." },
+  { category: "Creative prompts", label: "Problem-solution ad", mode: "creative_prompt", prompt: "Create a problem-solution ad prompt for the selected client." },
+  { category: "Creative prompts", label: "Creative variations", mode: "creative_prompt", prompt: "Generate five distinct visual directions for testing the same offer." },
+  { category: "Client health", label: "Churn risk review", mode: "general", prompt: "Assess likely churn risks for the selected client using only available context." },
+  { category: "Client health", label: "Health check-in", mode: "general", prompt: "Draft a proactive client health check-in message." },
+  { category: "Client health", label: "Relationship risks", mode: "general", prompt: "List warning signs that an agency-client relationship may be at risk." },
+  { category: "Client health", label: "Retention plan", mode: "general", prompt: "Create a practical 30-day client retention plan." },
+  { category: "Client health", label: "Expectation reset", mode: "general", prompt: "Draft talking points for resetting expectations with a concerned client." },
+];
+
 const taskSuggestionsQueryKey = ["orvio-ai-task-suggestions"] as const;
 
 function cleanError(error: unknown, fallback: string): string {
-  if (error instanceof Error && error.message) return error.message;
+  if (
+    error instanceof Error &&
+    error.message.length <= 160 &&
+    /^(Orvio AI|The Orvio AI)/.test(error.message)
+  ) {
+    return error.message;
+  }
   return fallback;
 }
 
@@ -122,6 +178,7 @@ function OrvioAIPage() {
   const queryClient = useQueryClient();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const initialClientAppliedRef = useRef(false);
+  const sendLockRef = useRef(false);
   const [activeConversationId, setActiveConversationId] = useState<string>();
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const [clientId, setClientId] = useState("");
@@ -149,24 +206,35 @@ function OrvioAIPage() {
   });
 
   const {
-    data: taskSuggestions = [],
+    data: taskSuggestions = { active: [], history: [] },
     isLoading: taskSuggestionsLoading,
     error: taskSuggestionsError,
   } = useQuery({
     queryKey: taskSuggestionsQueryKey,
     queryFn: async () => {
-      const [suggested, accepted] = await Promise.all([
+      const [suggested, accepted, completed, dismissed] = await Promise.all([
         listOrvioAITaskSuggestions({
           data: { status: "suggested", limit: 20 },
         }),
         listOrvioAITaskSuggestions({
           data: { status: "accepted", limit: 20 },
         }),
+        listOrvioAITaskSuggestions({
+          data: { status: "completed", limit: 20 },
+        }),
+        listOrvioAITaskSuggestions({
+          data: { status: "dismissed", limit: 20 },
+        }),
       ]);
 
-      return [...suggested, ...accepted]
-        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-        .slice(0, 20);
+      return {
+        active: [...suggested, ...accepted]
+          .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+          .slice(0, 20),
+        history: [...completed, ...dismissed]
+          .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+          .slice(0, 20),
+      };
     },
   });
 
@@ -194,6 +262,7 @@ function OrvioAIPage() {
   }, [clients, clientsLoaded, search.clientId]);
 
   function startNewChat() {
+    if (sendLockRef.current) return;
     initialClientAppliedRef.current = true;
     setActiveConversationId(undefined);
     setMessages([]);
@@ -205,7 +274,7 @@ function OrvioAIPage() {
   }
 
   async function openConversation(conversation: Conversation) {
-    if (sending || loadingConversationId) return;
+    if (sendLockRef.current || loadingConversationId) return;
     setLoadingConversationId(conversation.id);
     setError(undefined);
 
@@ -232,6 +301,13 @@ function OrvioAIPage() {
   ) {
     event.stopPropagation();
     if (deletingId || sending) return;
+    if (
+      !window.confirm(
+        "Delete this conversation? This action cannot be undone.",
+      )
+    ) {
+      return;
+    }
     setDeletingId(conversationId);
     setError(undefined);
 
@@ -255,7 +331,8 @@ function OrvioAIPage() {
 
   async function sendMessage() {
     const message = draft.trim();
-    if (!message || sending) return;
+    if (!message || sendLockRef.current) return;
+    sendLockRef.current = true;
 
     const optimisticId = `pending-${Date.now()}`;
     const optimisticMessage: ConversationMessage = {
@@ -314,11 +391,21 @@ function OrvioAIPage() {
         });
       }
     } catch (sendError) {
-      setError(cleanError(sendError, "Orvio AI could not complete the request."));
+      setMessages((current) =>
+        current.filter((item) => item.id !== optimisticId),
+      );
+      setDraft(message);
+      setError(
+        cleanError(
+          sendError,
+          "Orvio AI could not complete the request. Please try again.",
+        ),
+      );
       await queryClient.invalidateQueries({
         queryKey: ["orvio-ai-conversations"],
       });
     } finally {
+      sendLockRef.current = false;
       setSending(false);
     }
   }
@@ -336,16 +423,39 @@ function OrvioAIPage() {
         data: { taskSuggestionId, status },
       });
 
-      queryClient.setQueryData<TaskSuggestion[]>(
+      queryClient.setQueryData<TaskSuggestionData>(
         taskSuggestionsQueryKey,
-        (current = []) =>
-          status === "accepted"
-            ? current.map((task) =>
-                task.id === taskSuggestionId
-                  ? { ...task, ...updatedTask }
-                  : task,
-              )
-            : current.filter((task) => task.id !== taskSuggestionId),
+        (current = { active: [], history: [] }) => {
+          const existing = [...current.active, ...current.history].find(
+            (task) => task.id === taskSuggestionId,
+          );
+          if (!existing) return current;
+
+          const task = { ...existing, ...updatedTask };
+          return status === "accepted"
+            ? {
+                active: [
+                  task,
+                  ...current.active.filter(
+                    (item) => item.id !== taskSuggestionId,
+                  ),
+                ],
+                history: current.history.filter(
+                  (item) => item.id !== taskSuggestionId,
+                ),
+              }
+            : {
+                active: current.active.filter(
+                  (item) => item.id !== taskSuggestionId,
+                ),
+                history: [
+                  task,
+                  ...current.history.filter(
+                    (item) => item.id !== taskSuggestionId,
+                  ),
+                ],
+              };
+        },
       );
       await queryClient.invalidateQueries({
         queryKey: taskSuggestionsQueryKey,
@@ -364,10 +474,16 @@ function OrvioAIPage() {
 
     try {
       await deleteOrvioAITaskSuggestion({ data: { taskSuggestionId } });
-      queryClient.setQueryData<TaskSuggestion[]>(
+      queryClient.setQueryData<TaskSuggestionData>(
         taskSuggestionsQueryKey,
-        (current = []) =>
-          current.filter((task) => task.id !== taskSuggestionId),
+        (current = { active: [], history: [] }) => ({
+          active: current.active.filter(
+            (task) => task.id !== taskSuggestionId,
+          ),
+          history: current.history.filter(
+            (task) => task.id !== taskSuggestionId,
+          ),
+        }),
       );
       await queryClient.invalidateQueries({
         queryKey: taskSuggestionsQueryKey,
@@ -400,7 +516,8 @@ function OrvioAIPage() {
               <button
                 type="button"
                 onClick={startNewChat}
-                className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-foreground px-3 text-[13px] font-medium text-background transition-opacity hover:opacity-90"
+                disabled={sending}
+                className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-foreground px-3 text-[13px] font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <MessageSquarePlus className="h-4 w-4" />
                 New Chat
@@ -436,13 +553,14 @@ function OrvioAIPage() {
                         <div
                           className={`group flex w-full items-start gap-1 rounded-lg px-1 py-1 transition-colors ${
                             active
-                              ? "bg-[var(--surface-2)]"
+                              ? "border border-[var(--accent)]/35 bg-[var(--accent-soft)]"
                               : "hover:bg-[var(--surface-2)]/70"
                           }`}
                         >
                           <button
                             type="button"
                             onClick={() => openConversation(conversation)}
+                            aria-current={active ? "page" : undefined}
                             className="flex min-w-0 flex-1 items-start gap-2 px-1.5 py-1.5 text-left"
                           >
                             <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[var(--accent-soft)] text-[var(--accent)]">
@@ -465,6 +583,7 @@ function OrvioAIPage() {
                                 </span>
                                 <span>·</span>
                                 <span>
+                                  Updated{" "}
                                   {formatConversationTime(
                                     conversation.updatedAt,
                                   )}
@@ -474,11 +593,13 @@ function OrvioAIPage() {
                           </button>
                           <button
                             type="button"
-                            title="Delete conversation"
+                            title="Delete conversation permanently"
+                            aria-label={`Delete ${conversation.title || "conversation"}`}
+                            disabled={Boolean(deletingId) || sending}
                             onClick={(event) =>
                               removeConversation(event, conversation.id)
                             }
-                            className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-md text-muted-foreground opacity-0 hover:bg-[var(--danger-soft)] hover:text-[var(--danger)] group-hover:opacity-100 focus:opacity-100"
+                            className="mt-1 grid h-7 w-7 shrink-0 place-items-center rounded-md text-muted-foreground opacity-0 hover:bg-[var(--danger-soft)] hover:text-[var(--danger)] disabled:cursor-not-allowed disabled:opacity-30 group-hover:opacity-100 focus:opacity-100"
                           >
                             {deletingId === conversation.id ? (
                               <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
@@ -541,6 +662,18 @@ function OrvioAIPage() {
                   ? " Start a new chat to change client or mode."
                   : ""}
               </p>
+              {clientsLoaded && clients.length === 0 && (
+                <p className="mt-2 rounded-lg border border-dashed border-border bg-[var(--surface-2)]/55 px-3 py-2 text-[11.5px] leading-relaxed text-muted-foreground">
+                  No clients yet. Orvio AI still works agency-wide.{" "}
+                  <Link
+                    to="/app/clients"
+                    className="font-medium text-foreground underline decoration-border underline-offset-2 hover:decoration-foreground"
+                  >
+                    Add your first client
+                  </Link>{" "}
+                  when you are ready for client-specific context.
+                </p>
+              )}
               {mode === "task_recommendations" && (
                 <p className="mt-1.5 flex items-center gap-1.5 text-[11.5px] text-muted-foreground">
                   <ListTodo className="h-3.5 w-3.5 text-[var(--accent)]" />
@@ -581,7 +714,11 @@ function OrvioAIPage() {
                 <EmptyChat
                   mode={activeMode.label}
                   clientName={clientId ? clientNames.get(clientId) : undefined}
-                  onPrompt={setDraft}
+                  firstConversation={conversations.length === 0}
+                  onPrompt={(starter) => {
+                    setMode(starter.mode);
+                    setDraft(starter.prompt);
+                  }}
                 />
               ) : (
                 <div className="mx-auto max-w-3xl space-y-5">
@@ -596,7 +733,7 @@ function OrvioAIPage() {
                       <div className="rounded-2xl border border-border bg-[var(--surface)] px-4 py-3">
                         <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
                           <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
-                          Orvio AI is working…
+                          Thinking with local model…
                         </div>
                       </div>
                     </div>
@@ -607,7 +744,8 @@ function OrvioAIPage() {
             </div>
 
             <SuggestedTasksPanel
-              tasks={taskSuggestions}
+              activeTasks={taskSuggestions.active}
+              historyTasks={taskSuggestions.history}
               loading={taskSuggestionsLoading}
               updatingTaskId={updatingTaskId}
               onStatusChange={updateTaskStatus}
@@ -674,13 +812,15 @@ function OrvioAIPage() {
 }
 
 function SuggestedTasksPanel({
-  tasks,
+  activeTasks,
+  historyTasks,
   loading,
   updatingTaskId,
   onStatusChange,
   onDelete,
 }: {
-  tasks: TaskSuggestion[];
+  activeTasks: TaskSuggestion[];
+  historyTasks: TaskSuggestion[];
   loading: boolean;
   updatingTaskId?: string;
   onStatusChange: (
@@ -689,6 +829,8 @@ function SuggestedTasksPanel({
   ) => Promise<void>;
   onDelete: (taskSuggestionId: string) => Promise<void>;
 }) {
+  const [showHistory, setShowHistory] = useState(false);
+
   return (
     <section className="border-t border-border bg-[var(--surface)] px-4 py-3 sm:px-5">
       <div className="flex items-center justify-between gap-3">
@@ -698,7 +840,20 @@ function SuggestedTasksPanel({
             Suggested Tasks
           </span>
         </div>
-        <span className="text-[11px] text-muted-foreground">{tasks.length}</span>
+        <div className="flex items-center gap-3">
+          {historyTasks.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowHistory((current) => !current)}
+              className="text-[11px] font-medium text-muted-foreground hover:text-foreground"
+            >
+              {showHistory ? "Hide history" : `History (${historyTasks.length})`}
+            </button>
+          )}
+          <span className="text-[11px] text-muted-foreground">
+            {activeTasks.length} active
+          </span>
+        </div>
       </div>
 
       {loading ? (
@@ -706,82 +861,148 @@ function SuggestedTasksPanel({
           <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
           Loading suggested tasks…
         </div>
-      ) : tasks.length === 0 ? (
+      ) : activeTasks.length === 0 ? (
         <p className="mt-2 text-[11.5px] text-muted-foreground">
-          Task recommendations saved by Orvio AI will appear here.
+          No active tasks. New recommendations saved by Orvio AI will appear
+          here.
         </p>
       ) : (
         <div className="mt-2 max-h-52 space-y-2 overflow-y-auto pr-1">
-          {tasks.map((task) => {
-            const updating = updatingTaskId === task.id;
-            return (
-              <div
+          {activeTasks.map((task) => (
+            <TaskSuggestionCard
+              key={task.id}
+              task={task}
+              updating={updatingTaskId === task.id}
+              showStatusActions
+              actionsDisabled={Boolean(updatingTaskId)}
+              onStatusChange={onStatusChange}
+              onDelete={onDelete}
+            />
+          ))}
+        </div>
+      )}
+
+      {showHistory && historyTasks.length > 0 && (
+        <div className="mt-3 border-t border-border pt-3">
+          <div className="mb-2 text-[10.5px] font-medium uppercase tracking-[0.08em] text-[var(--text-faint)]">
+            Completed and dismissed
+          </div>
+          <div className="max-h-40 space-y-2 overflow-y-auto pr-1">
+            {historyTasks.map((task) => (
+              <TaskSuggestionCard
                 key={task.id}
-                className="rounded-lg border border-border bg-background px-3 py-2.5"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="text-[12.5px] font-medium">{task.title}</div>
-                    <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[10.5px] text-muted-foreground">
-                      <span className="capitalize">
-                        {task.priority || "No priority"}
-                      </span>
-                      <span>·</span>
-                      <span className="capitalize">{task.status}</span>
-                      {task.clientName && (
-                        <>
-                          <span>·</span>
-                          <span>{task.clientName}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  {updating && (
-                    <LoaderCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 animate-spin text-muted-foreground" />
-                  )}
-                </div>
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  {task.status !== "accepted" && (
-                    <TaskAction
-                      disabled={Boolean(updatingTaskId)}
-                      onClick={() => void onStatusChange(task.id, "accepted")}
-                    >
-                      <Check className="h-3 w-3" />
-                      Accept
-                    </TaskAction>
-                  )}
-                  {task.status !== "completed" && (
-                    <TaskAction
-                      disabled={Boolean(updatingTaskId)}
-                      onClick={() => void onStatusChange(task.id, "completed")}
-                    >
-                      Complete
-                    </TaskAction>
-                  )}
-                  {task.status !== "dismissed" && (
-                    <TaskAction
-                      disabled={Boolean(updatingTaskId)}
-                      onClick={() => void onStatusChange(task.id, "dismissed")}
-                    >
-                      <X className="h-3 w-3" />
-                      Dismiss
-                    </TaskAction>
-                  )}
-                  <TaskAction
-                    danger
-                    disabled={Boolean(updatingTaskId)}
-                    onClick={() => void onDelete(task.id)}
-                  >
-                    <Trash2 className="h-3 w-3" />
-                    Delete
-                  </TaskAction>
-                </div>
-              </div>
-            );
-          })}
+                task={task}
+                updating={updatingTaskId === task.id}
+                actionsDisabled={Boolean(updatingTaskId)}
+                onStatusChange={onStatusChange}
+                onDelete={onDelete}
+              />
+            ))}
+          </div>
         </div>
       )}
     </section>
+  );
+}
+
+function TaskSuggestionCard({
+  task,
+  updating,
+  showStatusActions = false,
+  actionsDisabled,
+  onStatusChange,
+  onDelete,
+}: {
+  task: TaskSuggestion;
+  updating: boolean;
+  showStatusActions?: boolean;
+  actionsDisabled: boolean;
+  onStatusChange: (
+    taskSuggestionId: string,
+    status: "accepted" | "dismissed" | "completed",
+  ) => Promise<void>;
+  onDelete: (taskSuggestionId: string) => Promise<void>;
+}) {
+  return (
+    <div className="rounded-lg border border-border bg-background px-3 py-2.5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-[12.5px] font-medium">{task.title}</div>
+          <div className="mt-1 flex flex-wrap items-center gap-1.5">
+            <TaskBadge value={task.priority || "No priority"} kind="priority" />
+            <TaskBadge value={task.status} kind="status" />
+            {task.clientName && (
+              <span className="text-[10.5px] text-muted-foreground">
+                {task.clientName}
+              </span>
+            )}
+          </div>
+        </div>
+        {updating && (
+          <LoaderCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 animate-spin text-muted-foreground" />
+        )}
+      </div>
+      <div className="mt-2 flex flex-wrap gap-1.5">
+        {showStatusActions && task.status !== "accepted" && (
+          <TaskAction
+            disabled={actionsDisabled}
+            onClick={() => void onStatusChange(task.id, "accepted")}
+          >
+            <Check className="h-3 w-3" />
+            Accept
+          </TaskAction>
+        )}
+        {showStatusActions && (
+          <>
+            <TaskAction
+              disabled={actionsDisabled}
+              onClick={() => void onStatusChange(task.id, "completed")}
+            >
+              Complete
+            </TaskAction>
+            <TaskAction
+              disabled={actionsDisabled}
+              onClick={() => void onStatusChange(task.id, "dismissed")}
+            >
+              <X className="h-3 w-3" />
+              Dismiss
+            </TaskAction>
+          </>
+        )}
+        <TaskAction
+          danger
+          disabled={actionsDisabled}
+          onClick={() => void onDelete(task.id)}
+        >
+          <Trash2 className="h-3 w-3" />
+          Delete
+        </TaskAction>
+      </div>
+    </div>
+  );
+}
+
+function TaskBadge({
+  value,
+  kind,
+}: {
+  value: string;
+  kind: "priority" | "status";
+}) {
+  const emphasized =
+    value === "urgent" || value === "high" || value === "accepted";
+  return (
+    <span
+      className={`rounded-full border px-2 py-0.5 text-[9.5px] font-medium capitalize ${
+        emphasized
+          ? "border-[var(--accent)]/25 bg-[var(--accent-soft)] text-[var(--accent)]"
+          : kind === "status"
+            ? "border-border bg-[var(--surface-2)] text-muted-foreground"
+            : "border-border text-muted-foreground"
+      }`}
+    >
+      {value}
+    </span>
   );
 }
 
@@ -808,45 +1029,54 @@ function TaskAction({
 function EmptyChat({
   mode,
   clientName,
+  firstConversation,
   onPrompt,
 }: {
   mode: string;
   clientName?: string;
-  onPrompt: (prompt: string) => void;
+  firstConversation: boolean;
+  onPrompt: (starter: StarterPrompt) => void;
 }) {
-  const prompts = clientName
-    ? [
-        `Give me three practical priorities for ${clientName}.`,
-        `What information is missing before I make a recommendation for ${clientName}?`,
-        `Draft a concise client-ready update for ${clientName}.`,
-      ]
-    : [
-        "Help me prioritize agency work for this week.",
-        "Create a client reporting checklist for my team.",
-        "Suggest a practical follow-up process for new leads.",
-      ];
-
   return (
-    <div className="grid h-full min-h-[340px] place-items-center">
-      <div className="w-full max-w-xl text-center">
+    <div className="mx-auto flex min-h-[340px] w-full max-w-4xl flex-col justify-center py-4">
+      <div className="text-center">
         <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl border border-border bg-[var(--surface)] text-[var(--accent)]">
           <Bot className="h-5 w-5" />
         </span>
-        <h2 className="mt-4 text-[18px] font-semibold">Start with Orvio AI</h2>
+        <h2 className="mt-4 text-[18px] font-semibold">
+          {firstConversation ? "Meet Orvio AI" : "Start a new chat"}
+        </h2>
         <p className="mx-auto mt-1 max-w-md text-[13px] leading-relaxed text-muted-foreground">
           {clientName
             ? `Working in ${mode} mode with context for ${clientName}.`
             : `Working in ${mode} mode without a selected client.`}
         </p>
-        <div className="mt-5 grid gap-2 text-left sm:grid-cols-3">
-          {prompts.map((prompt) => (
+        <p className="mx-auto mt-2 max-w-2xl text-[12px] leading-relaxed text-muted-foreground">
+          Use Orvio AI for campaign ideas, lead follow-up, client reports, task
+          recommendations, creative prompts, and churn or client-health
+          planning. Choose a starter below to prefill the composer—nothing
+          sends until you review it.
+        </p>
+      </div>
+
+      <div className="mt-5 max-h-[310px] overflow-y-auto rounded-xl border border-border bg-[var(--surface)] p-3">
+        <div className="grid gap-2 text-left sm:grid-cols-2 lg:grid-cols-3">
+          {STARTER_PROMPTS.map((starter) => (
             <button
-              key={prompt}
+              key={`${starter.category}-${starter.label}`}
               type="button"
-              onClick={() => onPrompt(prompt)}
-              className="rounded-xl border border-border bg-[var(--surface)] p-3 text-[12px] leading-relaxed text-muted-foreground transition-colors hover:border-[var(--border-strong)] hover:bg-[var(--surface-2)] hover:text-foreground"
+              onClick={() => onPrompt(starter)}
+              className="rounded-lg border border-border bg-background p-3 text-left transition-colors hover:border-[var(--border-strong)] hover:bg-[var(--surface-2)]"
             >
-              {prompt}
+              <span className="block text-[9.5px] font-medium uppercase tracking-[0.08em] text-[var(--accent)]">
+                {starter.category}
+              </span>
+              <span className="mt-1 block text-[12px] font-medium text-foreground">
+                {starter.label}
+              </span>
+              <span className="mt-1 block line-clamp-2 text-[10.5px] leading-relaxed text-muted-foreground">
+                {starter.prompt}
+              </span>
             </button>
           ))}
         </div>

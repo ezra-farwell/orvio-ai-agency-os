@@ -188,16 +188,16 @@ function AITaskSuggestionsWidget() {
     queryFn: async () => {
       const [suggested, accepted] = await Promise.all([
         listOrvioAITaskSuggestions({
-          data: { status: "suggested", limit: 6 },
+          data: { status: "suggested", limit: 4 },
         }),
         listOrvioAITaskSuggestions({
-          data: { status: "accepted", limit: 6 },
+          data: { status: "accepted", limit: 4 },
         }),
       ]);
 
       return [...suggested, ...accepted]
-        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-        .slice(0, 6);
+        .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+        .slice(0, 4);
     },
   });
 
