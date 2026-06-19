@@ -36,6 +36,7 @@ import { Route as AppPipelineRouteImport } from './routes/app.pipeline'
 import { Route as AppPaymentsRouteImport } from './routes/app.payments'
 import { Route as AppMessagesRouteImport } from './routes/app.messages'
 import { Route as AppLeadsRouteImport } from './routes/app.leads'
+import { Route as AppAiRouteImport } from './routes/app.ai'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminIntegrationsRouteImport } from './routes/admin.integrations'
 import { Route as AdminBillingRouteImport } from './routes/admin.billing'
@@ -183,6 +184,11 @@ const AppLeadsRoute = AppLeadsRouteImport.update({
   path: '/leads',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAiRoute = AppAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AppRoute,
+} as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -255,6 +261,7 @@ export interface FileRoutesByFullPath {
   '/admin/billing': typeof AdminBillingRoute
   '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/app/ai': typeof AppAiRoute
   '/app/leads': typeof AppLeadsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/payments': typeof AppPaymentsRoute
@@ -292,6 +299,7 @@ export interface FileRoutesByTo {
   '/admin/billing': typeof AdminBillingRoute
   '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/app/ai': typeof AppAiRoute
   '/app/leads': typeof AppLeadsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/payments': typeof AppPaymentsRoute
@@ -333,6 +341,7 @@ export interface FileRoutesById {
   '/admin/billing': typeof AdminBillingRoute
   '/admin/integrations': typeof AdminIntegrationsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/app/ai': typeof AppAiRoute
   '/app/leads': typeof AppLeadsRoute
   '/app/messages': typeof AppMessagesRoute
   '/app/payments': typeof AppPaymentsRoute
@@ -375,6 +384,7 @@ export interface FileRouteTypes {
     | '/admin/billing'
     | '/admin/integrations'
     | '/admin/settings'
+    | '/app/ai'
     | '/app/leads'
     | '/app/messages'
     | '/app/payments'
@@ -412,6 +422,7 @@ export interface FileRouteTypes {
     | '/admin/billing'
     | '/admin/integrations'
     | '/admin/settings'
+    | '/app/ai'
     | '/app/leads'
     | '/app/messages'
     | '/app/payments'
@@ -452,6 +463,7 @@ export interface FileRouteTypes {
     | '/admin/billing'
     | '/admin/integrations'
     | '/admin/settings'
+    | '/app/ai'
     | '/app/leads'
     | '/app/messages'
     | '/app/payments'
@@ -682,6 +694,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLeadsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/ai': {
+      id: '/app/ai'
+      path: '/ai'
+      fullPath: '/app/ai'
+      preLoaderRoute: typeof AppAiRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/admin/settings': {
       id: '/admin/settings'
       path: '/settings'
@@ -807,6 +826,7 @@ const AppStudioRouteWithChildren = AppStudioRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppAiRoute: typeof AppAiRoute
   AppLeadsRoute: typeof AppLeadsRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppPaymentsRoute: typeof AppPaymentsRoute
@@ -822,6 +842,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAiRoute: AppAiRoute,
   AppLeadsRoute: AppLeadsRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppPaymentsRoute: AppPaymentsRoute,
@@ -877,3 +898,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

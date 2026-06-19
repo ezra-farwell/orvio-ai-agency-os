@@ -1,10 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { PageHeader, StatusGroupCard, HeroNumber } from "@/components/bits";
 import { trend30d, usd, num, TONE_COLOR } from "@/mock/data";
 import { getAgencyDashboard, getClients, getLeads } from "@/lib/data";
-import { getChurnMap, getFollowupMap, churnTier, TIER_COLOR } from "@/lib/data/insights";
-import { Plus, Sparkles, AlertTriangle, ArrowRight, CheckCircle2 } from "lucide-react";
+import {
+  Check,
+  ListTodo,
+  LoaderCircle,
+  Plus,
+  Sparkles,
+  X,
+} from "lucide-react";
+import { AIActionLink } from "@/components/orvio/AIActionMenu";
+import {
+  listOrvioAITaskSuggestions,
+  updateOrvioAITaskSuggestionStatus,
+} from "@/lib/api/ai.functions";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export const Route = createFileRoute("/app/")({
@@ -16,18 +28,9 @@ function AgencyOverview() {
   const { data: groups = [] } = useQuery({ queryKey: ["agency-dashboard"], queryFn: getAgencyDashboard });
   const { data: clients = [] } = useQuery({ queryKey: ["clients"], queryFn: getClients });
   const { data: allLeads = [] } = useQuery({ queryKey: ["leads"], queryFn: getLeads });
-  const { data: churn = {} } = useQuery({ queryKey: ["churn-map"], queryFn: getChurnMap });
-  const { data: followups = {} } = useQuery({ queryKey: ["followup-map"], queryFn: getFollowupMap });
   const totalSpend = clients.reduce((a, c) => a + c.monthlySpend, 0);
   const totalLeads = clients.reduce((a, c) => a + c.leads, 0);
   const recentLeads = allLeads.slice(0, 6);
-
-  const analyzed = clients.filter((c) => churn[c.id]).length;
-  const totalFollowups = clients.reduce((a, c) => a + (followups[c.id]?.data?.flags?.length ?? 0), 0);
-  const attention = clients
-    .map((c) => ({ c, ins: churn[c.id], tier: churnTier(churn[c.id]), flags: followups[c.id]?.data?.flags ?? [] }))
-    .filter((x) => x.tier === "high" || x.tier === "medium" || x.flags.length > 0)
-    .sort((a, b) => Number(b.ins?.score ?? 0) - Number(a.ins?.score ?? 0));
 
   return (
     <>
@@ -36,6 +39,15 @@ function AgencyOverview() {
         sub="Performance and account health across every client."
         actions={
           <>
+            <AIActionLink
+              mode="task_recommendations"
+              prompt="Recommend the highest-priority agency tasks for the next seven days."
+              context={`Agency overview currently shows ${clients.length} clients, ${totalLeads} leads, and ${usd(totalSpend)} in monthly spend.`}
+              className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-[13px] font-medium hover:bg-[var(--surface-2)]"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-[var(--accent)]" />
+              Recommend tasks
+            </AIActionLink>
             <select className="h-9 rounded-lg border border-border bg-[var(--surface)] px-3 text-[13px]">
               <option>Last 30 days</option><option>Last 7 days</option><option>This month</option>
             </select>
@@ -52,52 +64,7 @@ function AgencyOverview() {
           {groups.map((g, i) => <StatusGroupCard key={i} group={g} />)}
         </div>
 
-        {/* Orvio AI — needs attention */}
-        {analyzed > 0 && (
-          <section className="rounded-2xl border border-border bg-[var(--surface)] p-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="grid h-7 w-7 place-items-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]"><Sparkles className="h-4 w-4" /></span>
-                <div>
-                  <div className="text-[15px] font-semibold tracking-tight">Orvio AI</div>
-                  <div className="text-[11.5px] text-[var(--text-faint)]">Watching {analyzed} {analyzed === 1 ? "client" : "clients"} · {totalFollowups} open follow-up{totalFollowups === 1 ? "" : "s"}</div>
-                </div>
-              </div>
-              <Link to="/app/clients" className="text-[12.5px] font-medium text-muted-foreground hover:text-foreground">All clients →</Link>
-            </div>
-
-            {attention.length === 0 ? (
-              <div className="mt-4 flex items-center gap-2 rounded-xl border border-dashed border-border bg-[var(--surface-2)]/40 px-4 py-3 text-[13px] text-muted-foreground">
-                <CheckCircle2 className="h-4 w-4 text-[var(--success)]" /> All clear — no clients flagged for churn risk or follow-up right now.
-              </div>
-            ) : (
-              <ul className="mt-4 space-y-2">
-                {attention.map(({ c, ins, tier, flags }) => (
-                  <li key={c.id}>
-                    <Link to="/app/clients/$id" params={{ id: c.id }} className="flex items-center gap-3 rounded-xl border border-border bg-[var(--surface-2)]/40 px-4 py-3 hover:bg-[var(--surface-2)]">
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md text-[10px] font-semibold text-white" style={{ background: c.color }}>{c.initials}</span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[13.5px] font-medium">{c.name}</span>
-                          {ins?.score != null && (
-                            <span className="inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10.5px] font-semibold" style={{ color: TIER_COLOR[tier], background: `color-mix(in oklab, ${TIER_COLOR[tier]} 14%, transparent)` }}>
-                              <AlertTriangle className="h-2.5 w-2.5" /> Churn {Math.round(Number(ins.score))}
-                            </span>
-                          )}
-                          {flags.length > 0 && (
-                            <span className="text-[10.5px] font-medium text-[var(--warning)]">{flags.length} follow-up{flags.length === 1 ? "" : "s"}</span>
-                          )}
-                        </div>
-                        <div className="truncate text-[11.5px] text-[var(--text-faint)]">{ins?.body ?? flags[0] ?? `${c.category} · ${c.area}`}</div>
-                      </div>
-                      <ArrowRight className="h-4 w-4 shrink-0 text-[var(--text-faint)]" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        )}
+        <AITaskSuggestionsWidget />
 
         {/* Hero number + trend */}
         <HeroNumber label="LEADS GENERATED" value={num(totalLeads)} sub={`${usd(totalSpend)} spent · last 30 days`}>
@@ -205,5 +172,171 @@ function AgencyOverview() {
         </section>
       </div>
     </>
+  );
+}
+
+type DashboardTaskSuggestion = Awaited<
+  ReturnType<typeof listOrvioAITaskSuggestions>
+>[number];
+
+function AITaskSuggestionsWidget() {
+  const queryClient = useQueryClient();
+  const [updatingId, setUpdatingId] = useState<string>();
+  const [actionError, setActionError] = useState<string>();
+  const { data: tasks = [], isLoading } = useQuery({
+    queryKey: ["orvio-ai-dashboard-task-suggestions"],
+    queryFn: async () => {
+      const [suggested, accepted] = await Promise.all([
+        listOrvioAITaskSuggestions({
+          data: { status: "suggested", limit: 4 },
+        }),
+        listOrvioAITaskSuggestions({
+          data: { status: "accepted", limit: 4 },
+        }),
+      ]);
+
+      return [...suggested, ...accepted]
+        .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+        .slice(0, 4);
+    },
+  });
+
+  async function setTaskStatus(
+    task: DashboardTaskSuggestion,
+    status: "accepted" | "dismissed" | "completed",
+  ) {
+    if (updatingId) return;
+    setUpdatingId(task.id);
+    setActionError(undefined);
+
+    try {
+      await updateOrvioAITaskSuggestionStatus({
+        data: { taskSuggestionId: task.id, status },
+      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["orvio-ai-dashboard-task-suggestions"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["orvio-ai-task-suggestions"],
+        }),
+      ]);
+    } catch {
+      setActionError("The task suggestion could not be updated.");
+    } finally {
+      setUpdatingId(undefined);
+    }
+  }
+
+  return (
+    <section className="rounded-2xl border border-border bg-[var(--surface)]">
+      <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+        <div>
+          <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--text-faint)]">
+            <ListTodo className="h-3.5 w-3.5 text-[var(--accent)]" />
+            Orvio AI tasks
+          </div>
+          <h2 className="mt-1 text-[16px] font-semibold tracking-tight">
+            Suggested priorities
+          </h2>
+        </div>
+        <Link
+          to="/app/ai"
+          search={{ mode: "task_recommendations" }}
+          className="text-[12px] font-medium text-muted-foreground hover:text-foreground"
+        >
+          Open Orvio AI →
+        </Link>
+      </div>
+
+      {isLoading ? (
+        <div className="flex items-center gap-2 px-5 py-5 text-[12px] text-muted-foreground">
+          <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
+          Loading suggested priorities…
+        </div>
+      ) : tasks.length === 0 ? (
+        <div className="px-5 py-5 text-[12px] text-muted-foreground">
+          No active AI task suggestions.
+        </div>
+      ) : (
+        <ul className="divide-y divide-border">
+          {tasks.map((task) => (
+            <li
+              key={task.id}
+              className="flex flex-wrap items-center gap-3 px-5 py-3"
+            >
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--accent)]" />
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-[12.5px] font-medium">
+                  {task.title}
+                </div>
+                <div className="mt-0.5 flex items-center gap-1.5 text-[10.5px] text-muted-foreground">
+                  <span className="capitalize">
+                    {task.priority || "No priority"}
+                  </span>
+                  <span>·</span>
+                  <span className="capitalize">{task.status}</span>
+                  {task.clientName && (
+                    <>
+                      <span>·</span>
+                      <span className="truncate">{task.clientName}</span>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {updatingId === task.id ? (
+                  <LoaderCircle className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+                ) : (
+                  <>
+                    {task.status === "suggested" && (
+                      <DashboardTaskAction
+                        title="Accept task"
+                        disabled={Boolean(updatingId)}
+                        onClick={() => void setTaskStatus(task, "accepted")}
+                      >
+                        <Check className="h-3.5 w-3.5" />
+                      </DashboardTaskAction>
+                    )}
+                    <DashboardTaskAction
+                      title="Complete task"
+                      disabled={Boolean(updatingId)}
+                      onClick={() => void setTaskStatus(task, "completed")}
+                    >
+                      <Check className="h-3.5 w-3.5" />
+                    </DashboardTaskAction>
+                    <DashboardTaskAction
+                      title="Dismiss task"
+                      disabled={Boolean(updatingId)}
+                      onClick={() => void setTaskStatus(task, "dismissed")}
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </DashboardTaskAction>
+                  </>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {actionError && (
+        <div className="border-t border-border px-5 py-2.5 text-[11.5px] text-[var(--danger)]">
+          {actionError}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function DashboardTaskAction(
+  props: React.ButtonHTMLAttributes<HTMLButtonElement>,
+) {
+  return (
+    <button
+      type="button"
+      className="grid h-7 w-7 place-items-center rounded-md border border-border text-muted-foreground hover:bg-[var(--surface-2)] hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+      {...props}
+    />
   );
 }
