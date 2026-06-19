@@ -175,6 +175,9 @@ export const sendOrvioAIMessage = createServerFn({ method: "POST" })
       });
 
       const aiContext = {
+        clientSelection: requestContext.client
+          ? "selected_client_context_available"
+          : "no_client_selected",
         authenticatedUser: {
           role: requestContext.profile.role,
           fullName: requestContext.profile.fullName,
@@ -185,7 +188,9 @@ export const sendOrvioAIMessage = createServerFn({ method: "POST" })
 
       const result = await completeOrvioAIChat({
         systemPrompt: [
-          buildOrvioAISystemPrompt(effectiveMode),
+          buildOrvioAISystemPrompt(effectiveMode, {
+            hasSelectedClient: Boolean(requestContext.client),
+          }),
           effectiveMode === "task_recommendations"
             ? taskSuggestions.TASK_RECOMMENDATION_FORMAT_INSTRUCTIONS
             : "",

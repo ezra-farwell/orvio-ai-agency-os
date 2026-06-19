@@ -113,43 +113,52 @@ type StarterPrompt = {
   prompt: string;
 };
 
-const STARTER_PROMPTS: StarterPrompt[] = [
-  { category: "Campaign ideas", label: "Campaign angles", mode: "campaign_ideas", prompt: "Give me five campaign angles for a local service business." },
-  { category: "Campaign ideas", label: "Offer ideas", mode: "campaign_ideas", prompt: "Develop three compelling offers for the selected client." },
-  { category: "Campaign ideas", label: "Ad hooks", mode: "campaign_ideas", prompt: "Write ten concise ad hooks based on common customer pain points." },
-  { category: "Campaign ideas", label: "Campaign structure", mode: "campaign_ideas", prompt: "Outline a practical 30-day campaign structure and testing plan." },
-  { category: "Campaign ideas", label: "Seasonal campaign", mode: "campaign_ideas", prompt: "Create a seasonal campaign concept with an offer, audience, and CTA." },
-  { category: "Campaign ideas", label: "Retargeting plan", mode: "campaign_ideas", prompt: "Suggest a simple retargeting campaign for leads who did not book." },
-  { category: "Lead follow-up", label: "New lead sequence", mode: "lead_followup", prompt: "Create a five-touch follow-up sequence for a new inbound lead." },
-  { category: "Lead follow-up", label: "Missed call SMS", mode: "lead_followup", prompt: "Draft a short missed-call text message that encourages a reply." },
-  { category: "Lead follow-up", label: "No-response email", mode: "lead_followup", prompt: "Write a concise follow-up email for a lead who stopped responding." },
-  { category: "Lead follow-up", label: "Appointment reminder", mode: "lead_followup", prompt: "Draft an appointment reminder SMS with a clear confirmation CTA." },
-  { category: "Lead follow-up", label: "Lead qualification", mode: "lead_followup", prompt: "Create five practical questions for qualifying a new lead." },
-  { category: "Lead follow-up", label: "Reactivation message", mode: "lead_followup", prompt: "Draft a reactivation message for older leads who never booked." },
-  { category: "Client reports", label: "Monthly summary", mode: "report_summary", prompt: "Create a concise structure for a client-ready monthly performance summary." },
-  { category: "Client reports", label: "Explain CPL change", mode: "report_summary", prompt: "Explain how to communicate a rising cost per lead without sounding defensive." },
-  { category: "Client reports", label: "Wins and risks", mode: "report_summary", prompt: "Turn the available performance context into wins, risks, and next actions." },
-  { category: "Client reports", label: "Missing data", mode: "report_summary", prompt: "Identify the data needed for a useful client performance report." },
-  { category: "Client reports", label: "Executive update", mode: "report_summary", prompt: "Draft a brief executive update a busy client can scan in one minute." },
-  { category: "Client reports", label: "Reporting agenda", mode: "report_summary", prompt: "Create an agenda for a 30-minute monthly client reporting call." },
-  { category: "Task recommendations", label: "Weekly priorities", mode: "task_recommendations", prompt: "Recommend the highest-priority agency tasks for the next seven days." },
-  { category: "Task recommendations", label: "Today's actions", mode: "task_recommendations", prompt: "Give me five concrete agency actions to complete today." },
-  { category: "Task recommendations", label: "Client next steps", mode: "task_recommendations", prompt: "Recommend the next operational steps for the selected client." },
-  { category: "Task recommendations", label: "Onboarding checklist", mode: "task_recommendations", prompt: "Create a prioritized onboarding checklist for a new agency client." },
-  { category: "Task recommendations", label: "Reporting cleanup", mode: "task_recommendations", prompt: "Recommend tasks to improve our reporting process and data quality." },
-  { category: "Task recommendations", label: "Agency bottlenecks", mode: "task_recommendations", prompt: "Help me identify likely agency workflow bottlenecks and actions to fix them." },
-  { category: "Creative prompts", label: "Static ad prompt", mode: "creative_prompt", prompt: "Write an original image-generation prompt for a high-converting static ad." },
-  { category: "Creative prompts", label: "Short video prompt", mode: "creative_prompt", prompt: "Create a 15-second vertical video prompt with a hook, scene plan, and CTA." },
-  { category: "Creative prompts", label: "Before and after", mode: "creative_prompt", prompt: "Create a compliant before-and-after creative concept without unrealistic claims." },
-  { category: "Creative prompts", label: "Testimonial concept", mode: "creative_prompt", prompt: "Write a customer-testimonial ad concept and production prompt." },
-  { category: "Creative prompts", label: "Problem-solution ad", mode: "creative_prompt", prompt: "Create a problem-solution ad prompt for the selected client." },
-  { category: "Creative prompts", label: "Creative variations", mode: "creative_prompt", prompt: "Generate five distinct visual directions for testing the same offer." },
-  { category: "Client health", label: "Churn risk review", mode: "general", prompt: "Assess likely churn risks for the selected client using only available context." },
-  { category: "Client health", label: "Health check-in", mode: "general", prompt: "Draft a proactive client health check-in message." },
-  { category: "Client health", label: "Relationship risks", mode: "general", prompt: "List warning signs that an agency-client relationship may be at risk." },
-  { category: "Client health", label: "Retention plan", mode: "general", prompt: "Create a practical 30-day client retention plan." },
-  { category: "Client health", label: "Expectation reset", mode: "general", prompt: "Draft talking points for resetting expectations with a concerned client." },
+const AGENCY_STARTER_PROMPTS: StarterPrompt[] = [
+  { category: "Agency growth", label: "Weekly growth plan", mode: "general", prompt: "Give me a weekly agency growth plan." },
+  { category: "Agency operations", label: "Prioritize this week", mode: "task_recommendations", prompt: "Help me prioritize agency work this week." },
+  { category: "Agency operations", label: "First-client onboarding", mode: "task_recommendations", prompt: "Create a first-client onboarding checklist." },
+  { category: "Agency growth", label: "Service packages", mode: "campaign_ideas", prompt: "Generate service package ideas for a Meta/Google ads agency." },
+  { category: "Agency growth", label: "Offer positioning", mode: "general", prompt: "Help me position an agency offer for local service businesses." },
+  { category: "Agency growth", label: "Outbound plan", mode: "lead_followup", prompt: "Create a simple agency outbound follow-up plan for prospective clients." },
+  { category: "Agency operations", label: "Today's actions", mode: "task_recommendations", prompt: "Give me five concrete agency actions to complete today." },
+  { category: "Agency operations", label: "Workflow bottlenecks", mode: "task_recommendations", prompt: "Identify common agency workflow bottlenecks and practical fixes." },
+  { category: "Agency operations", label: "Reporting process", mode: "task_recommendations", prompt: "Recommend tasks to improve an agency reporting process and data quality." },
+  { category: "Agency operations", label: "Client health checklist", mode: "general", prompt: "Create a general client churn-risk and health checklist for an agency." },
+  { category: "Agency operations", label: "Retention process", mode: "general", prompt: "Create a repeatable client retention process for an agency." },
+  { category: "Campaign planning", label: "Campaign framework", mode: "campaign_ideas", prompt: "Create a reusable paid-media campaign planning framework." },
+  { category: "Campaign planning", label: "Testing plan", mode: "campaign_ideas", prompt: "Outline a practical creative and offer testing process for agency clients." },
+  { category: "Lead operations", label: "Lead qualification", mode: "lead_followup", prompt: "Create a reusable lead qualification checklist for local service businesses." },
+  { category: "Lead operations", label: "Follow-up framework", mode: "lead_followup", prompt: "Create a general five-touch lead follow-up framework." },
+  { category: "Reporting", label: "Report template", mode: "report_summary", prompt: "Create a reusable monthly client report template." },
+  { category: "Reporting", label: "Reporting agenda", mode: "report_summary", prompt: "Create an agenda for a 30-minute monthly client reporting call." },
+  { category: "Creative prompts", label: "Static ad framework", mode: "creative_prompt", prompt: "Create a reusable image-generation prompt framework for static ads." },
 ];
+
+const CLIENT_STARTER_PROMPTS: StarterPrompt[] = [
+  { category: "Client campaign", label: "Campaign angles", mode: "campaign_ideas", prompt: "Give me five campaign angles for the selected client using the available client context." },
+  { category: "Client campaign", label: "Offer ideas", mode: "campaign_ideas", prompt: "Develop three compelling offers for the selected client using the available client context." },
+  { category: "Client campaign", label: "Ad hooks", mode: "campaign_ideas", prompt: "Write ten ad hooks for the selected client based on the available category and service-area context." },
+  { category: "Client campaign", label: "Campaign structure", mode: "campaign_ideas", prompt: "Outline a practical 30-day campaign structure for the selected client." },
+  { category: "Client campaign", label: "Retargeting plan", mode: "campaign_ideas", prompt: "Suggest a retargeting plan for the selected client's leads who did not book." },
+  { category: "Client follow-up", label: "New lead sequence", mode: "lead_followup", prompt: "Create a five-touch follow-up sequence for the selected client's new leads." },
+  { category: "Client follow-up", label: "Missed call SMS", mode: "lead_followup", prompt: "Draft a missed-call SMS for the selected client using the available client context." },
+  { category: "Client follow-up", label: "Reactivation message", mode: "lead_followup", prompt: "Draft a reactivation message for the selected client's older leads." },
+  { category: "Client report", label: "Performance summary", mode: "report_summary", prompt: "Summarize the selected client's available performance context, including wins, risks, missing data, and next actions." },
+  { category: "Client report", label: "Explain CPL", mode: "report_summary", prompt: "Explain the selected client's available CPL and lead data in client-ready language." },
+  { category: "Client report", label: "Executive update", mode: "report_summary", prompt: "Draft a brief executive update for the selected client using the available context." },
+  { category: "Client tasks", label: "Next steps", mode: "task_recommendations", prompt: "Recommend the next operational steps for the selected client using the available context." },
+  { category: "Client creative", label: "Static ad prompt", mode: "creative_prompt", prompt: "Write an original static-ad image prompt for the selected client using its category and service-area context." },
+  { category: "Client creative", label: "Short video prompt", mode: "creative_prompt", prompt: "Create a 15-second vertical video prompt for the selected client." },
+  { category: "Client health", label: "Churn risk review", mode: "general", prompt: "Assess churn risk for the selected client using all available client context. Give a useful assessment before listing missing data." },
+  { category: "Client health", label: "Health check-in", mode: "general", prompt: "Draft a proactive health check-in for the selected client using the available context." },
+  { category: "Client health", label: "Retention plan", mode: "general", prompt: "Create a practical 30-day retention plan for the selected client using the available context." },
+];
+
+const CLIENT_SPECIFIC_MODES = new Set<Mode>([
+  "campaign_ideas",
+  "lead_followup",
+  "report_summary",
+]);
 
 const taskSuggestionsQueryKey = ["orvio-ai-task-suggestions"] as const;
 
@@ -244,6 +253,8 @@ function OrvioAIPage() {
   );
   const activeMode = MODES.find((item) => item.value === mode) ?? MODES[0];
   const conversationLocked = Boolean(activeConversationId);
+  const clientSpecificModeWithoutClient =
+    !clientId && CLIENT_SPECIFIC_MODES.has(mode);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -674,6 +685,12 @@ function OrvioAIPage() {
                   when you are ready for client-specific context.
                 </p>
               )}
+              {clientSpecificModeWithoutClient && (
+                <p className="mt-2 text-[11.5px] text-muted-foreground">
+                  Select a client for a client-specific assessment, or run this
+                  as a general agency checklist.
+                </p>
+              )}
               {mode === "task_recommendations" && (
                 <p className="mt-1.5 flex items-center gap-1.5 text-[11.5px] text-muted-foreground">
                   <ListTodo className="h-3.5 w-3.5 text-[var(--accent)]" />
@@ -714,6 +731,7 @@ function OrvioAIPage() {
                 <EmptyChat
                   mode={activeMode.label}
                   clientName={clientId ? clientNames.get(clientId) : undefined}
+                  hasSelectedClient={Boolean(clientId)}
                   firstConversation={conversations.length === 0}
                   onPrompt={(starter) => {
                     setMode(starter.mode);
@@ -1029,14 +1047,20 @@ function TaskAction({
 function EmptyChat({
   mode,
   clientName,
+  hasSelectedClient,
   firstConversation,
   onPrompt,
 }: {
   mode: string;
   clientName?: string;
+  hasSelectedClient: boolean;
   firstConversation: boolean;
   onPrompt: (starter: StarterPrompt) => void;
 }) {
+  const prompts = hasSelectedClient
+    ? [...CLIENT_STARTER_PROMPTS, ...AGENCY_STARTER_PROMPTS]
+    : AGENCY_STARTER_PROMPTS;
+
   return (
     <div className="mx-auto flex min-h-[340px] w-full max-w-4xl flex-col justify-center py-4">
       <div className="text-center">
@@ -1047,8 +1071,8 @@ function EmptyChat({
           {firstConversation ? "Meet Orvio AI" : "Start a new chat"}
         </h2>
         <p className="mx-auto mt-1 max-w-md text-[13px] leading-relaxed text-muted-foreground">
-          {clientName
-            ? `Working in ${mode} mode with context for ${clientName}.`
+          {hasSelectedClient
+            ? `Working in ${mode} mode with context for ${clientName || "the selected client"}.`
             : `Working in ${mode} mode without a selected client.`}
         </p>
         <p className="mx-auto mt-2 max-w-2xl text-[12px] leading-relaxed text-muted-foreground">
@@ -1061,7 +1085,7 @@ function EmptyChat({
 
       <div className="mt-5 max-h-[310px] overflow-y-auto rounded-xl border border-border bg-[var(--surface)] p-3">
         <div className="grid gap-2 text-left sm:grid-cols-2 lg:grid-cols-3">
-          {STARTER_PROMPTS.map((starter) => (
+          {prompts.map((starter) => (
             <button
               key={`${starter.category}-${starter.label}`}
               type="button"
