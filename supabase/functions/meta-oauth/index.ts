@@ -5,7 +5,7 @@
 //
 // Required secrets (supabase secrets set ...):
 //   META_APP_ID, META_APP_SECRET, APP_URL, SUPABASE_SERVICE_ROLE_KEY (auto)
-import { cors, json, redirect, serviceClient, agencyIdFromAuth, APP_URL } from "../_shared/util.ts";
+import { cors, json, redirect, serviceClient, agencyIdFromAuth, signState, verifyState, APP_URL } from "../_shared/util.ts";
 
 const GRAPH = "https://graph.facebook.com/v19.0";
 
@@ -22,15 +22,15 @@ Deno.serve(async (req) => {
     const consent = new URL("https://www.facebook.com/v19.0/dialog/oauth");
     consent.searchParams.set("client_id", Deno.env.get("META_APP_ID")!);
     consent.searchParams.set("redirect_uri", redirectUri);
-    consent.searchParams.set("state", agencyId);
+    consent.searchParams.set("state", await signState(agencyId));
     consent.searchParams.set("scope", "ads_read,ads_management,business_management");
     return json({ url: consent.toString() });
   }
 
-  // 2) CALLBACK — Meta redirects here with ?code&state(agencyId).
+  // 2) CALLBACK — Meta redirects here with ?code&state(signed agencyId).
   const code = url.searchParams.get("code");
-  const agencyId = url.searchParams.get("state");
-  if (!code || !agencyId) return json({ error: "missing code/state" }, 400);
+  const agencyId = await verifyState(url.searchParams.get("state"));
+  if (!code || !agencyId) return json({ error: "missing code or invalid state" }, 400);
 
   const redirectUri = `${url.origin}${url.pathname}`;
 

@@ -5,7 +5,7 @@
 // Required secrets:
 //   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_URL, SUPABASE_SERVICE_ROLE_KEY (auto)
 // Note: pulling Google Ads metrics also needs GOOGLE_ADS_DEVELOPER_TOKEN (see sync-insights).
-import { cors, json, redirect, serviceClient, agencyIdFromAuth, APP_URL } from "../_shared/util.ts";
+import { cors, json, redirect, serviceClient, agencyIdFromAuth, signState, verifyState, APP_URL } from "../_shared/util.ts";
 
 const SCOPE = "https://www.googleapis.com/auth/adwords";
 
@@ -26,14 +26,14 @@ Deno.serve(async (req) => {
     consent.searchParams.set("scope", SCOPE);
     consent.searchParams.set("access_type", "offline"); // get a refresh token
     consent.searchParams.set("prompt", "consent");
-    consent.searchParams.set("state", agencyId);
+    consent.searchParams.set("state", await signState(agencyId));
     return json({ url: consent.toString() });
   }
 
-  // 2) CALLBACK
+  // 2) CALLBACK — Google redirects here with ?code&state(signed agencyId).
   const code = url.searchParams.get("code");
-  const agencyId = url.searchParams.get("state");
-  if (!code || !agencyId) return json({ error: "missing code/state" }, 400);
+  const agencyId = await verifyState(url.searchParams.get("state"));
+  if (!code || !agencyId) return json({ error: "missing code or invalid state" }, 400);
 
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",

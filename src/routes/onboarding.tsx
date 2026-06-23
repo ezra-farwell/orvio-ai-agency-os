@@ -61,20 +61,33 @@ function Onboarding() {
     setError(null);
     setSubmitting(true);
     try {
-      await signUp(data.email, data.password, data.agency);
+      const res = await signUp(data.email, data.password, data.agency);
+      // signUp only returns a session when email confirmation is disabled. Without
+      // a session the create-agency RPC runs unauthenticated and fails, so stop here
+      // with a clear message instead of a cryptic "not authenticated" error.
+      if (!res.session) {
+        throw new Error(
+          "Account created. Please confirm your email, then sign in to finish setting up your agency.",
+        );
+      }
       const agencyId = await createAgency({ name: data.agency, domain: data.domain || undefined, brandColor: data.color });
       if (data.clientName && supabase) {
-        await supabase.from("clients").insert({
-          agency_id: agencyId,
-          name: data.clientName,
-          owner_name: data.clientName,
-          email: "",
-          area: data.clientCity || null,
-          category: data.clientService || null,
-          initials: initialsOf(data.clientName) || null,
-          brand_color: data.color,
-          status: "onboarding",
-        });
+        // A failed first-client insert shouldn't throw away the created agency.
+        try {
+          await supabase.from("clients").insert({
+            agency_id: agencyId,
+            name: data.clientName,
+            owner_name: data.clientName,
+            email: "",
+            area: data.clientCity || null,
+            category: data.clientService || null,
+            initials: initialsOf(data.clientName) || null,
+            brand_color: data.color,
+            status: "onboarding",
+          });
+        } catch {
+          // Non-fatal — the agency exists; they can add the client from the dashboard.
+        }
       }
       setStep(steps.findIndex((s) => s.id === "done"));
     } catch (e) {
@@ -428,7 +441,7 @@ function ConnectStep({ data, setData }: { data: DataT; setData: (d: DataT) => vo
       <StepHead
         eyebrow="Step 4"
         title="Connect your ad accounts"
-        sub="You can connect now or later. None of your clients see these screens — only your team does."
+        sub="Pick what you plan to connect. You'll securely link each one from Settings → Integrations once your workspace is live — nothing actually connects during signup."
       />
       <div className="space-y-2.5">
         {items.map(it => (
@@ -447,7 +460,7 @@ function ConnectStep({ data, setData }: { data: DataT; setData: (d: DataT) => vo
                 it.on ? "border border-[var(--success)]/30 bg-[var(--success-soft)]/50 text-[var(--success)]" : "bg-foreground text-background hover:bg-foreground/90"
               }`}
             >
-              {it.on ? "Connected" : "Connect"}
+              {it.on ? "Planned" : "Plan to connect"}
             </button>
           </div>
         ))}
@@ -527,7 +540,7 @@ function DoneStep({ data }: { data: DataT }) {
           ["Workspace created", data.agency],
           ["Portal domain", data.domain],
           ["First client added", data.clientName],
-          ["Integrations", [data.meta && "Meta", data.google && "Google", data.stripe && "Stripe"].filter(Boolean).join(" · ") || "None yet"],
+          ["Integrations to connect", [data.meta && "Meta", data.google && "Google", data.stripe && "Stripe"].filter(Boolean).join(" · ") || "None yet"],
         ].map(([k,v]) => (
           <div key={k as string} className="flex items-center justify-between rounded-lg border border-border bg-background px-3 py-2 text-[12.5px]">
             <span className="text-muted-foreground">{k}</span>

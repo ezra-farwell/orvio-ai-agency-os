@@ -4,7 +4,7 @@
 // here with ?code&state → exchange code for the connected account id → store it.
 //
 // Required secrets: STRIPE_SECRET_KEY, STRIPE_CONNECT_CLIENT_ID, APP_URL.
-import { cors, json, redirect, serviceClient, agencyIdFromAuth, APP_URL } from "../_shared/util.ts";
+import { cors, json, redirect, serviceClient, agencyIdFromAuth, signState, verifyState, APP_URL } from "../_shared/util.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
@@ -19,14 +19,14 @@ Deno.serve(async (req) => {
     consent.searchParams.set("response_type", "code");
     consent.searchParams.set("client_id", Deno.env.get("STRIPE_CONNECT_CLIENT_ID")!);
     consent.searchParams.set("scope", "read_write");
-    consent.searchParams.set("state", agencyId);
+    consent.searchParams.set("state", await signState(agencyId));
     return json({ url: consent.toString() });
   }
 
-  // 2) CALLBACK — Stripe redirects here with ?code&state(agencyId).
+  // 2) CALLBACK — Stripe redirects here with ?code&state(signed agencyId).
   const code = url.searchParams.get("code");
-  const agencyId = url.searchParams.get("state");
-  if (!code || !agencyId) return json({ error: "missing code/state" }, 400);
+  const agencyId = await verifyState(url.searchParams.get("state"));
+  if (!code || !agencyId) return json({ error: "missing code or invalid state" }, 400);
 
   const res = await fetch("https://connect.stripe.com/oauth/token", {
     method: "POST",
