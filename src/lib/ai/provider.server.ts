@@ -33,7 +33,8 @@ export type OrvioAIProviderErrorCode =
   | "connection_failed"
   | "request_failed"
   | "timeout"
-  | "invalid_response";
+  | "invalid_response"
+  | "queue_full";
 
 export class OrvioAIProviderError extends Error {
   readonly code: OrvioAIProviderErrorCode;
@@ -108,6 +109,14 @@ export async function completeOrvioAIChat(
           : { max_tokens: input.maxTokens }),
       }),
     });
+
+    if (response.status === 429) {
+      throw new OrvioAIProviderError(
+        "queue_full",
+        "Orvio AI is busy with another request. Please try again in a moment.",
+        { status: 429 },
+      );
+    }
 
     if (!response.ok) {
       throw new OrvioAIProviderError(

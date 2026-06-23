@@ -14,5 +14,19 @@ export default defineConfig({
   },
   // Deploy target. Lovable's wrapper defaults to Cloudflare; we deploy to Vercel,
   // so pin the Vercel preset (applies outside a Lovable build). NITRO_PRESET env still wins.
-  nitro: { preset: "vercel" },
+  //
+  // serverDir enables Nitro's file-based route scanning for server/routes/ and server/api/.
+  // Without it, serverDir defaults to false and handlers are never picked up.
+  //
+  // compatibilityDate < "2025-07-15" disables Nitro's Vercel "observability routes" feature
+  // (_presets.mjs getObservabilityRoutes). That feature emits { src, dest } routing entries
+  // for every scanned handler and then creates per-route .func junction directories. It is
+  // incompatible with TanStack Start's single-bundle architecture (everything lives in
+  // __server.func) and also has a Windows junction bug in this Nitro beta — the relative
+  // symlink target is resolved against process.cwd() instead of the junction's parent, so
+  // the junction is never created but config.json still contains the route entry, causing
+  // "ENOENT: no such file or directory" on vercel deploy --prebuilt.
+  // With this date set, scanned handlers are still bundled into __server.func and routed
+  // correctly by the existing catch-all { src: "/(.*)", dest: "/__server" }.
+  nitro: { preset: "vercel", serverDir: "server", compatibilityDate: "2025-01-01" },
 });

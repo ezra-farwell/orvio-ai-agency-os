@@ -1,0 +1,10 @@
+{
+  "name": "orvio-ai-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Auth + queue proxy for Orvio AI → Ollama. Zero external dependencies.",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node proxy.js"
+  }
+}

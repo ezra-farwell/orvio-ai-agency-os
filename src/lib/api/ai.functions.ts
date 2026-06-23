@@ -266,12 +266,17 @@ export const sendOrvioAIMessage = createServerFn({ method: "POST" })
       }
 
       if (error instanceof OrvioAIProviderError) {
+        if (error.code === "queue_full") {
+          throw publicError(
+            "Orvio AI is busy right now — please try again in a moment.",
+          );
+        }
         if (error.code === "timeout") {
           throw publicError("Orvio AI took too long to respond. Please try again.");
         }
         if (error.code === "connection_failed") {
           throw publicError(
-            "Orvio AI is currently unavailable. Confirm the local AI service is running.",
+            "Orvio AI is temporarily unavailable. Check back shortly.",
           );
         }
         throw publicError("Orvio AI could not complete the request.");
