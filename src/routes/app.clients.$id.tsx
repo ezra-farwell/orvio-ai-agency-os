@@ -4,6 +4,7 @@ import { usd } from "@/mock/data";
 import { getClient, getCampaigns, getLeads } from "@/lib/data";
 import { getClientInsights } from "@/lib/data/insights";
 import { PageHeader, Card, KPI, StatusBadge } from "@/components/bits";
+import { formatRelativeTime } from "@/lib/utils";
 import { Sparkles, ArrowRight, AlertTriangle, ListChecks } from "lucide-react";
 import { AIActionMenu } from "@/components/orvio/AIActionMenu";
 
@@ -30,6 +31,17 @@ function ClientDetail() {
   const churn = ai.churn_risk;
   const actions = ai.next_actions?.data?.actions ?? [];
   const flags = ai.followup_flag?.data?.flags ?? [];
+  const lastAnalyzed = [
+    ai.churn_risk,
+    ai.next_actions,
+    ai.followup_flag,
+    ai.analytics_summary,
+    ai.client_report,
+  ]
+    .map((insight) => insight?.created_at)
+    .filter((date): date is string => Boolean(date))
+    .sort()
+    .at(-1);
   const clientContext = c ? [
     `Client: ${c.name}`,
     `Category: ${c.category || "Not provided"}`,
@@ -118,6 +130,12 @@ function ClientDetail() {
                 </span>
               )}
             </div>
+
+            {lastAnalyzed && (
+              <div className="mt-1 text-[11px] text-[var(--text-faint)]">
+                Updated {formatRelativeTime(lastAnalyzed)} by the local model
+              </div>
+            )}
 
             {!ai.churn_risk && !ai.next_actions && (
               <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">No AI insight yet — runs after the local Orvio AI worker analyzes this client.</p>

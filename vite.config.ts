@@ -28,5 +28,13 @@ export default defineConfig({
   // "ENOENT: no such file or directory" on vercel deploy --prebuilt.
   // With this date set, scanned handlers are still bundled into __server.func and routed
   // correctly by the existing catch-all { src: "/(.*)", dest: "/__server" }.
-  nitro: { preset: "vercel", serverDir: "server", compatibilityDate: "2025-01-01" },
+  // Cast: the wrapper forwards this whole object to Nitro at runtime, but its
+  // public type only types { preset, output, cloudflare }. serverDir (route
+  // scanning) and compatibilityDate are real Nitro options it just doesn't
+  // surface — the cast keeps the runtime values while satisfying the type.
+  nitro: {
+    preset: "vercel",
+    serverDir: "server",
+    compatibilityDate: "2025-01-01",
+  } as { preset: string },
 });

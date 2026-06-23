@@ -196,6 +196,7 @@ function OrvioAIPage() {
   const [starterContext, setStarterContext] = useState(search.context ?? "");
   const [loadingConversationId, setLoadingConversationId] = useState<string>();
   const [sending, setSending] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
   const [deletingId, setDeletingId] = useState<string>();
   const [updatingTaskId, setUpdatingTaskId] = useState<string>();
   const [error, setError] = useState<string>();
@@ -247,6 +248,31 @@ function OrvioAIPage() {
     },
   });
 
+  // Lightweight availability probe — pings /api/ai-health (which checks the
+  // proxy + local model) so the user knows the home PC is reachable before they
+  // type. Only renders a pill for known JSON states; a non-JSON 404 (e.g. local
+  // dev where the Nitro route isn't served) is treated as "unknown" and hidden.
+  const { data: aiHealth } = useQuery({
+    queryKey: ["ai-health"],
+    queryFn: async (): Promise<{ status: string; latencyMs?: number }> => {
+      try {
+        const res = await fetch("/api/ai-health", {
+          headers: { accept: "application/json" },
+        });
+        const contentType = res.headers.get("content-type") ?? "";
+        if (!contentType.includes("application/json")) {
+          return { status: "unknown" };
+        }
+        return await res.json();
+      } catch {
+        return { status: "unknown" };
+      }
+    },
+    refetchInterval: 45_000,
+    staleTime: 30_000,
+    retry: 1,
+  });
+
   const clientNames = useMemo(
     () => new Map(clients.map((client) => [client.id, client.name])),
     [clients],
@@ -259,6 +285,19 @@ function OrvioAIPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, sending]);
+
+  // Local inference is slow (8-30s on the 6GB card). Show a live elapsed counter
+  // so a long wait reads as "working", not "hung".
+  useEffect(() => {
+    if (!sending) return;
+    setElapsed(0);
+    const startedAt = Date.now();
+    const id = setInterval(
+      () => setElapsed(Math.round((Date.now() - startedAt) / 1000)),
+      1000,
+    );
+    return () => clearInterval(id);
+  }, [sending]);
 
   useEffect(() => {
     if (initialClientAppliedRef.current || !clientsLoaded) return;
@@ -518,6 +557,7 @@ function OrvioAIPage() {
           </span>
         }
         sub="AI assistant for agency operations, ads, client strategy, reporting, and follow-up."
+        actions={<AIHealthPill status={aiHealth?.status} />}
       />
 
       <div className="px-4 pb-8 sm:px-6">
@@ -751,8 +791,20 @@ function OrvioAIPage() {
                       <div className="rounded-2xl border border-border bg-[var(--surface)] px-4 py-3">
                         <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
                           <LoaderCircle className="h-3.5 w-3.5 animate-spin" />
-                          Thinking with local model…
+                          <span>
+                            Thinking with local model…
+                            {elapsed > 0 && (
+                              <span className="ml-1 tabular-nums text-[var(--text-faint)]">
+                                {elapsed}s
+                              </span>
+                            )}
+                          </span>
                         </div>
+                        {elapsed >= 15 && (
+                          <div className="mt-1.5 pl-[22px] text-[11px] text-[var(--text-faint)]">
+                            Local inference on your home hardware can take a moment.
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -826,6 +878,31 @@ function OrvioAIPage() {
         </Card>
       </div>
     </>
+  );
+}
+
+function AIHealthPill({ status }: { status?: string }) {
+  const states: Record<string, { dot: string; label: string }> = {
+    up: { dot: "var(--success)", label: "Local model online" },
+    down: { dot: "var(--danger)", label: "Model offline" },
+    unconfigured: { dot: "var(--warning)", label: "Not configured" },
+    local_dev: { dot: "var(--text-faint)", label: "Dev mode" },
+  };
+  const state = status ? states[status] : undefined;
+  // Hide entirely for unknown/loading so we never flash a misleading "offline".
+  if (!state) return null;
+
+  return (
+    <span
+      title="Live status of the local Orvio AI model"
+      className="inline-flex items-center gap-1.5 rounded-full border border-border bg-[var(--surface)] px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+    >
+      <span
+        className="h-1.5 w-1.5 rounded-full"
+        style={{ background: state.dot }}
+      />
+      {state.label}
+    </span>
   );
 }
 
