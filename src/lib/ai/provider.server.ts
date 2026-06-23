@@ -171,3 +171,145 @@ export async function completeOrvioAIChat(
     clearTimeout(timeout);
   }
 }
+
+/**
+ * Streaming variant of {@link completeOrvioAIChat}. Hits the same
+ * OpenAI-compatible endpoint with `stream: true` and invokes `onDelta` for each
+ * incremental token. Returns the assembled result once the stream completes, so
+ * callers can persist the full message exactly like the non-streaming path.
+ *
+ * The proxy in front of Ollama pipes the response body unbuffered, and holds its
+ * single concurrency slot for the full stream duration — so streaming preserves
+ * the 1-in-flight guarantee.
+ */
+export async function streamOrvioAIChat(
+  input: OrvioAIChatInput,
+  onDelta: (text: string) => void,
+): Promise<OrvioAIChatResult> {
+  const config = getOrvioAIConfig();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), config.timeoutMs);
+  const startedAt = Date.now();
+
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (config.apiKey) {
+      headers.Authorization = `Bearer ${config.apiKey}`;
+    }
+
+    const response = await fetch(`${config.baseUrl}/chat/completions`, {
+      method: "POST",
+      headers,
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: config.model,
+        stream: true,
+        messages: [
+          { role: "system", content: input.systemPrompt },
+          { role: "user", content: buildUserContent(input) },
+        ],
+        ...(input.temperature === undefined
+          ? {}
+          : { temperature: input.temperature }),
+        ...(input.maxTokens === undefined
+          ? {}
+          : { max_tokens: input.maxTokens }),
+      }),
+    });
+
+    if (response.status === 429) {
+      throw new OrvioAIProviderError(
+        "queue_full",
+        "Orvio AI is busy with another request. Please try again in a moment.",
+        { status: 429 },
+      );
+    }
+
+    if (!response.ok) {
+      throw new OrvioAIProviderError(
+        "request_failed",
+        `The Orvio AI provider rejected the request with status ${response.status}.`,
+        { status: response.status },
+      );
+    }
+
+    if (!response.body) {
+      throw new OrvioAIProviderError(
+        "invalid_response",
+        "The Orvio AI provider returned no response stream.",
+      );
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let fullText = "";
+    let model = config.model;
+
+    // OpenAI-compatible SSE: newline-delimited `data: {json}` lines, terminated
+    // by `data: [DONE]`. Buffer across chunks since a JSON line can be split.
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith("data:")) continue;
+        const data = trimmed.slice(5).trim();
+        if (!data || data === "[DONE]") continue;
+
+        try {
+          const parsed = JSON.parse(data) as {
+            model?: string;
+            choices?: Array<{ delta?: { content?: string } }>;
+          };
+          if (parsed.model) model = parsed.model;
+          const delta = parsed.choices?.[0]?.delta?.content;
+          if (delta) {
+            fullText += delta;
+            onDelta(delta);
+          }
+        } catch {
+          // Ignore keep-alive comments or partial JSON; the buffer logic above
+          // reassembles split lines, and a malformed line is never fatal.
+        }
+      }
+    }
+
+    if (!fullText.trim()) {
+      throw new OrvioAIProviderError(
+        "invalid_response",
+        "The Orvio AI provider returned no response text.",
+      );
+    }
+
+    return {
+      text: fullText,
+      provider: config.provider,
+      model,
+      latencyMs: Date.now() - startedAt,
+    };
+  } catch (error) {
+    if (error instanceof OrvioAIProviderError) throw error;
+
+    if (isAbortError(error)) {
+      throw new OrvioAIProviderError("timeout", "The Orvio AI request timed out.", {
+        cause: error,
+      });
+    }
+
+    throw new OrvioAIProviderError(
+      "connection_failed",
+      "Unable to reach the configured Orvio AI provider.",
+      { cause: error },
+    );
+  } finally {
+    clearTimeout(timeout);
+  }
+}

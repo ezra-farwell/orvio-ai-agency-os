@@ -26,6 +26,7 @@ import {
   updateOrvioAITaskSuggestionStatus,
 } from "@/lib/api/ai.functions";
 import { getClients } from "@/lib/data";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/app/ai")({
   validateSearch: z.object({
@@ -197,6 +198,7 @@ function OrvioAIPage() {
   const [loadingConversationId, setLoadingConversationId] = useState<string>();
   const [sending, setSending] = useState(false);
   const [elapsed, setElapsed] = useState(0);
+  const [streamingId, setStreamingId] = useState<string>();
   const [deletingId, setDeletingId] = useState<string>();
   const [updatingTaskId, setUpdatingTaskId] = useState<string>();
   const [error, setError] = useState<string>();
@@ -401,44 +403,213 @@ function OrvioAIPage() {
     setError(undefined);
     setSending(true);
 
-    try {
-      const result = await sendOrvioAIMessage({
-        data: {
-          message,
-          conversationId: activeConversationId,
-          clientId: clientId || undefined,
-          mode,
-          context: starterContext || undefined,
-        },
-      });
-
-      const assistantMessage: ConversationMessage = {
-        id: result.assistantMessageId,
-        role: "assistant",
-        content: result.text,
-        model: result.model,
-        provider: result.provider,
-        latencyMs: result.latencyMs,
-        metadata: { mode: result.mode },
-        createdAt: new Date().toISOString(),
-      };
-
-      setActiveConversationId(result.conversationId);
-      setMessages((current) => [
-        ...current.map((item) =>
-          item.id === optimisticId
-            ? { ...item, id: result.userMessageId }
-            : item,
-        ),
-        assistantMessage,
-      ]);
+    const refreshAfterSend = async (resultMode: string) => {
       await queryClient.invalidateQueries({
         queryKey: ["orvio-ai-conversations"],
       });
-      if (result.mode === "task_recommendations") {
+      if (resultMode === "task_recommendations") {
         await queryClient.invalidateQueries({
           queryKey: taskSuggestionsQueryKey,
         });
+      }
+    };
+
+    // Preferred path: stream tokens live via /api/ai-stream. Returns true once a
+    // user message has been persisted server-side (the `meta` event) — past that
+    // point we never fall back, to avoid double-sending. Returns false if the
+    // route is unreachable (e.g. local dev, where Nitro routes aren't served) or
+    // errors before `meta`, in which case the optimistic message is untouched and
+    // the non-streaming server function takes over.
+    const trySendStreaming = async (): Promise<boolean> => {
+      let token: string | undefined;
+      try {
+        const { data } = await supabase.auth.getSession();
+        token = data.session?.access_token;
+      } catch {
+        return false;
+      }
+      if (!token) return false;
+
+      let response: Response;
+      try {
+        response = await fetch("/api/ai-stream", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            message,
+            conversationId: activeConversationId,
+            clientId: clientId || undefined,
+            mode,
+            context: starterContext || undefined,
+          }),
+        });
+      } catch {
+        return false;
+      }
+
+      const contentType = response.headers.get("content-type") ?? "";
+      if (
+        !response.ok ||
+        !response.body ||
+        !contentType.includes("text/event-stream")
+      ) {
+        return false;
+      }
+
+      const placeholderId = `streaming-${Date.now()}`;
+      let committed = false;
+      let placeholderAdded = false;
+      let finalized = false;
+      let assistantText = "";
+      let streamedMode: string = mode;
+
+      const handle = (payload: { type: string; [key: string]: unknown }) => {
+        if (payload.type === "meta") {
+          committed = true;
+          streamedMode = (payload.mode as string) ?? mode;
+          setActiveConversationId(payload.conversationId as string);
+          setMessages((current) =>
+            current.map((item) =>
+              item.id === optimisticId
+                ? { ...item, id: payload.userMessageId as string }
+                : item,
+            ),
+          );
+        } else if (payload.type === "delta") {
+          assistantText += String(payload.text ?? "");
+          if (!placeholderAdded) {
+            placeholderAdded = true;
+            setStreamingId(placeholderId);
+            setMessages((current) => [
+              ...current,
+              {
+                id: placeholderId,
+                role: "assistant",
+                content: assistantText,
+                model: null,
+                provider: null,
+                latencyMs: null,
+                metadata: { mode: streamedMode },
+                createdAt: new Date().toISOString(),
+              },
+            ]);
+          } else {
+            setMessages((current) =>
+              current.map((item) =>
+                item.id === placeholderId
+                  ? { ...item, content: assistantText }
+                  : item,
+              ),
+            );
+          }
+        } else if (payload.type === "done") {
+          finalized = true;
+          setMessages((current) =>
+            current.map((item) =>
+              item.id === placeholderId
+                ? {
+                    ...item,
+                    id: (payload.assistantMessageId as string) ?? item.id,
+                    content: assistantText,
+                    model: (payload.model as string) ?? null,
+                    provider: (payload.provider as string) ?? null,
+                    latencyMs: (payload.latencyMs as number) ?? null,
+                  }
+                : item,
+            ),
+          );
+        } else if (payload.type === "error") {
+          finalized = true;
+          setMessages((current) =>
+            current.filter((item) => item.id !== placeholderId),
+          );
+          setError(
+            typeof payload.message === "string"
+              ? payload.message
+              : "Orvio AI could not complete the request.",
+          );
+        }
+      };
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      try {
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed.startsWith("data:")) continue;
+            const data = trimmed.slice(5).trim();
+            if (!data) continue;
+            try {
+              handle(JSON.parse(data) as { type: string });
+            } catch {
+              // ignore a malformed SSE line
+            }
+          }
+        }
+      } catch {
+        // stream broke mid-flight; handled by the finalized check below
+      }
+
+      if (!committed) return false;
+
+      if (!finalized) {
+        setMessages((current) =>
+          current.filter((item) => item.id !== placeholderId),
+        );
+        setError(
+          "Orvio AI was interrupted before finishing. Please try again.",
+        );
+      }
+      await refreshAfterSend(streamedMode);
+      return true;
+    };
+
+    try {
+      const streamed = await trySendStreaming();
+
+      if (!streamed) {
+        // Fallback: non-streaming server function (also the local-dev path).
+        const result = await sendOrvioAIMessage({
+          data: {
+            message,
+            conversationId: activeConversationId,
+            clientId: clientId || undefined,
+            mode,
+            context: starterContext || undefined,
+          },
+        });
+
+        const assistantMessage: ConversationMessage = {
+          id: result.assistantMessageId,
+          role: "assistant",
+          content: result.text,
+          model: result.model,
+          provider: result.provider,
+          latencyMs: result.latencyMs,
+          metadata: { mode: result.mode },
+          createdAt: new Date().toISOString(),
+        };
+
+        setActiveConversationId(result.conversationId);
+        setMessages((current) => [
+          ...current.map((item) =>
+            item.id === optimisticId
+              ? { ...item, id: result.userMessageId }
+              : item,
+          ),
+          assistantMessage,
+        ]);
+        await refreshAfterSend(result.mode);
       }
     } catch (sendError) {
       setMessages((current) =>
@@ -457,6 +628,7 @@ function OrvioAIPage() {
     } finally {
       sendLockRef.current = false;
       setSending(false);
+      setStreamingId(undefined);
     }
   }
 
@@ -783,7 +955,7 @@ function OrvioAIPage() {
                   {messages.map((message) => (
                     <MessageBubble key={message.id} message={message} />
                   ))}
-                  {sending && (
+                  {sending && !streamingId && (
                     <div className="flex items-start gap-3">
                       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
                         <Sparkles className="h-4 w-4" />
