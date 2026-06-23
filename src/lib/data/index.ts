@@ -148,6 +148,41 @@ export async function getLeads(): Promise<Lead[]> {
   return (data as never[]).map(toLead);
 }
 
+export type TrendPoint = { d: string; leads: number };
+
+/**
+ * Real lead volume bucketed by day over the trailing `days` window (agency-scoped
+ * via RLS). Returns a continuous series so the chart never has gaps. Empty array
+ * when Supabase is unavailable; callers show an empty state when every day is 0.
+ */
+export async function getLeadTrend(days = 30): Promise<TrendPoint[]> {
+  const series: TrendPoint[] = [];
+  const buckets = new Map<string, number>();
+
+  if (isSupabaseConfigured && supabase) {
+    const since = new Date(Date.now() - days * 86_400_000).toISOString();
+    const { data, error } = await supabase
+      .from("leads")
+      .select("created_at")
+      .gte("created_at", since);
+    if (error) throw error;
+    for (const r of (data ?? []) as { created_at: string }[]) {
+      const key = r.created_at.slice(0, 10);
+      buckets.set(key, (buckets.get(key) ?? 0) + 1);
+    }
+  }
+
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(Date.now() - i * 86_400_000);
+    const key = date.toISOString().slice(0, 10);
+    series.push({
+      d: date.toLocaleDateString([], { month: "short", day: "numeric" }),
+      leads: buckets.get(key) ?? 0,
+    });
+  }
+  return series;
+}
+
 export async function getAssets(): Promise<ContentAsset[]> {
   if (!isSupabaseConfigured || !supabase) return mockAssets;
   const { data, error } = await supabase.from("content_assets").select("*, clients(name)").order("updated_at", { ascending: false });

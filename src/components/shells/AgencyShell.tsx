@@ -106,7 +106,7 @@ export function AgencyShell({ children }: { children?: ReactNode }) {
             <Link to="/portal" className="hidden h-9 items-center rounded-lg border border-border bg-background px-3 text-[12.5px] text-muted-foreground hover:text-foreground md:inline-flex">
               View as client →
             </Link>
-            <div className="grid h-8 w-8 place-items-center rounded-full bg-foreground text-[11px] font-semibold text-background">AS</div>
+            <div className="grid h-8 w-8 place-items-center rounded-full bg-foreground text-[11px] font-semibold text-background">{initials(ownerName) || "·"}</div>
           </div>
         </header>
         <div className="min-h-0 flex-1">{children ?? <Outlet />}</div>
