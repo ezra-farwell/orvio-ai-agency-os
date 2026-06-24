@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { getProfile } from "@/lib/auth";
 import { getAgencies, getClients, getClient } from "@/lib/data";
+import { MobileTabBar } from "./MobileTabBar";
 
 const nav = [
   { to: "/portal", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -98,8 +99,23 @@ export function ClientShell({ children }: { children?: ReactNode }) {
             </div>
           </div>
         </header>
-        <div className="min-h-0 flex-1">{children ?? <Outlet />}</div>
+        <div className="min-h-0 flex-1 pb-16 md:pb-0">{children ?? <Outlet />}</div>
       </div>
+
+      <MobileTabBar
+        brand={brand}
+        primary={[
+          { to: "/portal", label: "Home", icon: LayoutDashboard, exact: true },
+          { to: "/portal/leads", label: "Leads", icon: Inbox },
+          { to: "/portal/reports", label: "Reports", icon: FileText },
+          { to: "/portal/payments", label: "Pay", icon: CreditCard },
+        ]}
+        more={[
+          { to: "/portal/campaigns", label: "Campaigns", icon: BarChart3 },
+          { to: "/portal/approvals", label: "Approvals", icon: CheckSquare },
+          { to: "/portal/messages", label: "Messages", icon: MessageSquare },
+        ]}
+      />
     </div>
   );
 }

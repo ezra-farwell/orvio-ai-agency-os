@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { getAgencies } from "@/lib/data";
 import { getProfile, signOut } from "@/lib/auth";
+import { MobileTabBar } from "./MobileTabBar";
 
 const nav = [
   { to: "/app", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -117,8 +118,27 @@ export function AgencyShell({ children }: { children?: ReactNode }) {
             <div className="grid h-8 w-8 place-items-center rounded-full bg-foreground text-[11px] font-semibold text-background">{initials(ownerName) || "·"}</div>
           </div>
         </header>
-        <div className="min-h-0 flex-1">{children ?? <Outlet />}</div>
+        <div className="min-h-0 flex-1 pb-16 md:pb-0">{children ?? <Outlet />}</div>
       </div>
+
+      <MobileTabBar
+        primary={[
+          { to: "/app", label: "Home", icon: LayoutDashboard, exact: true },
+          { to: "/app/clients", label: "Clients", icon: Users },
+          { to: "/app/leads", label: "Leads", icon: Inbox },
+          { to: "/app/ai", label: "Orvio AI", icon: Sparkles },
+        ]}
+        more={[
+          { to: "/app/reporting", label: "Reporting", icon: BarChart3 },
+          { to: "/app/pipeline", label: "Pipeline", icon: Kanban },
+          { to: "/app/messages", label: "Messages", icon: MessageSquare },
+          { to: "/app/payments", label: "Payments", icon: CreditCard },
+          { to: "/app/studio", label: "Studio", icon: Sparkles },
+          { to: "/app/reports", label: "Reports", icon: FileText },
+          { to: "/app/settings/integrations", label: "Integrations", icon: Plug },
+          { to: "/app/settings/white-label", label: "Settings", icon: Settings },
+        ]}
+      />
     </div>
   );
 }
