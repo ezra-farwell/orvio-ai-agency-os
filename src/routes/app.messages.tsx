@@ -1,82 +1,49 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { PageHeader, Card } from "@/components/bits";
-import { clients } from "@/mock/data";
-import { Send } from "lucide-react";
+import { MessageSquare, Mail, Phone, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/app/messages")({
   component: Messages,
   head: () => ({ meta: [{ title: "Messages — Orvio" }] }),
 });
 
-const threads = clients.slice(0,5).map((c, i) => ({
-  client: c.name,
-  initials: c.initials,
-  color: c.color,
-  last: [
-    "Sending the report shortly!",
-    "Booked the appointment for Thursday.",
-    "Approved the kitchen carousel.",
-    "Can we scale Roof Replacement?",
-    "Need to talk about budget.",
-  ][i],
-  time: ["2m","18m","1h","yesterday","2d"][i],
-  unread: [2,0,1,0,3][i],
-}));
-
-const mockMessages = [
-  { from: "client", body: "Hey, how's the campaign performing this week?", time: "Mon 9:14am" },
-  { from: "us",     body: "Up 12% on leads, CPL down to $67. I'll send the full report shortly.", time: "Mon 9:21am" },
-  { from: "client", body: "Awesome. Also — can we push the new offer to ads?", time: "Mon 9:24am" },
-  { from: "us",     body: "Already drafted in the Studio. Sending it for approval now.", time: "Mon 9:28am" },
+const upcoming = [
+  { icon: MessageSquare, title: "Two-way SMS", desc: "Text leads and clients from your agency number, with full thread history." },
+  { icon: Mail, title: "Email threads", desc: "Unified inbox for client and lead email, tied to the right account." },
+  { icon: Phone, title: "Call logging", desc: "Missed-call alerts and follow-up reminders, synced to each lead." },
 ];
 
 function Messages() {
-  const [active, setActive] = useState(0);
-  const t = threads[active];
   return (
     <>
-      <PageHeader title="Messages" sub="SMS + email threads with each client and lead." />
+      <PageHeader title="Messages" sub="Unified SMS + email with every client and lead." />
       <div className="px-6 pb-10">
-        <Card className="grid grid-cols-1 overflow-hidden md:grid-cols-[280px_1fr]">
-          <div className="border-r border-border">
-            <div className="border-b border-border px-3 py-2 text-[11px] uppercase tracking-wider text-muted-foreground">Inbox</div>
-            <ul className="divide-y divide-border">
-              {threads.map((th,i) => (
-                <li key={th.client}>
-                  <button onClick={()=>setActive(i)} className={`flex w-full items-start gap-2.5 px-3 py-3 text-left ${active===i?"bg-[var(--surface-2)]":""} hover:bg-[var(--surface-2)]/70`}>
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded text-[11px] font-semibold text-white" style={{ background: th.color }}>{th.initials}</span>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="truncate text-[13px] font-medium">{th.client}</span>
-                        <span className="text-[10.5px] text-muted-foreground">{th.time}</span>
-                      </div>
-                      <div className="truncate text-[12px] text-muted-foreground">{th.last}</div>
-                    </div>
-                    {th.unread > 0 && <span className="grid h-4 min-w-[16px] place-items-center rounded-full bg-[var(--accent)] px-1 text-[10px] font-semibold text-white">{th.unread}</span>}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex min-h-[500px] flex-col">
-            <div className="border-b border-border px-5 py-3">
-              <div className="text-[14px] font-semibold">{t.client}</div>
-              <div className="text-[11.5px] text-muted-foreground">SMS · last active {t.time}</div>
+        <Card className="overflow-hidden">
+          <div className="grid place-items-center px-6 py-14 text-center">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl border border-border bg-[var(--surface)] text-[var(--accent)]">
+              <MessageSquare className="h-5 w-5" />
+            </span>
+            <div className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-border bg-[var(--surface-2)] px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+              <Clock className="h-3 w-3" /> Coming soon
             </div>
-            <div className="flex-1 space-y-2 overflow-y-auto p-5">
-              {mockMessages.map((m,i) => (
-                <div key={i} className={`flex ${m.from==="us"?"justify-end":"justify-start"}`}>
-                  <div className={`max-w-[70%] rounded-2xl px-3 py-2 text-[13px] ${m.from==="us"?"bg-foreground text-background":"bg-[var(--surface-2)]"}`}>
-                    {m.body}
-                    <div className="mt-1 text-[10px] opacity-60">{m.time}</div>
+            <h2 className="mt-3 text-[20px] font-semibold tracking-tight">Messaging is on the way</h2>
+            <p className="mx-auto mt-1.5 max-w-md text-[13px] leading-relaxed text-muted-foreground">
+              Soon you'll handle every client and lead conversation from here — no
+              more juggling your phone and five inboxes. Here's what's landing:
+            </p>
+            <div className="mt-7 grid w-full max-w-2xl gap-3 sm:grid-cols-3">
+              {upcoming.map((u) => {
+                const Icon = u.icon;
+                return (
+                  <div key={u.title} className="rounded-xl border border-border bg-background p-4 text-left">
+                    <span className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <div className="mt-2.5 text-[13px] font-medium">{u.title}</div>
+                    <div className="mt-0.5 text-[11.5px] leading-relaxed text-muted-foreground">{u.desc}</div>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center gap-2 border-t border-border p-3">
-              <input className="h-10 flex-1 rounded-lg border border-border bg-background px-3 text-[13px] outline-none focus:border-[var(--accent)]" placeholder={`Message ${t.client}…`} />
-              <button className="inline-flex h-10 items-center gap-1.5 rounded-lg bg-foreground px-3 text-[13px] font-medium text-background"><Send className="h-3.5 w-3.5" />Send</button>
+                );
+              })}
             </div>
           </div>
         </Card>

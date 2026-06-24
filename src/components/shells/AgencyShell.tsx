@@ -3,7 +3,7 @@ import { type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   LayoutDashboard, Users, BarChart3, Inbox, Kanban, MessageSquare,
-  CreditCard, Sparkles, FileText, Settings, Search, Bell, ChevronDown, Plug, LogOut,
+  CreditCard, Sparkles, FileText, Settings, Search, Bell, Plug, LogOut,
 } from "lucide-react";
 import { getAgencies } from "@/lib/data";
 import { getProfile, signOut } from "@/lib/auth";
@@ -55,7 +55,6 @@ export function AgencyShell({ children }: { children?: ReactNode }) {
               <span className="grid h-5 w-5 shrink-0 place-items-center rounded text-[10px] font-semibold text-white" style={{ background: agency?.brandColor ?? "var(--accent)" }}>{agencyName.charAt(0).toUpperCase()}</span>
               <span className="truncate font-medium">{agencyName}</span>
             </span>
-            <ChevronDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
           </div>
         </div>
 
@@ -92,17 +91,26 @@ export function AgencyShell({ children }: { children?: ReactNode }) {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-border bg-background/85 px-5 backdrop-blur">
-          <div className="relative w-full max-w-md">
+          <form
+            onSubmit={(e) => { e.preventDefault(); navigate({ to: "/app/clients" }); }}
+            className="relative w-full max-w-md"
+          >
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
-              placeholder="Search clients, campaigns, leads…"
+              placeholder="Search clients…"
               className="h-9 w-full rounded-lg border border-border bg-[var(--surface-2)] pl-9 pr-3 text-[13px] outline-none placeholder:text-muted-foreground focus:border-[var(--accent)]"
             />
-          </div>
+          </form>
           <div className="ml-auto flex items-center gap-2">
-            <button className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground">
-              <Bell className="h-4 w-4" />
-            </button>
+            <details className="group relative">
+              <summary className="grid h-9 w-9 cursor-pointer list-none place-items-center rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground [&::-webkit-details-marker]:hidden">
+                <Bell className="h-4 w-4" />
+              </summary>
+              <div className="absolute right-0 z-30 mt-2 w-64 rounded-xl border border-border bg-[var(--surface)] p-4 text-center shadow-pop">
+                <div className="text-[12.5px] font-medium">You're all caught up</div>
+                <div className="mt-1 text-[11.5px] text-muted-foreground">New leads, approvals, and messages will show up here.</div>
+              </div>
+            </details>
             <Link to="/portal" className="hidden h-9 items-center rounded-lg border border-border bg-background px-3 text-[12.5px] text-muted-foreground hover:text-foreground md:inline-flex">
               View as client →
             </Link>

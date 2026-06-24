@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { PageHeader, Card, KPI, StatusBadge } from "@/components/bits";
-import { agencies, usd } from "@/mock/data";
+import { getAgencies } from "@/lib/data";
+import { usd } from "@/mock/data";
+import { Loader2, Building2 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/")({
   component: AdminOverview,
@@ -8,75 +11,69 @@ export const Route = createFileRoute("/admin/")({
 });
 
 function AdminOverview() {
-  const totals = agencies.reduce((a,x)=>({clients:a.clients+x.clients, mrr:a.mrr+x.mrr, spend:a.spend+x.spend}),{clients:0,mrr:0,spend:0});
+  const { data: agencies = [], isLoading } = useQuery({ queryKey: ["agencies"], queryFn: getAgencies });
+
+  const totals = agencies.reduce(
+    (a, x) => ({ clients: a.clients + x.clients, mrr: a.mrr + x.mrr, spend: a.spend + x.spend }),
+    { clients: 0, mrr: 0, spend: 0 },
+  );
+  const avgClients = agencies.length ? Math.round(totals.clients / agencies.length) : 0;
+
   return (
     <>
       <PageHeader title="Master admin" sub="Every agency on Orvio." />
       <div className="space-y-6 px-6 pb-10">
-        <div className="grid gap-3 md:grid-cols-4">
-          <KPI label="Agencies" value={agencies.length} sub={`${agencies.filter(a=>a.status==="Active").length} active`} />
-          <KPI label="Total client accounts" value={totals.clients} />
-          <KPI label="Monthly recurring revenue" value={usd(totals.mrr)} delta={6.4} />
-          <KPI label="Client ad spend tracked" value={usd(totals.spend)} sub="last 30 days" />
-        </div>
-        <div className="grid gap-3 md:grid-cols-4">
-          <KPI label="Churn risk" value={agencies.filter(a=>a.status==="Churn Risk").length} sub="agencies flagged" />
-          <KPI label="Past due" value={agencies.filter(a=>a.status==="Past Due").length} />
-          <KPI label="Trial accounts" value={agencies.filter(a=>a.status==="Trial").length} />
-          <KPI label="Avg CPL across platform" value="$74.20" delta={-2.1} />
-        </div>
-        <Card>
-          <div className="flex flex-wrap items-start justify-between gap-3 p-5 pb-3">
-            <div>
-              <div className="text-[15px] font-semibold">How churn risk is scored</div>
-              <p className="mt-1 max-w-2xl text-[12.5px] text-muted-foreground">
-                A weighted blend of three signals over the last 30 days. Weights are configurable per admin in Settings.
-              </p>
+        {isLoading ? (
+          <div className="flex items-center gap-2 py-12 text-[13px] text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin" /> Loading agencies…
+          </div>
+        ) : agencies.length === 0 ? (
+          <div className="grid place-items-center rounded-2xl border border-dashed border-border px-6 py-16 text-center">
+            <span className="grid h-11 w-11 place-items-center rounded-xl border border-border bg-[var(--surface)] text-muted-foreground">
+              <Building2 className="h-5 w-5" />
+            </span>
+            <div className="mt-3 text-[14px] font-medium">No agencies yet</div>
+            <div className="mt-1 text-[12.5px] text-muted-foreground">Agencies appear here as they sign up for Orvio.</div>
+          </div>
+        ) : (
+          <>
+            <div className="grid gap-3 md:grid-cols-4">
+              <KPI label="Agencies" value={agencies.length} sub={`${agencies.filter((a) => a.status === "Active").length} active`} />
+              <KPI label="Total client accounts" value={totals.clients} />
+              <KPI label="Monthly recurring revenue" value={usd(totals.mrr)} />
+              <KPI label="Client ad spend tracked" value={usd(totals.spend)} sub="last 30 days" />
             </div>
-            <Link to="/admin/settings" className="text-[12.5px] font-medium text-[var(--accent)] hover:underline">Adjust weights →</Link>
-          </div>
-          <div className="grid gap-3 px-5 pb-5 md:grid-cols-3">
-            {[
-              { name: "Lead volume trend", weight: 40, body: "Week-over-week change in qualified leads delivered." },
-              { name: "CPL stability", weight: 35, body: "Variance of cost per lead vs the prior 30-day baseline." },
-              { name: "Portal engagement", weight: 25, body: "Client logins, approval response time, and message activity." },
-            ].map(s => (
-              <div key={s.name} className="rounded-lg border border-border bg-[var(--surface-2)]/40 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="text-[13px] font-semibold">{s.name}</div>
-                  <span className="rounded-full bg-background px-2 py-0.5 text-[11px] font-medium text-muted-foreground">{s.weight}%</span>
-                </div>
-                <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{s.body}</p>
-                <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-background">
-                  <div className="h-full rounded-full bg-[var(--accent)]" style={{ width: `${s.weight}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+            <div className="grid gap-3 md:grid-cols-4">
+              <KPI label="Churn risk" value={agencies.filter((a) => a.status === "Churn Risk").length} sub="agencies flagged" />
+              <KPI label="Past due" value={agencies.filter((a) => a.status === "Past Due").length} />
+              <KPI label="Trial accounts" value={agencies.filter((a) => a.status === "Trial").length} />
+              <KPI label="Avg clients / agency" value={avgClients} />
+            </div>
 
-        <Card>
-          <div className="flex items-center justify-between p-5 pb-3">
-            <div className="text-[15px] font-semibold">Recent agency activity</div>
-            <Link to="/admin/agencies" className="text-[12.5px] font-medium text-[var(--accent)] hover:underline">All agencies →</Link>
-          </div>
-          <table className="w-full text-[13px]">
-            <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
-              <tr><th className="px-4 py-2">Agency</th><th className="px-4 py-2">Plan</th><th className="px-4 py-2">Clients</th><th className="px-4 py-2">MRR</th><th className="px-4 py-2">Status</th></tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {agencies.map(a => (
-                <tr key={a.id} className="hover:bg-[var(--surface-2)]/60">
-                  <td className="px-4 py-2.5"><Link to="/admin/agencies/$id" params={{ id: a.id }} className="font-medium hover:underline">{a.name}</Link><div className="text-[11px] text-muted-foreground">{a.owner}</div></td>
-                  <td className="px-4 py-2.5">{a.plan}</td>
-                  <td className="px-4 py-2.5">{a.clients}</td>
-                  <td className="px-4 py-2.5 mono">{usd(a.mrr)}</td>
-                  <td className="px-4 py-2.5"><StatusBadge kind={a.status==="Active"?"success":a.status==="Trial"?"indigo":a.status==="Past Due"||a.status==="Churn Risk"?"danger":"neutral"}>{a.status}</StatusBadge></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
+            <Card>
+              <div className="flex items-center justify-between p-5 pb-3">
+                <div className="text-[15px] font-semibold">Agencies</div>
+                <Link to="/admin/agencies" className="text-[12.5px] font-medium text-[var(--accent)] hover:underline">All agencies →</Link>
+              </div>
+              <table className="w-full text-[13px]">
+                <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
+                  <tr><th className="px-4 py-2">Agency</th><th className="px-4 py-2">Plan</th><th className="px-4 py-2">Clients</th><th className="px-4 py-2">MRR</th><th className="px-4 py-2">Status</th></tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {agencies.map((a) => (
+                    <tr key={a.id} className="hover:bg-[var(--surface-2)]/60">
+                      <td className="px-4 py-2.5"><Link to="/admin/agencies/$id" params={{ id: a.id }} className="font-medium hover:underline">{a.name}</Link><div className="text-[11px] text-muted-foreground">{a.owner}</div></td>
+                      <td className="px-4 py-2.5">{a.plan}</td>
+                      <td className="px-4 py-2.5">{a.clients}</td>
+                      <td className="px-4 py-2.5 mono">{usd(a.mrr)}</td>
+                      <td className="px-4 py-2.5"><StatusBadge kind={a.status === "Active" ? "success" : a.status === "Trial" ? "indigo" : a.status === "Past Due" || a.status === "Churn Risk" ? "danger" : "neutral"}>{a.status}</StatusBadge></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+          </>
+        )}
       </div>
     </>
   );
