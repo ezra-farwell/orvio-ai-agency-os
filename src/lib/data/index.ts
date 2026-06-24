@@ -124,6 +124,40 @@ export async function getClients(): Promise<Client[]> {
   return (data as ClientRow[]).map(toClient);
 }
 
+/** Create a client under the caller's agency (RLS requires agency_id = your agency). */
+export async function createClient(input: {
+  agencyId: string;
+  name: string;
+  ownerName: string;
+  email: string;
+  phone?: string;
+  category?: string;
+  area?: string;
+  brandColor?: string;
+}): Promise<string> {
+  if (!isSupabaseConfigured || !supabase) throw new Error("Supabase not configured.");
+  const initials = input.name
+    .split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("");
+  const { data, error } = await supabase
+    .from("clients")
+    .insert({
+      agency_id: input.agencyId,
+      name: input.name,
+      owner_name: input.ownerName,
+      email: input.email,
+      phone: input.phone || null,
+      category: input.category || null,
+      area: input.area || null,
+      initials,
+      brand_color: input.brandColor || "#4F46E5",
+      status: "onboarding",
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return (data as { id: string }).id;
+}
+
 export async function getClient(id: string): Promise<Client | null> {
   if (!isSupabaseConfigured || !supabase) return mockClients.find((c) => c.id === id) ?? null;
   const { data, error } = await supabase.from("clients").select("*").eq("id", id).maybeSingle();
@@ -195,6 +229,16 @@ export async function getAgencies(): Promise<Agency[]> {
   const { data, error } = await supabase.from("agencies").select("*").order("mrr", { ascending: false });
   if (error) throw error;
   return (data as AgencyRow[]).map(toAgency);
+}
+
+/** Update the caller's agency branding (RLS restricts this to the agency owner). */
+export async function updateAgency(
+  agencyId: string,
+  patch: { name?: string; domain?: string | null; brand_color?: string },
+): Promise<void> {
+  if (!isSupabaseConfigured || !supabase) return;
+  const { error } = await supabase.from("agencies").update(patch).eq("id", agencyId);
+  if (error) throw error;
 }
 
 export async function getAgencyDashboard(): Promise<MetricGroup[]> {

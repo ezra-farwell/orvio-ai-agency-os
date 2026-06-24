@@ -1,38 +1,38 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader, Card, StatusBadge } from "@/components/bits";
-import { BrandLogo } from "@/components/BrandLogo";
+import { PageHeader, Card } from "@/components/bits";
+import { Activity, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/admin/integrations")({
   component: Integrations,
   head: () => ({ meta: [{ title: "Integrations — Orvio admin" }] }),
 });
 
-const ints = [
-  ["Meta Marketing API","Healthy","Last sync 2m ago","success"],
-  ["Google Ads API","Healthy","Last sync 4m ago","success"],
-  ["Stripe Connect","Healthy","All payouts cleared","success"],
-  ["Twilio SMS","Degraded","Elevated latency on US-East","warning"],
-  ["Postmark Email","Healthy","99.98% delivery 24h","success"],
-  ["CallRail","Down","API returning 503 since 11:02 UTC","danger"],
-] as const;
+const providers = ["Meta Marketing API", "Google Ads API", "Stripe Connect", "Twilio SMS", "Postmark Email", "CallRail"];
 
 function Integrations() {
   return (
     <>
       <PageHeader title="Integrations" sub="Platform health across third-party providers." />
-      <div className="grid gap-3 px-6 pb-10 md:grid-cols-2">
-        {ints.map(([name,state,note,kind]) => (
-          <Card key={name as string} className="p-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <BrandLogo name={name as string} size={32} />
-                <div className="text-[14px] font-semibold">{name}</div>
-              </div>
-              <StatusBadge kind={kind as any}>{state}</StatusBadge>
+      <div className="px-6 pb-10">
+        <Card className="overflow-hidden">
+          <div className="grid place-items-center px-6 py-14 text-center">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl border border-border bg-[var(--surface)] text-[var(--accent)]">
+              <Activity className="h-5 w-5" />
+            </span>
+            <div className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-border bg-[var(--surface-2)] px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+              <Clock className="h-3 w-3" /> Coming soon
             </div>
-            <div className="mt-2 ml-[44px] text-[12.5px] text-muted-foreground">{note}</div>
-          </Card>
-        ))}
+            <h2 className="mt-3 text-[20px] font-semibold tracking-tight">Live provider health</h2>
+            <p className="mx-auto mt-1.5 max-w-md text-[13px] leading-relaxed text-muted-foreground">
+              Real-time uptime and sync status for every provider Orvio depends on will live here. Until the monitoring pipeline is wired, we're not showing placeholder numbers.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {providers.map((p) => (
+                <span key={p} className="rounded-full border border-border bg-background px-2.5 py-1 text-[11.5px] text-muted-foreground">{p}</span>
+              ))}
+            </div>
+          </div>
+        </Card>
       </div>
     </>
   );

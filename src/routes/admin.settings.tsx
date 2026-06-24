@@ -11,22 +11,20 @@ function Settings() {
     <>
       <PageHeader title="Settings" sub="Platform-level configuration." />
       <div className="grid gap-4 px-6 pb-10 md:grid-cols-2">
-        <Card className="p-5">
-          <div className="text-[14px] font-semibold">Plans</div>
-          <div className="mt-2 text-[12.5px] text-muted-foreground">Pricing tiers and feature flags. Editing here updates marketing pricing.</div>
-        </Card>
-        <Card className="p-5">
-          <div className="text-[14px] font-semibold">Feature flags</div>
-          <div className="mt-2 text-[12.5px] text-muted-foreground">Roll out features to specific agencies before global release.</div>
-        </Card>
-        <Card className="p-5">
-          <div className="text-[14px] font-semibold">Team</div>
-          <div className="mt-2 text-[12.5px] text-muted-foreground">Internal Orvio team members and roles.</div>
-        </Card>
-        <Card className="p-5">
-          <div className="text-[14px] font-semibold">Audit log</div>
-          <div className="mt-2 text-[12.5px] text-muted-foreground">Every privileged action across the platform.</div>
-        </Card>
+        {[
+          ["Plans", "Pricing tiers and feature flags. Editing here updates marketing pricing."],
+          ["Feature flags", "Roll out features to specific agencies before global release."],
+          ["Team", "Internal Orvio team members and roles."],
+          ["Audit log", "Every privileged action across the platform."],
+        ].map(([title, desc]) => (
+          <Card key={title} className="p-5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="text-[14px] font-semibold">{title}</div>
+              <span className="chip">Coming soon</span>
+            </div>
+            <div className="mt-2 text-[12.5px] text-muted-foreground">{desc}</div>
+          </Card>
+        ))}
       </div>
     </>
   );

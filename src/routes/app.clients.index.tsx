@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PageHeader, Card, StatusBadge } from "@/components/bits";
-import { getClients } from "@/lib/data";
+import { getClients, getAgencies, createClient } from "@/lib/data";
 import { getChurnMap, churnTier, TIER_COLOR } from "@/lib/data/insights";
 import { usd } from "@/mock/data";
-import { Plus, X, Mail, Phone, Sparkles, AlertTriangle } from "lucide-react";
+import { Plus, X, Mail, Sparkles, AlertTriangle, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/app/clients/")({
   component: Clients,
@@ -14,8 +14,11 @@ export const Route = createFileRoute("/app/clients/")({
 
 function Clients() {
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
   const { data: clients = [] } = useQuery({ queryKey: ["clients"], queryFn: getClients });
   const { data: churn = {} } = useQuery({ queryKey: ["churn-map"], queryFn: getChurnMap });
+  const { data: agencies = [] } = useQuery({ queryKey: ["agencies"], queryFn: getAgencies });
+  const agencyId = agencies[0]?.id;
   return (
     <>
       <PageHeader title="Clients" sub={`${clients.length} accounts · ${clients.filter(c=>c.status==="active").length} active`}
@@ -99,7 +102,16 @@ function Clients() {
         </Card>
       </div>
 
-      {open && <AddClientModal onClose={() => setOpen(false)} />}
+      {open && (
+        <AddClientModal
+          agencyId={agencyId}
+          onClose={() => setOpen(false)}
+          onCreated={async () => {
+            setOpen(false);
+            await queryClient.invalidateQueries({ queryKey: ["clients"] });
+          }}
+        />
+      )}
     </>
   );
 }
@@ -123,56 +135,75 @@ function IntChip({ label, state, title }: { label: string; state: "connected" | 
   );
 }
 
-function AddClientModal({ onClose }: { onClose: () => void }) {
+function AddClientModal({ agencyId, onClose, onCreated }: { agencyId?: string; onClose: () => void; onCreated: () => Promise<void> }) {
+  const [form, setForm] = useState({ name: "", ownerName: "", email: "", phone: "", category: "", area: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string>();
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!agencyId) return setError("Your agency is still loading — try again in a moment.");
+    if (!form.name.trim()) return setError("Business name is required.");
+    setSubmitting(true);
+    setError(undefined);
+    try {
+      await createClient({
+        agencyId,
+        name: form.name.trim(),
+        ownerName: form.ownerName.trim() || form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || undefined,
+        category: form.category.trim() || undefined,
+        area: form.area.trim() || undefined,
+      });
+      await onCreated();
+    } catch {
+      setError("Could not create the client. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-foreground/30 p-4 backdrop-blur-sm" onClick={onClose}>
-      <div onClick={e => e.stopPropagation()} className="w-full max-w-xl rounded-2xl border border-border bg-background shadow-pop">
+      <div onClick={(e) => e.stopPropagation()} className="w-full max-w-xl rounded-2xl border border-border bg-background shadow-pop">
         <div className="flex items-center justify-between border-b border-border px-5 py-3">
           <div>
             <div className="text-[15px] font-semibold">Add a new client</div>
-            <div className="text-[12px] text-muted-foreground">They'll receive a portal invite by email.</div>
+            <div className="text-[12px] text-muted-foreground">Create the account now — invite them to their portal anytime.</div>
           </div>
           <button onClick={onClose} className="rounded-md p-1 text-muted-foreground hover:bg-[var(--surface-2)]"><X className="h-4 w-4" /></button>
         </div>
-        <form onSubmit={e => { e.preventDefault(); onClose(); }} className="space-y-3 p-5">
+        <form onSubmit={submit} className="space-y-3 p-5">
           <div className="grid gap-3 md:grid-cols-2">
-            <Field label="Business name" placeholder="Hartland Plumbing" />
-            <Field label="Owner name" placeholder="Mike Hartland" />
-            <Field label="Owner email" placeholder="mike@example.com" />
-            <Field label="Phone" placeholder="(248) 555-0142" />
-            <Field label="Service category" placeholder="Plumbing" />
-            <Field label="Service area" placeholder="Detroit Metro, MI" />
+            <Field label="Business name" placeholder="Hartland Plumbing" value={form.name} onChange={set("name")} />
+            <Field label="Owner name" placeholder="Mike Hartland" value={form.ownerName} onChange={set("ownerName")} />
+            <Field label="Owner email" placeholder="mike@example.com" value={form.email} onChange={set("email")} />
+            <Field label="Phone" placeholder="(248) 555-0142" value={form.phone} onChange={set("phone")} />
+            <Field label="Service category" placeholder="Plumbing" value={form.category} onChange={set("category")} />
+            <Field label="Service area" placeholder="Detroit Metro, MI" value={form.area} onChange={set("area")} />
           </div>
-          <div className="grid gap-3 md:grid-cols-2">
-            <Select label="Meta ad account" options={["Connect after invite","Connect now"]} />
-            <Select label="Google ad account" options={["Connect after invite","Connect now"]} />
-          </div>
-          <div className="flex items-center gap-2 rounded-lg border border-border bg-[var(--surface-2)] px-3 py-2.5">
-            <input type="checkbox" defaultChecked id="wl" className="h-4 w-4 accent-[var(--accent)]" />
-            <label htmlFor="wl" className="text-[13px]">Enable white-label branding for this client</label>
-          </div>
+          {error && (
+            <div className="rounded-lg border border-[var(--danger)]/30 bg-[var(--danger-soft)] px-3 py-2 text-[12.5px] text-[var(--danger)]">{error}</div>
+          )}
           <div className="flex items-center justify-end gap-2 pt-2">
             <button type="button" onClick={onClose} className="h-9 rounded-lg border border-border bg-background px-4 text-[13px]">Cancel</button>
-            <button type="submit" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-4 text-[13px] font-medium text-background"><Mail className="h-3.5 w-3.5" />Send invite</button>
+            <button type="submit" disabled={submitting} className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-4 text-[13px] font-medium text-background disabled:opacity-60">
+              {submitting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Mail className="h-3.5 w-3.5" />}
+              {submitting ? "Creating…" : "Create client"}
+            </button>
           </div>
         </form>
       </div>
     </div>
   );
 }
-function Field({ label, placeholder }: { label: string; placeholder?: string }) {
+function Field({ label, placeholder, value, onChange }: { label: string; placeholder?: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
     <label className="block">
       <div className="text-[12px] font-medium text-muted-foreground">{label}</div>
-      <input placeholder={placeholder} className="mt-1 h-9 w-full rounded-lg border border-border bg-background px-3 text-[13px] outline-none focus:border-[var(--accent)]" />
-    </label>
-  );
-}
-function Select({ label, options }: { label: string; options: string[] }) {
-  return (
-    <label className="block">
-      <div className="text-[12px] font-medium text-muted-foreground">{label}</div>
-      <select className="mt-1 h-9 w-full rounded-lg border border-border bg-background px-3 text-[13px]">{options.map(o => <option key={o}>{o}</option>)}</select>
+      <input value={value} onChange={onChange} placeholder={placeholder} className="mt-1 h-9 w-full rounded-lg border border-border bg-background px-3 text-[13px] outline-none focus:border-[var(--accent)]" />
     </label>
   );
 }
