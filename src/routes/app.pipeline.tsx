@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, GripVertical, Check, X } from "lucide-react";
 import { PageHeader } from "@/components/bits";
-import { leads as seedLeads } from "@/mock/data";
+import { getLeads } from "@/lib/data";
+import { type Lead } from "@/mock/data";
 
 export const Route = createFileRoute("/app/pipeline")({
   component: Pipeline,
@@ -27,7 +29,7 @@ const DEFAULT_COLUMNS: Column[] = [
   { id: "new",       name: "New",           tone: "bg-[var(--accent-soft)] text-[var(--accent)]" },
   { id: "contacted", name: "Contacted",     tone: "bg-[var(--surface-2)] text-foreground" },
   { id: "booked",    name: "Booked",        tone: "bg-[var(--accent-soft)] text-[var(--accent)]" },
-  { id: "estimate",  name: "Estimate Sent", tone: "bg-[var(--warning-soft)] text-[#B45309]" },
+  { id: "estimate",  name: "Estimate Sent", tone: "bg-[var(--warning-soft)] text-[var(--warning)]" },
   { id: "won",       name: "Won",           tone: "bg-[var(--success-soft)] text-[var(--success)]" },
   { id: "lost",      name: "Lost",          tone: "bg-[var(--danger-soft)] text-[var(--danger)]" },
 ];
@@ -37,8 +39,8 @@ const STATUS_TO_COL: Record<string, string> = {
   "Estimate Sent": "estimate", Won: "won", Lost: "lost",
 };
 
-function seedCards(): Card[] {
-  return seedLeads.map((l) => ({
+function seedCards(leads: Lead[]): Card[] {
+  return leads.map((l) => ({
     id: l.id, name: l.name, client: l.client, campaign: l.campaign,
     source: l.source, submitted: l.submitted,
     columnId: STATUS_TO_COL[l.status] ?? "new",
@@ -46,26 +48,36 @@ function seedCards(): Card[] {
 }
 
 function Pipeline() {
+  const { data: realLeads = [], isLoading } = useQuery({ queryKey: ["leads"], queryFn: getLeads });
   const [columns, setColumns] = useState<Column[]>(DEFAULT_COLUMNS);
-  const [cards, setCards] = useState<Card[]>(seedCards());
+  const [cards, setCards] = useState<Card[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
   const [dragId, setDragId] = useState<string | null>(null);
   const [dropTarget, setDropTarget] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
 
-  // Load from localStorage
+  // Load once: a saved board wins; otherwise seed from the agency's real leads
+  // (which arrive asynchronously, so this re-runs when the query resolves).
   useEffect(() => {
+    if (loaded) return;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed.columns) setColumns(parsed.columns);
         if (parsed.cards) setCards(parsed.cards);
+        setLoaded(true);
+        return;
       }
-    } catch {}
-    setLoaded(true);
-  }, []);
+    } catch {
+      /* ignore an unreadable saved board and fall back to seeding */
+    }
+    if (!isLoading) {
+      setCards(seedCards(realLeads));
+      setLoaded(true);
+    }
+  }, [isLoading, loaded, realLeads]);
 
   // Persist
   useEffect(() => {
@@ -97,7 +109,7 @@ function Pipeline() {
   }
   function resetBoard() {
     setColumns(DEFAULT_COLUMNS);
-    setCards(seedCards());
+    setCards(seedCards(realLeads));
   }
 
   function onDrop(columnId: string) {
