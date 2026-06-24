@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PageHeader, StatusGroupCard, HeroNumber } from "@/components/bits";
 import { TONE_COLOR, num } from "@/mock/data";
 import { getProfile } from "@/lib/auth";
-import { getClient, getClients, getClientDashboard, getLeads } from "@/lib/data";
+import { getClient, getClients, getClientDashboard, getLeads, getLeadTrend } from "@/lib/data";
 import { getClientInsights } from "@/lib/data/insights";
 import { Phone, MessageSquare } from "lucide-react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -12,11 +12,6 @@ export const Route = createFileRoute("/portal/")({
   component: ClientOverview,
   head: () => ({ meta: [{ title: "Your dashboard — Client portal" }] }),
 });
-
-const trend = [
-  { d: "Wk 1", leads: 12 }, { d: "Wk 2", leads: 14 },
-  { d: "Wk 3", leads: 17 }, { d: "Wk 4", leads: 20 },
-];
 
 function ClientOverview() {
   const { data: profile } = useQuery({ queryKey: ["profile"], queryFn: getProfile });
@@ -39,6 +34,10 @@ function ClientOverview() {
   const { data: insights = {} } = useQuery({
     queryKey: ["client-insights", clientId], queryFn: () => getClientInsights(clientId!), enabled: !!clientId,
   });
+  const { data: leadTrend = [] } = useQuery({
+    queryKey: ["lead-trend"], queryFn: () => getLeadTrend(30), enabled: !!clientId,
+  });
+  const trendTotal = leadTrend.reduce((a, p) => a + p.leads, 0);
 
   const myLeads = client ? allLeads.filter((l) => l.client === client.name).slice(0, 4) : [];
   const firstName = client?.owner?.split(" ")[0] ?? "there";
@@ -55,9 +54,14 @@ function ClientOverview() {
         </div>
 
         <HeroNumber label="LEADS THIS MONTH" value={num(client?.leads ?? 0)} sub="from your active ad campaigns">
+          {trendTotal === 0 ? (
+            <div className="mt-6 grid h-[200px] place-items-center rounded-xl border border-dashed border-border px-6 text-center text-[13px] text-muted-foreground">
+              Your lead trend appears here once leads start coming in.
+            </div>
+          ) : (
           <div className="mt-6 h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={trend} margin={{ top: 6, right: 12, bottom: 0, left: 0 }}>
+              <AreaChart data={leadTrend} margin={{ top: 6, right: 12, bottom: 0, left: 0 }}>
                 <defs>
                   <linearGradient id="cleads" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#34D399" stopOpacity={0.25} />
@@ -72,6 +76,7 @@ function ClientOverview() {
               </AreaChart>
             </ResponsiveContainer>
           </div>
+          )}
         </HeroNumber>
 
         <section>

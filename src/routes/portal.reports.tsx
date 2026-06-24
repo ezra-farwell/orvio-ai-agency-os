@@ -1,37 +1,68 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { PageHeader, Card } from "@/components/bits";
-import { Download } from "lucide-react";
+import { getProfile } from "@/lib/auth";
+import { getClients, getClient } from "@/lib/data";
+import { getClientInsights } from "@/lib/data/insights";
+import { usd } from "@/mock/data";
+import { FileText, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/portal/reports")({
   component: Reports,
   head: () => ({ meta: [{ title: "Reports — Client portal" }] }),
 });
 
-const reports = [
-  { month: "April 2024", spend: "$4,280", leads: 63, cpl: "$67.94", best: "Emergency Plumbing Leads", note: "Best month yet. Roof Replacement scaled. Booked calls up 38%." },
-  { month: "March 2024", spend: "$4,100", leads: 58, cpl: "$70.69", best: "Drain Cleaning Local", note: "Steady growth. CTR up to 2.6%. Two new offers tested." },
-  { month: "February 2024", spend: "$3,820", leads: 49, cpl: "$77.96", best: "Drain Cleaning Local", note: "Slower start but improved through the month. New creative refresh." },
-];
+const thisMonth = new Date().toLocaleDateString([], { month: "long", year: "numeric" });
 
 function Reports() {
+  const { data: profile } = useQuery({ queryKey: ["profile"], queryFn: getProfile });
+  const { data: clients = [] } = useQuery({ queryKey: ["clients"], queryFn: getClients, enabled: !!profile && !profile.client_id });
+  const clientId = profile?.client_id ?? clients[0]?.id;
+  const { data: client } = useQuery({ queryKey: ["client", clientId], queryFn: () => getClient(clientId!), enabled: !!clientId });
+  const { data: insights = {}, isLoading } = useQuery({ queryKey: ["client-insights", clientId], queryFn: () => getClientInsights(clientId!), enabled: !!clientId });
+
+  const report = insights.client_report;
+  const summary = insights.analytics_summary;
+
   return (
     <>
       <PageHeader title="Monthly reports" sub="Performance summaries from your agency, in plain English." />
       <div className="grid gap-4 px-6 pb-10">
-        {reports.map(r => (
-          <Card key={r.month} className="p-5">
+        {isLoading ? (
+          <div className="flex items-center gap-2 py-12 text-[13px] text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin" /> Loading your reports…
+          </div>
+        ) : !report && !summary ? (
+          <div className="grid place-items-center rounded-2xl border border-dashed border-border px-6 py-16 text-center">
+            <span className="grid h-11 w-11 place-items-center rounded-xl border border-border bg-[var(--surface)] text-muted-foreground">
+              <FileText className="h-5 w-5" />
+            </span>
+            <div className="mt-3 text-[14px] font-medium">No reports yet</div>
+            <div className="mt-1 max-w-sm text-[12.5px] text-muted-foreground">
+              Your first monthly summary will appear here once your agency generates it — written in plain English, no jargon.
+            </div>
+          </div>
+        ) : (
+          <Card className="p-5">
             <div className="flex items-center justify-between">
-              <div className="text-[15px] font-semibold">{r.month}</div>
-              <button className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-[12.5px]"><Download className="h-3.5 w-3.5" />Download PDF</button>
+              <div className="text-[15px] font-semibold">{thisMonth}</div>
+              <span className="chip-indigo">Latest</span>
             </div>
-            <div className="mt-4 grid gap-2 md:grid-cols-4">
-              {[["Spend",r.spend],["Leads",String(r.leads)],["CPL",r.cpl],["Best campaign",r.best]].map(([l,v]) => (
-                <div key={l} className="rounded-lg border border-border bg-[var(--surface-2)]/60 p-3"><div className="text-[10.5px] uppercase tracking-wider text-muted-foreground">{l}</div><div className="mt-0.5 text-[14px] font-semibold">{v}</div></div>
-              ))}
-            </div>
-            <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{r.note}</p>
+            {client && (
+              <div className="mt-4 grid gap-2 md:grid-cols-3">
+                {[["Spend", usd(client.monthlySpend)], ["Leads", String(client.leads)], ["CPL", `$${client.cpl.toFixed(2)}`]].map(([l, v]) => (
+                  <div key={l} className="rounded-lg border border-border bg-[var(--surface-2)]/60 p-3">
+                    <div className="text-[10.5px] uppercase tracking-wider text-muted-foreground">{l}</div>
+                    <div className="mt-0.5 text-[14px] font-semibold">{v}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <p className="mt-4 whitespace-pre-line text-[13px] leading-relaxed text-foreground/90">
+              {report?.body ?? summary?.body}
+            </p>
           </Card>
-        ))}
+        )}
       </div>
     </>
   );
