@@ -148,7 +148,8 @@ function Payments() {
               No invoices yet. Create your first invoice to bill a client.
             </div>
           ) : (
-            <table className="w-full text-[13px]">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] text-[13px]">
               <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
                 <tr>
                   <th className="px-4 py-2">Invoice</th>
@@ -181,6 +182,7 @@ function Payments() {
                 })}
               </tbody>
             </table>
+            </div>
           )}
         </Card>
       </div>

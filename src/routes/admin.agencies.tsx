@@ -31,7 +31,8 @@ function AgenciesList() {
               <div className="mt-1 text-[12.5px] text-muted-foreground">Agencies appear here as they sign up.</div>
             </div>
           ) : (
-            <table className="w-full text-[13px]">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[820px] text-[13px]">
               <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
                 <tr><th className="px-4 py-2">Agency</th><th className="px-4 py-2">Plan</th><th className="px-4 py-2">Clients</th><th className="px-4 py-2">MRR</th><th className="px-4 py-2">Spend tracked</th><th className="px-4 py-2">Domain</th><th className="px-4 py-2">Integrations</th><th className="px-4 py-2">Status</th></tr>
               </thead>
@@ -54,6 +55,7 @@ function AgenciesList() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </Card>
       </div>

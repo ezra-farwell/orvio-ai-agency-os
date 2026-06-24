@@ -71,7 +71,8 @@ function Leads() {
               </div>
             </div>
           ) : (
-            <table className="w-full text-[13px]">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[680px] text-[13px]">
               <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
                 <tr><th className="px-4 py-2.5">Lead</th><th className="px-4 py-2.5">Client</th><th className="px-4 py-2.5">Campaign</th><th className="px-4 py-2.5">Source</th><th className="px-4 py-2.5">Status</th><th className="px-4 py-2.5">Submitted</th><th></th></tr>
               </thead>
@@ -92,6 +93,7 @@ function Leads() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </Card>
       </div>
