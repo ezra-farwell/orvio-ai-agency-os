@@ -67,7 +67,7 @@ function CampaignPerf() {
           </div>
         ) : (
           <>
-            <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
               <KPI label="Spend" value={usd(t.spend)} helper="What you paid for ads this month." />
               <KPI label="Leads" value={num(t.leads)} helper="People who filled out a form or called." />
               <KPI label="CPL" value={`$${t.cpl.toFixed(2)}`} helper="What each lead costs you." />
@@ -102,7 +102,8 @@ function CampaignPerf() {
 
             <Card>
               <div className="p-5 pb-2 text-[15px] font-semibold">Active campaigns</div>
-              <table className="w-full text-[13px]">
+              <div className="overflow-x-auto">
+              <table className="w-full min-w-[520px] text-[13px]">
                 <thead className="bg-[var(--surface-2)] text-left text-[11.5px] uppercase tracking-wider text-muted-foreground">
                   <tr><th className="px-4 py-2">Campaign</th><th className="px-4 py-2">Spend</th><th className="px-4 py-2">Leads</th><th className="px-4 py-2">CPL</th><th className="px-4 py-2">Status</th></tr>
                 </thead>
@@ -112,6 +113,7 @@ function CampaignPerf() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </Card>
           </>
         )}
